@@ -1,0 +1,150 @@
+{
+  "tournaments": [
+    {
+      "id": "t_utr_live",
+      "date": "2026-08-01",
+      "event": "UTR Junior Event",
+      "place": "Florida, USA",
+      "surface": "Hard",
+      "status": "live",
+      "resultSingles": "",
+      "resultDoubles": "",
+      "notes": "UTR Sports · live draw",
+      "url": "https://app.utrsports.net/events/326809?divisionId=516419&t=1",
+      "matches": []
+    },
+    {
+      "id": "t1",
+      "date": "2026-08",
+      "event": "ITF Junior Circuit",
+      "place": "Europe · TBC",
+      "surface": "Hard",
+      "status": "upcoming",
+      "resultSingles": "",
+      "resultDoubles": "",
+      "notes": "",
+      "url": "",
+      "matches": []
+    },
+    {
+      "id": "t2",
+      "date": "2026-09",
+      "event": "ITF Junior Circuit",
+      "place": "Europe · TBC",
+      "surface": "Clay / Hard",
+      "status": "upcoming",
+      "resultSingles": "",
+      "resultDoubles": "",
+      "notes": "",
+      "url": "",
+      "matches": []
+    },
+    {
+      "id": "t_battle_bay",
+      "date": "2026-04-11",
+      "event": "Battle on the Bay · Inspiration Academy",
+      "place": "Bradenton / Sarasota, FL",
+      "surface": "Hard",
+      "status": "completed",
+      "resultSingles": "SF",
+      "resultDoubles": "—",
+      "notes": "UTR Men's Open (Main) · Prize Money Event",
+      "url": "https://app.utrsports.net/events/326803?d=c7958fa2-243a-4755-b3a0-218997694870&t=2",
+      "matches": [
+        {
+          "id": "m_bb_r16",
+          "round": "R16",
+          "opponent": "A. Vogelgesang",
+          "score": "6-0 6-1",
+          "result": "win",
+          "date": "2026-04-11",
+          "notes": ""
+        },
+        {
+          "id": "m_bb_qf",
+          "round": "QF",
+          "opponent": "P. Larouche",
+          "score": "6-3 6-3",
+          "result": "win",
+          "date": "2026-04-11",
+          "notes": ""
+        },
+        {
+          "id": "m_bb_sf",
+          "round": "SF",
+          "opponent": "P. Polansky",
+          "score": "2-6 2-6",
+          "result": "loss",
+          "date": "2026-04-12",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "t3",
+      "date": "2026-02",
+      "event": "J30 Nairobi",
+      "place": "Nairobi, Kenya",
+      "surface": "Hard",
+      "status": "completed",
+      "resultSingles": "Nasadený #2",
+      "resultDoubles": "—",
+      "notes": "ITF East Africa Junior Circuit",
+      "url": "",
+      "matches": []
+    },
+    {
+      "id": "t4",
+      "date": "2025",
+      "event": "Majstrovstvá SR — štvorhra",
+      "place": "Slovakia",
+      "surface": "Hard",
+      "status": "completed",
+      "resultSingles": "—",
+      "resultDoubles": "Vicemajster",
+      "notes": "Národný okruh · U14",
+      "url": "",
+      "matches": []
+    }
+  ],
+  "albums": [
+    {
+      "id": "a_training",
+      "title": "Tréning",
+      "date": "2026",
+      "description": "Príprava na antuke a hard courte.",
+      "createdAt": "2026-07-31T00:00:00.000Z"
+    }
+  ],
+  "photos": [
+    {
+      "id": "p_backhand",
+      "src": "/media/filip-backhand.jpg",
+      "alt": "Filip Urbánoš — backhand na antuke",
+      "caption": "Tréning · backhand",
+      "albumId": "a_training",
+      "createdAt": "2026-07-31T00:00:00.000Z"
+    }
+  ],
+  "videos": [
+    {
+      "id": "v_ms9b8fru_vsdqb",
+      "title": "Rozhovor v Inspiration Academy",
+      "url": "/uploads/vid_ms9b8flv_tnp4a.mp4",
+      "description": "Rozhovor o pocitoch a ako našiel akadémiu Inspiration Academy v Bradentone na Floride",
+      "albumId": "",
+      "createdAt": "2026-07-31T19:03:00.570Z"
+    }
+  ],
+  "partners": [
+    {
+      "id": "partner_agromepa",
+      "name": "AGROMEPA, s.r.o.",
+      "url": "https://agroobchod.sk",
+      "logo": "/partners/agromepa.png",
+      "tier": "main",
+      "description": "",
+      "order": 0
+    }
+  ]
+}

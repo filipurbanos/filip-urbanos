@@ -1,0 +1,431 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import type {
+  Match,
+  MatchResult,
+  Tournament,
+  TournamentStatus,
+} from "@/lib/cms/types";
+import { sortByDateDesc } from "@/lib/cms/dates";
+
+const blankTournament = {
+  date: "",
+  event: "",
+  place: "",
+  surface: "Hard",
+  status: "upcoming" as TournamentStatus,
+  resultSingles: "",
+  resultDoubles: "",
+  notes: "",
+  url: "",
+  matches: [] as Match[],
+};
+
+const blankMatch = {
+  round: "",
+  opponent: "",
+  score: "",
+  result: "scheduled" as MatchResult,
+  date: "",
+  notes: "",
+};
+
+function statusLabel(status: TournamentStatus) {
+  if (status === "live") return "aktuálny";
+  if (status === "completed") return "ukončený";
+  return "nadchádzajúci";
+}
+
+export default function AdminTournamentsPage() {
+  const [items, setItems] = useState<Tournament[]>([]);
+  const [form, setForm] = useState(blankTournament);
+  const [matchForm, setMatchForm] = useState(blankMatch);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingMatchId, setEditingMatchId] = useState<string | null>(null);
+  const [error, setError] = useState("");
+
+  async function load() {
+    const res = await fetch("/api/admin/tournaments");
+    if (!res.ok) return;
+    const data = (await res.json()) as { tournaments: Tournament[] };
+    setItems(data.tournaments);
+  }
+
+  useEffect(() => {
+    void load();
+  }, []);
+
+  const sortedItems = useMemo(() => sortByDateDesc(items), [items]);
+
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    const res = await fetch("/api/admin/tournaments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editingId ? { ...form, id: editingId } : form),
+    });
+    if (!res.ok) {
+      setError("Uloženie zlyhalo");
+      return;
+    }
+    const data = (await res.json()) as { tournaments: Tournament[] };
+    setItems(data.tournaments);
+    setForm(blankTournament);
+    setMatchForm(blankMatch);
+    setEditingId(null);
+    setEditingMatchId(null);
+  }
+
+  async function remove(id: string) {
+    if (!confirm("Zmazať turnaj?")) return;
+    const res = await fetch(`/api/admin/tournaments?id=${id}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) return;
+    const data = (await res.json()) as { tournaments: Tournament[] };
+    setItems(data.tournaments);
+  }
+
+  function edit(item: Tournament) {
+    setEditingId(item.id);
+    setForm({
+      date: item.date,
+      event: item.event,
+      place: item.place,
+      surface: item.surface,
+      status: item.status,
+      resultSingles: item.resultSingles,
+      resultDoubles: item.resultDoubles,
+      notes: item.notes,
+      url: item.url,
+      matches: item.matches,
+    });
+    setMatchForm(blankMatch);
+    setEditingMatchId(null);
+  }
+
+  function saveMatch(e: React.FormEvent) {
+    e.preventDefault();
+    if (!matchForm.opponent.trim() && !matchForm.round.trim()) return;
+
+    if (editingMatchId) {
+      setForm({
+        ...form,
+        matches: form.matches.map((match) =>
+          match.id === editingMatchId
+            ? { ...match, ...matchForm }
+            : match,
+        ),
+      });
+    } else {
+      setForm({
+        ...form,
+        matches: [
+          ...form.matches,
+          {
+            id: `m_${Date.now().toString(36)}`,
+            ...matchForm,
+          },
+        ],
+      });
+    }
+    setMatchForm(blankMatch);
+    setEditingMatchId(null);
+  }
+
+  function editMatch(match: Match) {
+    setEditingMatchId(match.id);
+    setMatchForm({
+      round: match.round,
+      opponent: match.opponent,
+      score: match.score,
+      result: match.result,
+      date: match.date,
+      notes: match.notes,
+    });
+  }
+
+  function removeMatch(id: string) {
+    setForm({
+      ...form,
+      matches: form.matches.filter((match) => match.id !== id),
+    });
+    if (editingMatchId === id) {
+      setEditingMatchId(null);
+      setMatchForm(blankMatch);
+    }
+  }
+
+  return (
+    <div className="admin-page">
+      <h1>Turnaje</h1>
+      <p className="admin-lead">
+        Môžeš pridávať aj staršie turnaje spätne: nastav stav „Ukončený“, vyplň
+        dátum, miesto, povrch a umiestnenie 2hra / 4hra. Aktuálny = živé zápasy;
+        po skončení prepni na „Ukončený“. Na webe sa odohrané zoraďujú od
+        najnovšieho.
+      </p>
+
+      <form className="admin-form" onSubmit={save}>
+        <div className="admin-form__grid">
+          <label>
+            Dátum
+            <input
+              value={form.date}
+              onChange={(e) => setForm({ ...form, date: e.target.value })}
+              placeholder="2026-08-01 alebo 2026-08"
+              required
+            />
+          </label>
+          <label>
+            Turnaj
+            <input
+              value={form.event}
+              onChange={(e) => setForm({ ...form, event: e.target.value })}
+              required
+            />
+          </label>
+          <label>
+            Miesto
+            <input
+              value={form.place}
+              onChange={(e) => setForm({ ...form, place: e.target.value })}
+            />
+          </label>
+          <label>
+            Povrch
+            <input
+              value={form.surface}
+              onChange={(e) => setForm({ ...form, surface: e.target.value })}
+            />
+          </label>
+          <label>
+            Stav
+            <select
+              value={form.status}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  status: e.target.value as TournamentStatus,
+                })
+              }
+            >
+              <option value="upcoming">Nadchádzajúci</option>
+              <option value="live">Aktuálny (live)</option>
+              <option value="completed">Ukončený</option>
+            </select>
+          </label>
+          <label>
+            Umiestnenie 2hra
+            <input
+              value={form.resultSingles}
+              onChange={(e) =>
+                setForm({ ...form, resultSingles: e.target.value })
+              }
+              placeholder="R16 / W / —"
+            />
+          </label>
+          <label>
+            Umiestnenie 4hra
+            <input
+              value={form.resultDoubles}
+              onChange={(e) =>
+                setForm({ ...form, resultDoubles: e.target.value })
+              }
+              placeholder="F / Vicemajster / —"
+            />
+          </label>
+          <label className="admin-form__wide">
+            Odkaz (UTR / ITF)
+            <input
+              value={form.url}
+              onChange={(e) => setForm({ ...form, url: e.target.value })}
+              placeholder="https://app.utrsports.net/events/..."
+            />
+          </label>
+          <label className="admin-form__wide">
+            Poznámka
+            <input
+              value={form.notes}
+              onChange={(e) => setForm({ ...form, notes: e.target.value })}
+            />
+          </label>
+        </div>
+
+        <div className="admin-matches">
+          <h2>Zápasy na turnaji</h2>
+          <div className="admin-form__grid">
+            <label>
+              Kolo
+              <input
+                value={matchForm.round}
+                onChange={(e) =>
+                  setMatchForm({ ...matchForm, round: e.target.value })
+                }
+                placeholder="R32 / QF / F"
+              />
+            </label>
+            <label>
+              Súper
+              <input
+                value={matchForm.opponent}
+                onChange={(e) =>
+                  setMatchForm({ ...matchForm, opponent: e.target.value })
+                }
+                placeholder="Meno súpera"
+              />
+            </label>
+            <label>
+              Skóre
+              <input
+                value={matchForm.score}
+                onChange={(e) =>
+                  setMatchForm({ ...matchForm, score: e.target.value })
+                }
+                placeholder="6-4 7-5"
+              />
+            </label>
+            <label>
+              Výsledok zápasu
+              <select
+                value={matchForm.result}
+                onChange={(e) =>
+                  setMatchForm({
+                    ...matchForm,
+                    result: e.target.value as MatchResult,
+                  })
+                }
+              >
+                <option value="scheduled">Naplánovaný</option>
+                <option value="win">Výhra</option>
+                <option value="loss">Prehra</option>
+                <option value="retired">Retired</option>
+                <option value="walkover">Walkover</option>
+              </select>
+            </label>
+            <label>
+              Dátum zápasu
+              <input
+                value={matchForm.date}
+                onChange={(e) =>
+                  setMatchForm({ ...matchForm, date: e.target.value })
+                }
+                placeholder="2026-08-01"
+              />
+            </label>
+            <label>
+              Poznámka
+              <input
+                value={matchForm.notes}
+                onChange={(e) =>
+                  setMatchForm({ ...matchForm, notes: e.target.value })
+                }
+              />
+            </label>
+          </div>
+          <div className="admin-form__actions">
+            <button
+              type="button"
+              className="btn btn--admin-ghost"
+              onClick={saveMatch}
+            >
+              {editingMatchId ? "Uložiť zápas" : "Pridať zápas"}
+            </button>
+            {editingMatchId ? (
+              <button
+                type="button"
+                className="btn btn--admin-ghost"
+                onClick={() => {
+                  setEditingMatchId(null);
+                  setMatchForm(blankMatch);
+                }}
+              >
+                Zrušiť zápas
+              </button>
+            ) : null}
+          </div>
+
+          <div className="admin-match-list">
+            {form.matches.length === 0 ? (
+              <p className="admin-lead">Zatiaľ žiadne zápasy.</p>
+            ) : (
+              form.matches.map((match) => (
+                <article key={match.id} className="admin-row">
+                  <div>
+                    <strong>
+                      {match.round || "Zápas"} · {match.opponent || "TBC"}
+                    </strong>
+                    <p>
+                      {match.result}
+                      {match.score ? ` · ${match.score}` : ""}
+                      {match.date ? ` · ${match.date}` : ""}
+                    </p>
+                  </div>
+                  <div className="admin-row__actions">
+                    <button type="button" onClick={() => editMatch(match)}>
+                      Upraviť
+                    </button>
+                    <button type="button" onClick={() => removeMatch(match.id)}>
+                      Zmazať
+                    </button>
+                  </div>
+                </article>
+              ))
+            )}
+          </div>
+        </div>
+
+        {error ? <p className="admin-error">{error}</p> : null}
+        <div className="admin-form__actions">
+          <button className="btn btn--primary" type="submit">
+            {editingId ? "Uložiť turnaj" : "Pridať turnaj"}
+          </button>
+          {editingId ? (
+            <button
+              type="button"
+              className="btn btn--admin-ghost"
+              onClick={() => {
+                setEditingId(null);
+                setForm(blankTournament);
+                setMatchForm(blankMatch);
+                setEditingMatchId(null);
+              }}
+            >
+              Zrušiť
+            </button>
+          ) : null}
+        </div>
+      </form>
+
+      <div className="admin-table">
+        {sortedItems.map((item) => (
+          <article key={item.id} className="admin-row">
+            <div>
+              <strong>
+                {item.date} · {item.event}
+              </strong>
+              <p>
+                {item.place} · {item.surface} · {statusLabel(item.status)}
+                {item.resultSingles ? ` · 2hra ${item.resultSingles}` : ""}
+                {item.resultDoubles ? ` · 4hra ${item.resultDoubles}` : ""}
+                {item.matches.length
+                  ? ` · ${item.matches.length} zápasov`
+                  : ""}
+              </p>
+            </div>
+            <div className="admin-row__actions">
+              <button type="button" onClick={() => edit(item)}>
+                Upraviť
+              </button>
+              <button type="button" onClick={() => remove(item.id)}>
+                Zmazať
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}

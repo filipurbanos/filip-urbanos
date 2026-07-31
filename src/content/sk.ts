@@ -1,0 +1,425 @@
+import type { Content } from "./types";
+
+export const sk: Content = {
+  meta: {
+    title: "Filip Urbánoš | Tenis",
+    description:
+      "Oficiálna stránka slovenského juniorského tenistu Filipa Urbánoša — profil, cesta, výsledky, USA kapitola, médiá a partnerstvá.",
+  },
+  nav: {
+    about: "Príbeh",
+    journey: "Cesta",
+    results: "Výsledky",
+    usa: "USA",
+    media: "Médiá",
+    partners: "Partneri",
+    contact: "Kontakt",
+  },
+  hero: {
+    role: "Slovenský juniorský tenista",
+    headline: "Pripravený na ďalší bod.",
+    lead: "Zo Slovenska na Floridu. Štúdium, disciplína a elitný tréning spojené s cieľom vybudovať profesionálnu tenisovú kariéru.",
+    ctaPrimary: "Pozrieť výsledky",
+    ctaSecondary: "Stať sa partnerom",
+  },
+  about: {
+    eyebrow: "O Filipovi",
+    title: "Ambícia, disciplína, rast",
+    lead: "Slovenský junior, ktorý stavia kariéru cez tréning, medzinárodný okruh a ďalšiu kapitolu v USA.",
+    paragraphs: [
+      "Filip Urbánoš je 196 cm vysoký pravák s preferenciou hard courtu. Tenis hrá od štyroch–piatich rokov a dnes sa pohybuje na ITF Junior Tour.",
+      "Jeho cieľ je jasný: rásť ako hráč aj ako človek — cez ťažké zápasy, kvalitnú prípravu a spojenie štúdia s tenisom v Spojených štátoch.",
+    ],
+  },
+  journey: {
+    eyebrow: "Jeden smer",
+    title: "Vpred.",
+    lead: "Každá kapitola pridala tempo, súperov a jasnejší cieľ.",
+    chapters: [
+      {
+        year: "01",
+        title: "Slovensko",
+        body: "Miesto, kde sa začala láska k tenisu a prvé veľké ambície.",
+      },
+      {
+        year: "02",
+        title: "Barcelona",
+        body: "Medzinárodný tréning a nový pohľad na tenisovú hru.",
+      },
+      {
+        year: "03",
+        title: "Florida",
+        body: "Štúdium a tréning v Inspiration Academy spojené so získavaním zápasových skúseností v USA.",
+      },
+      {
+        year: "04",
+        title: "Budúcnosť",
+        body: "Univerzitný tenis a dlhodobá cesta na profesionálny okruh.",
+      },
+    ],
+  },
+  profile: {
+    eyebrow: "Profil hráča",
+    title: "Základné údaje",
+    lead: "Rýchly prehľad pre trénerov, médiá, recruiting aj partnerov.",
+    facts: [
+      { label: "Krajina", value: "Slovensko" },
+      { label: "Výška", value: "196 cm" },
+      { label: "Hrá", value: "Pravou rukou" },
+      { label: "Povrch", value: "Hard" },
+      { label: "Začiatok", value: "Od 4–5 rokov" },
+      { label: "Cieľ", value: "Top 20 ATP" },
+    ],
+  },
+  results: {
+    eyebrow: "Výsledky",
+    title: "Odohrané turnaje",
+    lead: "Odohrané turnaje a míľniky. Aktuálny turnaj sleduj vyššie — po zápase doplníme skóre.",
+    columns: {
+      date: "Dátum",
+      event: "Turnaj",
+      place: "Miesto",
+      surface: "Povrch",
+      singles: "2hra",
+      doubles: "4hra",
+    },
+    items: [
+      {
+        date: "2026-02",
+        event: "J30 Nairobi",
+        place: "Nairobi, Kenya",
+        surface: "Hard",
+        resultSingles: "Nasadený #2",
+        resultDoubles: "—",
+      },
+      {
+        date: "2025",
+        event: "Majstrovstvá SR — štvorhra",
+        place: "Slovakia",
+        surface: "Hard",
+        resultSingles: "—",
+        resultDoubles: "Vicemajster",
+      },
+    ],
+  },
+  live: {
+    eyebrow: "Aktuálny turnaj",
+    title: "Práve v hre",
+    lead: "Živý turnaj — po každom zápase doplníme výsledok. Po skončení ide do odohraných.",
+    badge: "LIVE",
+    empty: "Momentálne nie je nastavený aktuálny turnaj.",
+    drawLabel: "Draw / live scoring",
+    matchesLabel: "Zápasy",
+    noMatches: "Zápasy sa doplnia po začiatku turnaja.",
+    resultLabels: {
+      scheduled: "Naplánovaný",
+      win: "Výhra",
+      loss: "Prehra",
+      retired: "Retired",
+      walkover: "Walkover",
+    },
+  },
+  calendar: {
+    eyebrow: "Kalendár",
+    title: "Nadchádzajúce turnaje",
+    lead: "Plán okruhu — miesta a dátumy sa môžu meniť podľa žrebovania a cestovania.",
+    items: [
+      {
+        date: "Aug 2026",
+        event: "ITF Junior Circuit",
+        place: "Európa · TBC",
+        surface: "Hard",
+      },
+      {
+        date: "Sep 2026",
+        event: "ITF Junior Circuit",
+        place: "Európa · TBC",
+        surface: "Clay / Hard",
+      },
+    ],
+    note: "Aktuálny turnaj je vyššie. Kalendár spravuješ v admin → Turnaje.",
+  },
+  rankings: {
+    eyebrow: "Rebríčky",
+    title: "ITF · UTR · ATP",
+    lead: "Aktuálne pozície budeme udržiavať priebežne. Nižšie sú východiskové hodnoty / stav na doplnenie.",
+    items: [
+      {
+        system: "ITF Junior",
+        value: "Live",
+        note: "Oficiálny profil na itftennis.com",
+      },
+      {
+        system: "UTR",
+        value: "TBC",
+        note: "Doplníme po overení aktuálneho ratingu",
+      },
+      {
+        system: "ATP",
+        value: "Cieľ",
+        note: "Dlhodobá ambícia: Top 20",
+      },
+      {
+        system: "Tennis Europe",
+        value: "~150",
+        note: "Historický juniorský míľnik",
+      },
+    ],
+  },
+  training: {
+    eyebrow: "Tréning",
+    title: "Príprava na ďalší level",
+    lead: "Tenis, kondícia, regenerácia a mentálna práca — režim, ktorý drží tempo medzi turnajmi.",
+    items: [
+      {
+        title: "Na kurtu",
+        body: "Technika, taktické situácie, servis a return pod tlakom medzinárodného okruhu.",
+      },
+      {
+        title: "Kondícia",
+        body: "Sila, mobilita a výdrž pre 196 cm rám — bez zbytočného rizika zranenia.",
+      },
+      {
+        title: "Obnova",
+        body: "Fyzioterapia, spánok a regenerácia ako súčasť výkonu, nie bonus navrch.",
+      },
+    ],
+  },
+  usa: {
+    eyebrow: "USA",
+    title: "Florida — štúdium a tenis",
+    lead: "Inspiration Academy v Bradentone spája školu a high-performance tenis — aktuálna kapitola Filipa v USA.",
+    points: [
+      "Štúdium a denný tréning v Inspiration Academy na Floride.",
+      "Hard court režim, silná konkurencia a jasný denný plán.",
+      "Zápasové skúsenosti na UTR a americkom juniorskom okruhu.",
+      "Cieľ: univerzitný tenis a dlhodobá cesta na profesionálny okruh.",
+    ],
+    school: {
+      eyebrow: "Škola",
+      title: "Inspiration Academy",
+      lead: "Súkromná škola v Bradentone (FL), ktorá spája akademické štúdium s tenisovou akadémiou — jeden kampus, jeden rytmus.",
+      facts: [
+        { label: "Miesto", value: "Bradenton, Florida" },
+        { label: "Štúdium", value: "Stredná škola · 6–12 + post-grad" },
+        { label: "Model", value: "Malé skupiny · mentorský prístup" },
+        { label: "Tenis", value: "Full-time academy na hard courte" },
+      ],
+      paragraphs: [
+        "Inspiration Academy je day & boarding škola zameraná na individuálny prístup. Akademická časť beží popri športe, aby hráči zvládali učivo aj náročný tréningový plán.",
+        "Tenisová akadémia na tom istom areáli dáva Filipovi dennú prácu na hard courte, prípravu do zápasov a prístup k turnajom v regióne Bradenton / Sarasota — vrátane UTR eventov ako Battle on the Bay.",
+        "Pre Filipa je to prirodzené pokračovanie cesty Bratislava → Barcelona → USA: škola, tréning a zápasy na jednom mieste.",
+      ],
+      linkLabel: "inspirationacademy.com",
+      linkHref: "https://inspirationacademy.com/",
+    },
+    life: {
+      eyebrow: "Každodennosť",
+      title: "Čo znamená kapitola Florida",
+      lead: "Nie je to len „ísť do USA“ — je to režim, v ktorom sa škola a tenis dopĺňajú.",
+      items: [
+        {
+          title: "Škola + kurt",
+          body: "Ráno a deň sú postavené okolo učenia a tréningu. Malé triedy a mentorský model dávajú priestor zvládať oboje naraz.",
+        },
+        {
+          title: "Hard court rytmus",
+          body: "Florida = outdoor hard court, teplo a hustý kalendár. Filip sa tu učí hrať v americkom tempe a proti silnej konkurencii.",
+        },
+        {
+          title: "Zápasy blízko domu",
+          body: "UTR a juniorské eventy v Bradentone / Sarasote umožňujú zbierať skúsenosti bez zbytočného cestovania cez pol planéty každý víkend.",
+        },
+        {
+          title: "Ďalší cieľ",
+          body: "Univerzitný tenis v USA a rast smerom k profesionálnemu okruhu — Inspiration Academy je na to praktická platforma.",
+        },
+      ],
+    },
+  },
+  gallery: {
+    eyebrow: "Fotografie z cesty",
+    title: "Médiá.",
+    lead: "Turnaje, tréning a momenty z Filipovej tenisovej cesty — zoradené podľa akcií.",
+    placeholder: "Ďalšie fotky doplníme neskôr — zatiaľ je tu prvý výber z kurtu.",
+  },
+  albums: {
+    all: "Všetko",
+    uncategorized: "Bez albumu",
+    tabsLabel: "Albumy",
+    videosLabel: "Videá",
+  },
+  videos: {
+    eyebrow: "Videogaléria",
+    title: "Zápasy, highlighty, príprava",
+    lead: "Krátke clipy a dlhšie výstupy. Embedy z YouTube / Instagram doplníme v ďalšom kroku.",
+    placeholder: "Videá pripravujeme — linky na highlighty a rozhovory sú vítané.",
+  },
+  news: {
+    eyebrow: "Novinky",
+    title: "Čo je nové",
+    lead: "Krátke správy z okruhu, prípravy a USA kapitoly. Neskôr plný blog z administrácie.",
+    items: [
+      {
+        date: "2026",
+        title: "Oficiálny web je online",
+        excerpt:
+          "Spúšťame priestor pre profil, výsledky, médiá a partnerstvá — v slovenčine aj angličtine.",
+      },
+      {
+        date: "2026",
+        title: "Kapitola Florida",
+        excerpt:
+          "Štúdium a tréning v Inspiration Academy — aktuálna kapitola po Barcelone.",
+      },
+    ],
+  },
+  press: {
+    eyebrow: "Médiá",
+    title: "Rozhovory a výstupy",
+    lead: "Odkazy pre novinárov a fanúšikov. Media kit je samostatne nižšie.",
+    items: [
+      {
+        type: "Profil",
+        title: "ITF Junior Player Profile",
+        source: "itftennis.com",
+        href: "https://www.itftennis.com/en/players/filip-urbanos/800621234/svk/jt/S/overview/",
+      },
+      {
+        type: "Akadémia",
+        title: "Barcelona Tennis Academy — hráčsky profil",
+        source: "btatennis.com",
+        href: "https://www.btatennis.com/bta-players/filip-urbanos",
+      },
+      {
+        type: "Partnerstvá",
+        title: "Sponsoo — sponsorship profil",
+        source: "sponsoo.com",
+        href: "https://www.sponsoo.com/p/filipurbanos",
+      },
+      {
+        type: "Sociálne",
+        title: "Instagram @filipurbanos",
+        source: "instagram.com",
+        href: "https://www.instagram.com/filipurbanos/",
+      },
+    ],
+  },
+  partners: {
+    eyebrow: "Partneri",
+    title: "Značky pri Filipa",
+    lead: "Ďakujeme partnerom, ktorí stoja za cestou — od tréningu po turnaje.",
+    mainLabel: "Hlavný partner",
+    othersLabel: "Partneri",
+    emptyNote: "Ďalší partneri pribudnú čoskoro.",
+    visitLabel: "Navštíviť web",
+  },
+  sponsors: {
+    eyebrow: "Pre sponzorov",
+    title: "Prečo ísť do toho s Filipom",
+    lead: "Dlhodobé partnerstvo s juniorom, ktorý buduje medzinárodnú viditeľnosť a jasný cieľ.",
+    offerTitle: "Čo partner dostane",
+    offers: [
+      "Viditeľnosť loga na oblečení a výbave",
+      "Zmienky na Instagrame a v mediálnych výstupoch",
+      "Prezentácia značky na turnajoch",
+      "Prístup k media kitu a spolupráci na obsahu",
+    ],
+    usageTitle: "Kam idú prostriedky",
+    usage: [
+      "Cestovanie a ubytovanie na ITF turnajoch",
+      "Rakety, výplety, obuv a apparel",
+      "Tréning, kondícia a fyzioterapia",
+      "Štúdium a tréningový blok v USA",
+      "Produkcia foto a video obsahu",
+    ],
+    cta: "Napísať o partnerstve",
+  },
+  mediaKit: {
+    eyebrow: "Media Kit",
+    title: "Materiály na stiahnutie",
+    lead: "Logo, bio, fotografie vo vysokom rozlíšení a press texty — pripravíme ako balík na stiahnutie.",
+    items: [
+      { title: "Bio (SK / EN)", meta: "PDF · čoskoro" },
+      { title: "Výber fotografií", meta: "ZIP · čoskoro" },
+      { title: "Logá a brand assets", meta: "ZIP · čoskoro" },
+      { title: "Fact sheet", meta: "PDF · čoskoro" },
+    ],
+    cta: "Vyžiadať media kit",
+  },
+  collaborate: {
+    eyebrow: "Spolupráca",
+    title: "Ako začať partnerstvo",
+    lead: "Jednoduchý proces — od prvého mailu po aktiváciu na kurtu a v médiách.",
+    steps: [
+      {
+        title: "1. Brief",
+        body: "Pošlite cieľ značky, rozpočet a typ spolupráce.",
+      },
+      {
+        title: "2. Návrh",
+        body: "Pripravíme formát: apparel, content, event presence alebo balík.",
+      },
+      {
+        title: "3. Aktivácia",
+        body: "Spoločný kickoff, materiály a reporting počas sezóny.",
+      },
+    ],
+    cta: "Začať spoluprácu",
+  },
+  community: {
+    eyebrow: "Komunita",
+    title: "Charita a komunita",
+    lead: "Priestor pre aktivity, ktoré majú zmysel mimo výsledkovej listiny.",
+    note: "Sekcia sa aktivuje, keď budú konkrétne projekty — tenis pre deti, clinic, charity event.",
+  },
+  faq: {
+    eyebrow: "FAQ",
+    title: "Často kladené otázky",
+    lead: "Rýchle odpovede pre médiá, partnerov a fanúšikov.",
+    items: [
+      {
+        q: "Kde Filip trénuje?",
+        a: "Cesta viedla cez Love 4 Tennis v Bratislave a Barcelona Tennis Academy. Aktuálna kapitola je štúdium a tréning na Inspiration Academy na Floride.",
+      },
+      {
+        q: "Ako môžem sponzorovať Filipa?",
+        a: "Napíšte na urbanosfilip33@gmail.com s briefom značky. Pripravíme návrh spolupráce a media kit. Hlavným partnerom je AGROMEPA, s.r.o.",
+      },
+      {
+        q: "Kde nájdem oficiálne výsledky?",
+        a: "Na ITF profile a postupne aj tu v sekcii Výsledky.",
+      },
+      {
+        q: "Je stránka aj v angličtine?",
+        a: "Áno — prepínač SK / EN je v hlavičke.",
+      },
+    ],
+  },
+  contact: {
+    eyebrow: "Kontakt",
+    title: "Poďme sa porozprávať",
+    lead: "Médiá, turnaje, recruiting aj partnerstvá — napíšte a ozveme sa.",
+    emailLabel: "E-mail",
+    socialLabel: "Instagram",
+    partnerLabel: "Partnerstvá",
+    partnerBody:
+      "Pošlite krátky brief značky a cieľ spolupráce — ozveme sa s návrhom formátu.",
+    mediaLabel: "Médiá a pozvánky",
+    mediaBody:
+      "Rozhovory, foto/video requesty a turnajové pozvánky riešime cez rovnaký mail.",
+    cta: "Napísať e-mail",
+    detailsTitle: "Kontaktné údaje",
+    role: "Juniorský tenista · Slovakia → Florida",
+    baseLabel: "Základňa",
+    baseValue: "Inspiration Academy · Florida, USA",
+    itfLabel: "ITF profil",
+    responseLabel: "Odpoveď",
+    responseValue: "Zvyčajne do 2–3 dní",
+    igCta: "Otvoriť Instagram",
+  },
+  footer: {
+    rights: "© Filip Urbánoš. Všetky práva vyhradené.",
+    tagline: "Slovakia → USA",
+  },
+};
