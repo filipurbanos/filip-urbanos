@@ -98,6 +98,7 @@ const rankingSystems: Ranking["system"][] = [
   "ITF Junior",
   "UTR",
   "ATP",
+  "ATP Doubles",
   "Tennis Europe",
 ];
 
@@ -137,6 +138,13 @@ function normalizeRankings(raw: unknown): Ranking[] {
         system,
         value: "Cieľ",
         note: "Dlhodobá ambícia: Top 20",
+      };
+    }
+    if (system === "ATP Doubles") {
+      return {
+        system,
+        value: "N/A",
+        note: "ATP štvorhra zatiaľ nezapísaná",
       };
     }
     return {

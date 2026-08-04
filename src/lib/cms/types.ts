@@ -8,7 +8,12 @@ export type MatchResult =
   | "walkover";
 
 export type PartnerTier = "main" | "partner";
-export type RankingSystem = "ITF Junior" | "UTR" | "ATP" | "Tennis Europe";
+export type RankingSystem =
+  | "ITF Junior"
+  | "UTR"
+  | "ATP"
+  | "ATP Doubles"
+  | "Tennis Europe";
 
 export type Match = {
   id: string;

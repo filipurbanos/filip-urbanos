@@ -7,6 +7,7 @@ const allowedSystems: Ranking["system"][] = [
   "ITF Junior",
   "UTR",
   "ATP",
+  "ATP Doubles",
   "Tennis Europe",
 ];
 
