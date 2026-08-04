@@ -145,8 +145,8 @@ export const sk: Content = {
     title: "Nadchádzajúce turnaje",
     lead: "Plán okruhu — miesta a dátumy sa môžu meniť podľa žrebovania a cestovania.",
     items: [],
-    empty: "Zatiaľ nie sú naplánované ďalšie turnaje. Nové termíny doplníme v admin → Turnaje.",
-    note: "Aktuálny turnaj je vyššie. Kalendár spravuješ v admin → Turnaje.",
+    empty: "Zatiaľ nie sú naplánované ďalšie turnaje.",
+    note: "Termíny sa môžu meniť podľa žrebovania a cestovania.",
   },
   rankings: {
     eyebrow: "Rebríčky",

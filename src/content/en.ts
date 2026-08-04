@@ -145,8 +145,8 @@ export const en: Content = {
     title: "Upcoming tournaments",
     lead: "Circuit plan — venues and dates can shift with draws and travel.",
     items: [],
-    empty: "No upcoming tournaments scheduled yet. Add dates in admin → Tournaments.",
-    note: "The live tournament is above. Manage the calendar in admin → Tournaments.",
+    empty: "No upcoming tournaments scheduled yet.",
+    note: "Dates may shift with draws and travel.",
   },
   rankings: {
     eyebrow: "Rankings",

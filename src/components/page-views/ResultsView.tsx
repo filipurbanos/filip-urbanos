@@ -51,23 +51,21 @@ export function ResultsView({
         title={t.results.title}
         lead={t.results.lead}
       />
-      <LiveTournament
-        tournament={
-          live
-            ? {
-                date: live.date,
-                event: live.event,
-                place: live.place,
-                surface: live.surface,
-                notes: live.notes,
-                url: live.url,
-                matches: live.matches,
-              }
-            : null
-        }
-      />
+      {live ? (
+        <LiveTournament
+          tournament={{
+            date: live.date,
+            event: live.event,
+            place: live.place,
+            surface: live.surface,
+            notes: live.notes,
+            url: live.url,
+            matches: live.matches,
+          }}
+        />
+      ) : null}
       <Calendar items={upcoming} />
-      <Results items={completed} omitHeader />
+      <Results items={completed} />
       <Rankings items={rankings} />
     </>
   );
