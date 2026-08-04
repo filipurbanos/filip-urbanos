@@ -163,7 +163,7 @@ export const en: Content = {
   rankings: {
     eyebrow: "Rankings",
     title: "ITF · UTR · ATP",
-    lead: "Live positions will be maintained ongoing. Below are starting values / placeholders to confirm.",
+    lead: "Current positions and key milestones, updated over time from official sources.",
     items: [
       {
         system: "ITF Junior",
@@ -262,7 +262,7 @@ export const en: Content = {
     eyebrow: "Photos from the road",
     title: "Media.",
     lead: "Tournaments, training, and moments from Filip’s tennis journey — grouped by event.",
-    placeholder: "More photos later — first court selection is live now.",
+    placeholder: "The gallery will keep growing with tournament moments and behind-the-scenes photos.",
   },
   albums: {
     all: "All",
@@ -273,8 +273,8 @@ export const en: Content = {
   videos: {
     eyebrow: "Video gallery",
     title: "Matches, highlights, preparation",
-    lead: "Short clips and longer pieces. YouTube / Instagram embeds come next.",
-    placeholder: "Videos coming soon — highlight and interview links welcome.",
+    lead: "Highlights, interviews, and longer videos from tournaments and training.",
+    placeholder: "New videos will be added over time as fresh tournament and training footage comes in.",
   },
   news: {
     eyebrow: "News",
@@ -332,7 +332,7 @@ export const en: Content = {
     lead: "Thank you to the partners behind the journey — from training to tournaments.",
     mainLabel: "Main partner",
     othersLabel: "Partners",
-    emptyNote: "More partners will be added soon.",
+    emptyNote: "The space is open for additional long-term partners and collaborations.",
     visitLabel: "Visit website",
   },
   sponsors: {
@@ -359,12 +359,12 @@ export const en: Content = {
   mediaKit: {
     eyebrow: "Media Kit",
     title: "Downloadable assets",
-    lead: "Logo, bio, high-res photos, and press copy — prepared as a downloadable pack.",
+    lead: "Logo, bio, high-resolution photos, and core press copy are available as a prepared media pack.",
     items: [
-      { title: "Bio (SK / EN)", meta: "PDF · soon" },
-      { title: "Photo selection", meta: "ZIP · soon" },
-      { title: "Logos and brand assets", meta: "ZIP · soon" },
-      { title: "Fact sheet", meta: "PDF · soon" },
+      { title: "Bio (SK / EN)", meta: "PDF · on request" },
+      { title: "Photo selection", meta: "ZIP · on request" },
+      { title: "Logos and brand assets", meta: "ZIP · on request" },
+      { title: "Fact sheet", meta: "PDF · on request" },
     ],
     cta: "Request media kit",
   },
@@ -392,7 +392,7 @@ export const en: Content = {
     eyebrow: "Community",
     title: "Charity and community",
     lead: "Space for work that matters beyond the scoreboard.",
-    note: "This section goes live when projects are ready — kids’ clinics, charity events, local tennis.",
+    note: "We’re open to projects around kids’ tennis, community clinics, and meaningful local initiatives.",
   },
   faq: {
     eyebrow: "FAQ",

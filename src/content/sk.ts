@@ -163,7 +163,7 @@ export const sk: Content = {
   rankings: {
     eyebrow: "Rebríčky",
     title: "ITF · UTR · ATP",
-    lead: "Aktuálne pozície budeme udržiavať priebežne. Nižšie sú východiskové hodnoty / stav na doplnenie.",
+    lead: "Aktuálne pozície a dôležité míľniky, ktoré priebežne aktualizujeme podľa oficiálnych zdrojov.",
     items: [
       {
         system: "ITF Junior",
@@ -262,7 +262,7 @@ export const sk: Content = {
     eyebrow: "Fotografie z cesty",
     title: "Médiá.",
     lead: "Turnaje, tréning a momenty z Filipovej tenisovej cesty — zoradené podľa akcií.",
-    placeholder: "Ďalšie fotky doplníme neskôr — zatiaľ je tu prvý výber z kurtu.",
+    placeholder: "Výber fotiek budeme priebežne rozširovať o ďalšie turnaje a zákulisné momenty.",
   },
   albums: {
     all: "Všetko",
@@ -273,8 +273,8 @@ export const sk: Content = {
   videos: {
     eyebrow: "Videogaléria",
     title: "Zápasy, highlighty, príprava",
-    lead: "Krátke clipy a dlhšie výstupy. Embedy z YouTube / Instagram doplníme v ďalšom kroku.",
-    placeholder: "Videá pripravujeme — linky na highlighty a rozhovory sú vítané.",
+    lead: "Krátke highlighty, rozhovory a dlhšie výstupy z turnajov a tréningu.",
+    placeholder: "Videá pribúdajú priebežne podľa turnajového programu a dostupných výstupov.",
   },
   news: {
     eyebrow: "Novinky",
@@ -332,7 +332,7 @@ export const sk: Content = {
     lead: "Ďakujeme partnerom, ktorí stoja za cestou — od tréningu po turnaje.",
     mainLabel: "Hlavný partner",
     othersLabel: "Partneri",
-    emptyNote: "Ďalší partneri pribudnú čoskoro.",
+    emptyNote: "Priestor je otvorený aj pre ďalších partnerov a dlhodobé spolupráce.",
     visitLabel: "Navštíviť web",
   },
   sponsors: {
@@ -359,12 +359,12 @@ export const sk: Content = {
   mediaKit: {
     eyebrow: "Media Kit",
     title: "Materiály na stiahnutie",
-    lead: "Logo, bio, fotografie vo vysokom rozlíšení a press texty — pripravíme ako balík na stiahnutie.",
+    lead: "Logo, bio, fotografie vo vysokom rozlíšení a základné press texty vieme poslať ako pripravený balík.",
     items: [
-      { title: "Bio (SK / EN)", meta: "PDF · čoskoro" },
-      { title: "Výber fotografií", meta: "ZIP · čoskoro" },
-      { title: "Logá a brand assets", meta: "ZIP · čoskoro" },
-      { title: "Fact sheet", meta: "PDF · čoskoro" },
+      { title: "Bio (SK / EN)", meta: "PDF · na vyžiadanie" },
+      { title: "Výber fotografií", meta: "ZIP · na vyžiadanie" },
+      { title: "Logá a brand assets", meta: "ZIP · na vyžiadanie" },
+      { title: "Fact sheet", meta: "PDF · na vyžiadanie" },
     ],
     cta: "Vyžiadať media kit",
   },
@@ -392,7 +392,7 @@ export const sk: Content = {
     eyebrow: "Komunita",
     title: "Charita a komunita",
     lead: "Priestor pre aktivity, ktoré majú zmysel mimo výsledkovej listiny.",
-    note: "Sekcia sa aktivuje, keď budú konkrétne projekty — tenis pre deti, clinic, charity event.",
+    note: "Radi sa zapojíme do projektov pre deti, tenisové komunity a zmysluplné lokálne iniciatívy.",
   },
   faq: {
     eyebrow: "FAQ",
