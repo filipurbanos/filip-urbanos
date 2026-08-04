@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isAdminAuthenticated } from "@/lib/cms/auth";
+import { isAdminAuthenticated } from "@/lib/cms/auth-server";
 import { usesBlobStorage } from "@/lib/cms/storage";
 
 export async function GET() {

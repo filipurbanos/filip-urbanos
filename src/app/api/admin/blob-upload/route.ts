@@ -1,6 +1,6 @@
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
-import { isAdminAuthenticated } from "@/lib/cms/auth";
+import { isAdminAuthenticated } from "@/lib/cms/auth-server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

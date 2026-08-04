@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isAdminAuthenticated } from "@/lib/cms/auth";
+import { isAdminAuthenticated } from "@/lib/cms/auth-server";
 import { createId, readCms, writeCms } from "@/lib/cms/store";
 import { deleteUpload, saveUpload } from "@/lib/cms/storage";
 import type { Photo } from "@/lib/cms/types";

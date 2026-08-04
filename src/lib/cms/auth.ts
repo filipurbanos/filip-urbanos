@@ -1,3 +1,8 @@
+/**
+ * Edge-safe admin session helpers (used by middleware).
+ * Do NOT import Node-only modules (fs, Blob storage, password file) here.
+ */
+
 const COOKIE = "fu_admin_session";
 
 const DEV_SECRET = "dev-filip-admin-secret-change-me";
@@ -15,12 +20,21 @@ export function adminSecret(): string | null {
   return DEV_SECRET;
 }
 
-/** Bootstrap password when data/auth.json is missing. Required in production. */
+/** Bootstrap password when auth.json is missing. Required in production. */
 export function adminPassword(): string | null {
   const value = process.env.ADMIN_PASSWORD?.trim();
   if (value) return value;
   if (isProd()) return null;
   return DEV_PASSWORD;
+}
+
+function timingSafeEqualHex(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i += 1) {
+    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return diff === 0;
 }
 
 async function hmac(payload: string, secret: string): Promise<string> {
@@ -51,13 +65,16 @@ export async function signSession(
   return `${payload}.${sig}`;
 }
 
+/**
+ * HMAC + expiry check only (Edge-safe).
+ * Password-epoch invalidation is enforced in Node via `isAdminAuthenticated`.
+ */
 export async function verifySession(
   token: string | undefined,
 ): Promise<boolean> {
   const secret = adminSecret();
   if (!secret || !token) return false;
   const parts = token.split(".");
-  // Legacy 3-part tokens are rejected (force re-login after deploy).
   if (parts.length !== 4) return false;
   const [ok, exp, epochRaw, sig] = parts;
   if (ok !== "ok") return false;
@@ -67,22 +84,16 @@ export async function verifySession(
   if (!Number.isFinite(epoch)) return false;
   const payload = `${ok}.${exp}.${epoch}`;
   const expected = await hmac(payload, secret);
-  const { timingSafeEqualHex } = await import("@/lib/cms/secure-json");
-  if (!timingSafeEqualHex(sig, expected)) return false;
-
-  try {
-    const { authEpoch } = await import("@/lib/cms/password");
-    const current = await authEpoch();
-    return epoch === current;
-  } catch {
-    return false;
-  }
+  return timingSafeEqualHex(sig, expected);
 }
 
-export async function isAdminAuthenticated(): Promise<boolean> {
-  const { cookies } = await import("next/headers");
-  const jar = await cookies();
-  return verifySession(jar.get(COOKIE)?.value);
+/** Returns session epoch from cookie token, or null if invalid format. */
+export function sessionEpoch(token: string | undefined): number | null {
+  if (!token) return null;
+  const parts = token.split(".");
+  if (parts.length !== 4) return null;
+  const epoch = Number(parts[2]);
+  return Number.isFinite(epoch) ? epoch : null;
 }
 
 export function sessionCookieOptions(token: string) {

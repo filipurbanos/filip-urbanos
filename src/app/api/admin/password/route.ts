@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
-import {
-  isAdminAuthenticated,
-  sessionCookieOptions,
-  signSession,
-} from "@/lib/cms/auth";
+import { sessionCookieOptions, signSession } from "@/lib/cms/auth";
+import { isAdminAuthenticated } from "@/lib/cms/auth-server";
 import { authEpoch, setPassword, verifyPassword } from "@/lib/cms/password";
 
 export async function POST(request: Request) {
