@@ -9,6 +9,7 @@ import {
 import { PageBanner } from "@/components/PageBanner";
 import type { Match, Photo, Ranking, Tournament, Video } from "@/lib/cms/types";
 import { useLocale } from "@/lib/locale";
+import { mediaAssets } from "@/lib/media";
 
 export type CompletedResult = {
   id: string;
@@ -50,6 +51,7 @@ export function ResultsView({
         eyebrow={t.results.eyebrow}
         title={t.results.title}
         lead={t.results.lead}
+        imageSrc={mediaAssets.results}
       />
       {live ? (
         <LiveTournament

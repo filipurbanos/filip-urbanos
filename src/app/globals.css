@@ -2416,7 +2416,69 @@ a.partner-card:hover {
   color: #ff8f8f;
 }
 
-/* Contact — flip business cards */
+/* Contact details */
+.contact-details {
+  background: #0a0c10;
+  color: #ffffff;
+}
+
+.contact-details__grid {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.contact-details__card {
+  display: grid;
+  gap: 0.85rem;
+  align-content: start;
+  padding: 1.35rem 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #12161e;
+}
+
+.contact-details__card--wide {
+  grid-column: 1 / -1;
+}
+
+.contact-details__label {
+  margin: 0;
+  color: #c8f000;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.contact-details__value {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+a.contact-details__value:hover {
+  color: #c8f000;
+}
+
+.contact-details__body,
+.contact-details__meta {
+  margin: 0;
+  color: #c5ccd8;
+  line-height: 1.55;
+}
+
+@media (min-width: 720px) {
+  .contact-details__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .contact-details__card--wide {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Contact — flip business cards (legacy, unused on /contact) */
 .fu-cards {
   padding: clamp(2rem, 5vw, 3.5rem) 0 clamp(3rem, 6vw, 4.5rem);
   background:
@@ -2885,13 +2947,17 @@ a.fu-vcard__item:hover {
     align-items: flex-start;
     gap: 1.4rem;
     padding: 5rem 1.5rem 2rem;
-    background: rgba(246, 247, 249, 0.98);
+    background: rgba(7, 9, 13, 0.98);
     transform: translateY(-110%);
     transition: transform 280ms ease;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .nav.is-open {
     transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .nav a {
@@ -2901,11 +2967,6 @@ a.fu-vcard__item:hover {
     text-transform: uppercase;
     color: var(--white);
   }
-
-  .nav {
-    background: rgba(7, 9, 13, 0.98);
-  }
-
 }
 
 @media (prefers-reduced-motion: reduce) {

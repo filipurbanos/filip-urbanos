@@ -24,7 +24,7 @@ export function PartnersView({ partners }: { partners: Partner[] }) {
           locale === "sk" ? "Spoločná cesta." : "Shared journey."
         }
         lead={t.partners.lead}
-        imageSrc={mediaAssets.about}
+        imageSrc={mediaAssets.partners}
       />
       <PartnersList partners={partners} />
       <Sponsors />

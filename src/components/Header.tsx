@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import type { Content } from "@/content/types";
 import { routes } from "@/lib/routes";
 import { useLocale } from "@/lib/locale";
@@ -23,6 +23,10 @@ export function Header() {
   const isHome = pathname === routes.home;
   const [scrolled, setScrolled] = useState(!isHome);
   const [open, setOpen] = useState(false);
+  const navId = useId();
+  const menuLabel = locale === "sk" ? "Menu" : "Menu";
+  const navLabel = locale === "sk" ? "Hlavná navigácia" : "Primary navigation";
+  const langLabel = locale === "sk" ? "Jazyk" : "Language";
 
   useEffect(() => {
     if (!isHome) {
@@ -40,6 +44,23 @@ export function Header() {
     setOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    if (!open) return;
+
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
   return (
     <header
       className={`site-header ${scrolled || !isHome ? "is-scrolled" : ""}`}
@@ -52,7 +73,11 @@ export function Header() {
           <span className="brand__name">Filip Urbánoš</span>
         </Link>
 
-        <nav className={`nav ${open ? "is-open" : ""}`} aria-label="Primary">
+        <nav
+          id={navId}
+          className={`nav ${open ? "is-open" : ""}`}
+          aria-label={navLabel}
+        >
           {links.map(({ key, href }) => (
             <Link
               key={href}
@@ -66,7 +91,7 @@ export function Header() {
         </nav>
 
         <div className="header-actions">
-          <div className="lang" role="group" aria-label="Language">
+          <div className="lang" role="group" aria-label={langLabel}>
             <button
               type="button"
               className={locale === "en" ? "is-active" : ""}
@@ -89,7 +114,8 @@ export function Header() {
             type="button"
             className={`menu-btn ${open ? "is-open" : ""}`}
             aria-expanded={open}
-            aria-label="Menu"
+            aria-controls={navId}
+            aria-label={menuLabel}
             onClick={() => setOpen((v) => !v)}
           >
             <span />

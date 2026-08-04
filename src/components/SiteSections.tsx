@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { FlipBusinessCards } from "@/components/FlipBusinessCards";
+import Image from "next/image";
+import { ContactDetails } from "@/components/ContactDetails";
 import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
 import { mediaLinks } from "@/content";
@@ -360,10 +360,10 @@ export function Faq() {
 }
 
 export function ContactCard() {
-  return <FlipBusinessCards />;
+  return <ContactDetails />;
 }
 
 export function Contact({ omitHeader = false }: { omitHeader?: boolean }) {
   void omitHeader;
-  return <FlipBusinessCards />;
+  return <ContactDetails />;
 }

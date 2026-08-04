@@ -1,26 +1,26 @@
 "use client";
 
+import { ContactDetails } from "@/components/ContactDetails";
 import { ContactForm } from "@/components/ContactForm";
 import { PageBanner } from "@/components/PageBanner";
-import { FlipBusinessCards } from "@/components/FlipBusinessCards";
 import { Faq } from "@/components/SiteSections";
 import { useLocale } from "@/lib/locale";
 import { mediaAssets } from "@/lib/media";
 
 export function ContactView() {
-  const { t, locale } = useLocale();
+  const { t } = useLocale();
 
   return (
     <>
       <PageBanner
         eyebrow={t.contact.eyebrow}
-        title={locale === "sk" ? "Kontakt" : "Contact"}
-        outlineTitle={locale === "sk" ? "Filip Urbánoš" : "Filip Urbanos"}
+        title={t.contact.title}
+        outlineTitle="Filip Urbánoš"
         lead={t.contact.lead}
-        imageSrc={mediaAssets.about}
+        imageSrc={mediaAssets.contact}
       />
       <ContactForm />
-      <FlipBusinessCards />
+      <ContactDetails />
       <Faq />
     </>
   );
