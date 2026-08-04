@@ -560,6 +560,14 @@ type RankingItem = {
   note: string;
 };
 
+function rankingLabel(system: string) {
+  if (system === "ITF Junior") return "ITF 2-hra";
+  if (system === "ITF Doubles") return "ITF 4-hra";
+  if (system === "UTR") return "UTR 2-hra";
+  if (system === "UTR Doubles") return "UTR 4-hra";
+  return system;
+}
+
 export function Rankings({ items }: { items?: RankingItem[] }) {
   const { t } = useLocale();
   const list = items?.length ? items : t.rankings.items;
@@ -588,7 +596,7 @@ export function Rankings({ items }: { items?: RankingItem[] }) {
               }}
             >
               <p className="rank-card__system" style={{ color: "#c8f000" }}>
-                {item.system}
+                {rankingLabel(item.system)}
               </p>
               <p className="rank-card__value" style={{ color: "#ffffff" }}>
                 {item.value}

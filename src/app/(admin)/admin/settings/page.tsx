@@ -12,6 +12,14 @@ const defaultRankings: Ranking[] = [
   { system: "Tennis Europe", value: "~150", note: "Historický juniorský míľnik" },
 ];
 
+function rankingLabel(system: Ranking["system"]) {
+  if (system === "ITF Junior") return "ITF 2-hra";
+  if (system === "ITF Doubles") return "ITF 4-hra";
+  if (system === "UTR") return "UTR 2-hra";
+  if (system === "UTR Doubles") return "UTR 4-hra";
+  return system;
+}
+
 export default function AdminSettingsPage() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -161,7 +169,7 @@ export default function AdminSettingsPage() {
               <div className="admin-form__grid">
                 <label>
                   Systém
-                  <input value={item.system} disabled />
+                  <input value={rankingLabel(item.system)} disabled />
                 </label>
                 <label>
                   Hodnota
