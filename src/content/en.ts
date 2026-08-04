@@ -261,16 +261,19 @@ export const en: Content = {
   gallery: {
     eyebrow: "Photos from the road",
     title: "Media.",
-    lead: "Tournaments, training, and moments from Filip’s tennis journey — grouped by event.",
+    lead: "Tournaments, training, and moments — open an album by event.",
     outlineTitle: "Life in motion.",
     placeholder: "The gallery will keep growing with tournament moments and behind-the-scenes photos.",
   },
   albums: {
-    all: "All",
+    all: "All moments",
+    allLead: "The full gallery across tournaments and training.",
     uncategorized: "Uncategorized",
-    tabsLabel: "Albums",
+    indexLabel: "Albums",
+    back: "Back to albums",
     videosLabel: "Videos",
     empty: "No photos or videos in this album yet.",
+    emptyIndex: "No albums are ready yet.",
   },
   videos: {
     eyebrow: "Video gallery",

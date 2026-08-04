@@ -1794,39 +1794,109 @@ img {
   background: var(--paper);
 }
 
-.album-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1.75rem;
+.album-index__label {
+  margin: 0 0 1rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ball);
+  font-weight: 600;
 }
 
-.album-tabs button {
-  appearance: none;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+.album-index {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.album-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.85rem 0;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   background: transparent;
-  color: #c5ccd8;
-  padding: 0.55rem 0.9rem;
-  font-size: 0.78rem;
-  letter-spacing: 0.1em;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.album-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.album-row:hover .album-row__open {
+  color: var(--ball);
+}
+
+.album-row__cover {
+  position: relative;
+  width: 4.5rem;
+  height: 4.5rem;
+  overflow: hidden;
+  background: #12161e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.album-row__cover--all {
+  background:
+    linear-gradient(135deg, rgba(200, 240, 0, 0.35), transparent 55%),
+    #12161e;
+}
+
+.album-row__body {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.album-row__date {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.album-row__title {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.25rem, 2.5vw, 1.7rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.album-row__meta {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.album-row__open {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.45);
+  transition: color 160ms ease;
+}
+
+.album-back {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--ball);
+  padding: 0;
+  margin: 0 0 1.5rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
-  transition:
-    background 160ms ease,
-    color 160ms ease,
-    border-color 160ms ease;
 }
 
-.album-tabs button:hover {
-  border-color: rgba(200, 240, 0, 0.45);
+.album-back:hover {
   color: #ffffff;
-}
-
-.album-tabs button.is-active {
-  background: #c8f000;
-  border-color: #c8f000;
-  color: #0a0c10;
-  font-weight: 700;
 }
 
 .album-intro {

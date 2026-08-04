@@ -140,10 +140,13 @@ export type Content = {
   };
   albums: {
     all: string;
+    allLead: string;
     uncategorized: string;
-    tabsLabel: string;
+    indexLabel: string;
+    back: string;
     videosLabel: string;
     empty: string;
+    emptyIndex: string;
   };
   videos: SectionCopy & {
     placeholder: string;

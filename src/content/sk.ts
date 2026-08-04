@@ -261,16 +261,19 @@ export const sk: Content = {
   gallery: {
     eyebrow: "Fotografie z cesty",
     title: "Médiá.",
-    lead: "Turnaje, tréning a momenty z Filipovej tenisovej cesty — zoradené podľa akcií.",
+    lead: "Turnaje, tréning a momenty — otvor album podľa akcie.",
     outlineTitle: "Život v pohybe.",
     placeholder: "Výber fotiek budeme priebežne rozširovať o ďalšie turnaje a zákulisné momenty.",
   },
   albums: {
-    all: "Všetko",
+    all: "Všetky momenty",
+    allLead: "Celá galéria naprieč turnajmi a tréningom.",
     uncategorized: "Bez albumu",
-    tabsLabel: "Albumy",
+    indexLabel: "Albumy",
+    back: "Späť na albumy",
     videosLabel: "Videá",
     empty: "V tomto albume zatiaľ nie sú fotky ani videá.",
+    emptyIndex: "Zatiaľ nie sú pripravené žiadne albumy.",
   },
   videos: {
     eyebrow: "Videogaléria",
