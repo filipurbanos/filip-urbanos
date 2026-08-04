@@ -15,11 +15,11 @@ export function ContactView() {
       <PageBanner
         eyebrow={t.contact.eyebrow}
         title={t.contact.title}
-        outlineTitle="Filip Urbánoš"
+        outlineTitle={t.contact.outlineTitle}
         lead={t.contact.lead}
         imageSrc={mediaAssets.contact}
       />
-      <ContactForm />
+      <ContactForm flushTop />
       <ContactDetails />
       <Faq />
     </>

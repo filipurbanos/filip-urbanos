@@ -416,8 +416,9 @@ img {
   line-height: 0.92;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: transparent;
+  color: rgba(7, 9, 13, 0.45);
   -webkit-text-stroke: 1.5px var(--ball);
+  paint-order: stroke fill;
 }
 
 .page-banner__lead {

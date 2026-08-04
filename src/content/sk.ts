@@ -91,8 +91,12 @@ export const sk: Content = {
   results: {
     eyebrow: "Výsledky",
     title: "Odohrané turnaje",
+    pageTitle: "Okruh.",
     outlineTitle: "ITF · UTR · Kalendár",
-    lead: "Odohrané turnaje a míľniky. Klikni na riadok s „+“, ak má turnaj popis, zápasy alebo médiá.",
+    pageLead:
+      "Kalendár, odohrané turnaje a rebríčky — všetko na jednom mieste.",
+    lead:
+      "Klikni na riadok s „+“, ak má turnaj popis, zápasy alebo médiá.",
     columns: {
       date: "Dátum",
       event: "Turnaj",
@@ -419,6 +423,7 @@ export const sk: Content = {
   contact: {
     eyebrow: "Kontakt",
     title: "Poďme sa porozprávať",
+    outlineTitle: "Filip Urbánoš",
     lead: "Médiá, turnaje, recruiting aj partnerstvá — napíšte a ozveme sa.",
     emailLabel: "E-mail",
     socialLabel: "Instagram",

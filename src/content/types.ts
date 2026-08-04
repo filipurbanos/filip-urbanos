@@ -54,6 +54,8 @@ export type Content = {
     facts: { label: string; value: string }[];
   };
   results: SectionCopy & {
+    pageTitle: string;
+    pageLead: string;
     outlineTitle: string;
     columns: {
       date: string;
@@ -181,6 +183,7 @@ export type Content = {
     items: { q: string; a: string }[];
   };
   contact: SectionCopy & {
+    outlineTitle: string;
     emailLabel: string;
     socialLabel: string;
     partnerLabel: string;

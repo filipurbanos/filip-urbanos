@@ -6,7 +6,7 @@ import { useLocale } from "@/lib/locale";
 
 type Topic = "partner" | "media" | "other";
 
-export function ContactForm() {
+export function ContactForm({ flushTop = false }: { flushTop?: boolean }) {
   const { t } = useLocale();
   const formCopy = t.contact.form;
   const [name, setName] = useState("");
@@ -41,7 +41,10 @@ export function ContactForm() {
   }
 
   return (
-    <Section id="contact-form" className="contact-form-section">
+    <Section
+      id="contact-form"
+      className={`contact-form-section${flushTop ? " section--after-banner" : ""}`}
+    >
       <SectionHeader
         eyebrow={formCopy.eyebrow}
         title={formCopy.title}

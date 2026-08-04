@@ -91,8 +91,12 @@ export const en: Content = {
   results: {
     eyebrow: "Results",
     title: "Completed tournaments",
+    pageTitle: "Circuit.",
     outlineTitle: "ITF · UTR · Calendar",
-    lead: "Completed tournaments and milestones. Click a row with “+” when a tournament has notes, matches, or media.",
+    pageLead:
+      "Calendar, completed events, and rankings — all in one place.",
+    lead:
+      "Click a row with “+” when a tournament has notes, matches, or media.",
     columns: {
       date: "Date",
       event: "Event",
@@ -419,6 +423,7 @@ export const en: Content = {
   contact: {
     eyebrow: "Contact",
     title: "Let’s talk",
+    outlineTitle: "Filip Urbanos",
     lead: "Media, tournaments, recruiting, and partnerships — write and we’ll get back to you.",
     emailLabel: "Email",
     socialLabel: "Instagram",

@@ -49,9 +49,9 @@ export function ResultsView({
     <>
       <PageBanner
         eyebrow={t.results.eyebrow}
-        title={t.results.title}
+        title={t.results.pageTitle}
         outlineTitle={t.results.outlineTitle}
-        lead={t.results.lead}
+        lead={t.results.pageLead}
         imageSrc={mediaAssets.results}
       />
       {live ? (

@@ -150,7 +150,7 @@ export function PartnersList({ partners }: { partners: Partner[] }) {
   const others = sorted.filter((p) => p.tier !== "main");
 
   return (
-    <Section id="partners" className="partners partners--live">
+    <Section id="partners" className="partners partners--live section--after-banner">
       {main.length > 0 ? (
         <div className="partners__main">
           <p className="partners__tier">{t.partners.mainLabel}</p>

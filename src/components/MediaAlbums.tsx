@@ -74,7 +74,7 @@ export function MediaAlbums({ albums, photos, videos }: MediaAlbumsProps) {
     filteredPhotos.length === 0 && filteredVideos.length === 0;
 
   return (
-    <Section id="gallery" className="media albums-section">
+    <Section id="gallery" className="media albums-section section--after-banner">
       <div className="album-tabs" role="tablist" aria-label={t.albums.tabsLabel}>
         <button
           type="button"
