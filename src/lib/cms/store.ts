@@ -96,9 +96,10 @@ function normalizeVideo(raw: Partial<Video>): Video {
 
 const rankingSystems: Ranking["system"][] = [
   "ITF Junior",
+  "ITF Doubles",
   "UTR",
+  "UTR Doubles",
   "ATP",
-  "ATP Doubles",
   "Tennis Europe",
 ];
 
@@ -133,18 +134,25 @@ function normalizeRankings(raw: unknown): Ranking[] {
         note: "Doplníme po overení aktuálneho ratingu",
       };
     }
+    if (system === "UTR Doubles") {
+      return {
+        system,
+        value: "TBC",
+        note: "Doplníme po overení aktuálneho ratingu vo štvorhre",
+      };
+    }
+    if (system === "ITF Doubles") {
+      return {
+        system,
+        value: "TBC",
+        note: "Aktuálne ITF Junior poradie vo štvorhre",
+      };
+    }
     if (system === "ATP") {
       return {
         system,
         value: "Cieľ",
         note: "Dlhodobá ambícia: Top 20",
-      };
-    }
-    if (system === "ATP Doubles") {
-      return {
-        system,
-        value: "N/A",
-        note: "ATP štvorhra zatiaľ nezapísaná",
       };
     }
     return {

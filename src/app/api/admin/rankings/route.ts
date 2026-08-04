@@ -5,9 +5,10 @@ import type { Ranking } from "@/lib/cms/types";
 
 const allowedSystems: Ranking["system"][] = [
   "ITF Junior",
+  "ITF Doubles",
   "UTR",
+  "UTR Doubles",
   "ATP",
-  "ATP Doubles",
   "Tennis Europe",
 ];
 

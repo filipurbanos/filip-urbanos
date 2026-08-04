@@ -5,9 +5,10 @@ import type { Ranking } from "@/lib/cms/types";
 
 const defaultRankings: Ranking[] = [
   { system: "ITF Junior", value: "Live", note: "Oficiálny profil na itftennis.com" },
+  { system: "ITF Doubles", value: "TBC", note: "Aktuálne ITF Junior poradie vo štvorhre" },
   { system: "UTR", value: "TBC", note: "Doplníme po overení aktuálneho ratingu" },
+  { system: "UTR Doubles", value: "TBC", note: "Doplníme po overení aktuálneho ratingu vo štvorhre" },
   { system: "ATP", value: "Cieľ", note: "Dlhodobá ambícia: Top 20" },
-  { system: "ATP Doubles", value: "N/A", note: "ATP štvorhra zatiaľ nezapísaná" },
   { system: "Tennis Europe", value: "~150", note: "Historický juniorský míľnik" },
 ];
 
