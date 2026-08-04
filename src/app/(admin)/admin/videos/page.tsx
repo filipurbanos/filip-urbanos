@@ -6,6 +6,10 @@ import type { Album, Video } from "@/lib/cms/types";
 import { sortByDateDesc } from "@/lib/cms/dates";
 import { isManagedUploadUrl } from "@/lib/cms/media-url";
 
+/** Vercel serverless request body limit is ~4.5 MB — never post bigger files through our API. */
+const SERVER_SAFE_BYTES = 3.5 * 1024 * 1024;
+const MAX_BYTES = 150 * 1024 * 1024;
+
 function makeUploadName(file: File) {
   const ext =
     file.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "") ||
@@ -27,9 +31,7 @@ export default function AdminVideosPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState<number | null>(null);
-  const [uploadMode, setUploadMode] = useState<"blob-client" | "server">(
-    "server",
-  );
+  const [blobReady, setBlobReady] = useState<boolean | null>(null);
 
   async function load() {
     const [videosRes, albumsRes, configRes] = await Promise.all([
@@ -49,13 +51,76 @@ export default function AdminVideosPage() {
       const data = (await configRes.json()) as {
         mode: "blob-client" | "server";
       };
-      setUploadMode(data.mode);
+      setBlobReady(data.mode === "blob-client");
+    } else {
+      // On Vercel production we still attempt client upload for large files.
+      setBlobReady(null);
     }
   }
 
   useEffect(() => {
     void load();
   }, []);
+
+  async function registerVideo(videoUrl: string, fileName: string) {
+    const res = await fetch("/api/admin/videos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: title || fileName.replace(/\.[^.]+$/, "") || "Video",
+        url: videoUrl,
+        description,
+        albumId,
+      }),
+    });
+    const data = (await res.json().catch(() => null)) as
+      | { videos?: Video[]; error?: string }
+      | null;
+    if (!res.ok) {
+      throw new Error(
+        data?.error || `Uloženie záznamu zlyhalo (${res.status})`,
+      );
+    }
+    return data?.videos || [];
+  }
+
+  async function uploadViaBlob(selected: File) {
+    const pathname = makeUploadName(selected);
+    setProgress(0);
+    const blob = await upload(pathname, selected, {
+      access: "public",
+      handleUploadUrl: "/api/admin/blob-upload",
+      multipart: true,
+      contentType: selected.type || "video/mp4",
+      onUploadProgress: ({ percentage }) => {
+        setProgress(Math.round(percentage));
+      },
+    });
+    return registerVideo(blob.url, selected.name);
+  }
+
+  async function uploadViaServer(selected: File) {
+    const qs = new URLSearchParams({
+      title,
+      description,
+      albumId,
+    });
+    const res = await fetch(`/api/admin/videos?${qs}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": selected.type || "application/octet-stream",
+        "x-file-name": encodeURIComponent(selected.name),
+      },
+      body: selected,
+    });
+    const data = (await res.json().catch(() => null)) as
+      | { videos?: Video[]; error?: string }
+      | null;
+    if (!res.ok) {
+      throw new Error(data?.error || `Uloženie zlyhalo (${res.status})`);
+    }
+    return data?.videos || [];
+  }
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
@@ -65,67 +130,46 @@ export default function AdminVideosPage() {
       setError("Nahraj súbor z disku alebo vyplň URL");
       return;
     }
-    const maxBytes = 150 * 1024 * 1024;
-    if (file && file.size > maxBytes) {
+    if (file && file.size > MAX_BYTES) {
       setError("Video je príliš veľké (max 150 MB)");
       return;
     }
+
     setLoading(true);
     try {
-      let res: Response;
+      let nextVideos: Video[];
 
-      if (file && uploadMode === "blob-client") {
-        const pathname = makeUploadName(file);
-        const blob = await upload(pathname, file, {
-          access: "public",
-          handleUploadUrl: "/api/admin/blob-upload",
-          multipart: true,
-          contentType: file.type || "video/mp4",
-          onUploadProgress: ({ percentage }) => {
-            setProgress(Math.round(percentage));
-          },
-        });
-
-        res = await fetch("/api/admin/videos", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: title || file.name.replace(/\.[^.]+$/, "") || "Video",
-            url: blob.url,
-            description,
-            albumId,
-          }),
-        });
-      } else if (file) {
-        const qs = new URLSearchParams({
-          title,
-          description,
-          albumId,
-        });
-        res = await fetch(`/api/admin/videos?${qs}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": file.type || "application/octet-stream",
-            "x-file-name": encodeURIComponent(file.name),
-          },
-          body: file,
-        });
+      if (file) {
+        const mustUseBlob = file.size > SERVER_SAFE_BYTES;
+        if (mustUseBlob) {
+          if (blobReady === false) {
+            setError(
+              "Na Vercel treba BLOB_READ_WRITE_TOKEN — veľké video nejde cez API (limit 4,5 MB). Alebo nahraj YouTube/Vimeo link.",
+            );
+            return;
+          }
+          nextVideos = await uploadViaBlob(file);
+        } else if (blobReady === true) {
+          nextVideos = await uploadViaBlob(file);
+        } else {
+          nextVideos = await uploadViaServer(file);
+        }
       } else {
-        res = await fetch("/api/admin/videos", {
+        const res = await fetch("/api/admin/videos", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ title, url, description, albumId }),
         });
+        const data = (await res.json().catch(() => null)) as
+          | { videos?: Video[]; error?: string }
+          | null;
+        if (!res.ok) {
+          throw new Error(data?.error || `Uloženie zlyhalo (${res.status})`);
+        }
+        nextVideos = data?.videos || [];
       }
 
-      const data = (await res.json().catch(() => null)) as
-        | { videos?: Video[]; error?: string }
-        | null;
-      if (!res.ok) {
-        setError(data?.error || `Uloženie zlyhalo (${res.status})`);
-        return;
-      }
-      setVideos(data?.videos || []);
+      setVideos(nextVideos);
       setTitle("");
       setUrl("");
       setDescription("");
@@ -134,9 +178,8 @@ export default function AdminVideosPage() {
     } catch (err) {
       const message = err instanceof Error ? err.message : "";
       setError(
-        message
-          ? `Upload zlyhal: ${message}`
-          : "Upload zlyhal — skontroluj veľkosť súboru a skús znova.",
+        message ||
+          "Upload zlyhal — skontroluj veľkosť súboru / Blob token a skús znova.",
       );
     } finally {
       setLoading(false);
@@ -160,9 +203,11 @@ export default function AdminVideosPage() {
     <div className="admin-page">
       <h1>Videá</h1>
       <p className="admin-lead">
-        Nahraj video z disku (MP4 / WebM / MOV, max ~150 MB) alebo vlož odkaz na
-        YouTube / Vimeo (odporúčané pre dlhé videá). Na Vercel ide veľký súbor
-        priamo do Blob (obíde limit 4,5 MB na API).
+        Veľké súbory (&gt; 4 MB) idú priamo do Vercel Blob z prehliadača — nie
+        cez API (preto už by nemal byť 413). YouTube/Vimeo link je stále
+        najspoľahlivejší.
+        {blobReady === true ? " · Blob: OK" : null}
+        {blobReady === false ? " · Blob: vypnutý" : null}
       </p>
 
       <form className="admin-form" onSubmit={save}>
@@ -219,11 +264,13 @@ export default function AdminVideosPage() {
         {file ? (
           <p className="admin-muted">
             Vybraný súbor: {file.name} ({Math.round(file.size / 1024 / 1024)} MB)
-            {uploadMode === "blob-client" ? " · priamy Blob upload" : ""}
+            {file.size > SERVER_SAFE_BYTES
+              ? " · pôjde priamym Blob uploadom"
+              : ""}
           </p>
         ) : null}
         {progress !== null ? (
-          <p className="admin-muted">Nahrávam… {progress}%</p>
+          <p className="admin-muted">Nahrávam do Blob… {progress}%</p>
         ) : null}
         {error ? <p className="admin-error">{error}</p> : null}
         <button className="btn btn--primary" type="submit" disabled={loading}>

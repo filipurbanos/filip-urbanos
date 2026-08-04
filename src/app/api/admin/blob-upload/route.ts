@@ -37,11 +37,8 @@ export async function POST(request: Request): Promise<NextResponse> {
           maximumSizeInBytes: 150 * 1024 * 1024,
           addRandomSuffix: false,
           allowOverwrite: true,
-          tokenPayload: JSON.stringify({ kind: "admin-video" }),
         };
       },
-      // Client registers the CMS row after upload; callback is optional.
-      onUploadCompleted: async () => undefined,
     });
 
     return NextResponse.json(jsonResponse);
