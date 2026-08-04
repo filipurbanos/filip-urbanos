@@ -3099,10 +3099,44 @@ a.fu-vcard__item:hover {
   grid-column: 1 / -1;
 }
 
+.admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 0 1.5rem;
+  padding: 1rem 1.1rem;
+  border: 1.5px solid #10141c;
+  background: #ffffff;
+}
+
+.admin-toolbar .admin-success {
+  margin: 0;
+}
+
 .admin-form__actions {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+}
+
+.admin-shell .btn.btn--primary {
+  border: 2px solid #10141c;
+  background: #c8f000;
+  color: #0a0a0a;
+  box-shadow: 0 2px 0 #10141c;
+}
+
+.admin-shell .btn.btn--primary:hover:not(:disabled) {
+  background: #d8ff2e;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 #10141c;
+}
+
+.admin-shell .btn.btn--primary:disabled {
+  opacity: 0.6;
+  cursor: wait;
+  box-shadow: none;
 }
 
 .btn--admin-ghost {
