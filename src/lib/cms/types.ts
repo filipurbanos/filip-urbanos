@@ -8,6 +8,7 @@ export type MatchResult =
   | "walkover";
 
 export type PartnerTier = "main" | "partner";
+export type RankingSystem = "ITF Junior" | "UTR" | "ATP" | "Tennis Europe";
 
 export type Match = {
   id: string;
@@ -71,10 +72,17 @@ export type Partner = {
   order: number;
 };
 
+export type Ranking = {
+  system: RankingSystem;
+  value: string;
+  note: string;
+};
+
 export type CmsData = {
   tournaments: Tournament[];
   albums: Album[];
   photos: Photo[];
   videos: Video[];
   partners: Partner[];
+  rankings: Ranking[];
 };

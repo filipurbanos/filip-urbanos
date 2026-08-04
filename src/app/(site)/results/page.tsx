@@ -66,6 +66,7 @@ export default async function ResultsPage() {
         live={live}
         completed={completed.length ? completed : undefined}
         upcoming={upcoming.length ? upcoming : undefined}
+        rankings={data.rankings}
       />
     </div>
   );

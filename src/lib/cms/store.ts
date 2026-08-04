@@ -2,6 +2,7 @@ import type {
   Album,
   CmsData,
   Photo,
+  Ranking,
   Tournament,
   TournamentStatus,
   Video,
@@ -14,6 +15,7 @@ const empty: CmsData = {
   photos: [],
   videos: [],
   partners: [],
+  rankings: [],
 };
 
 function normalizeStatus(status: unknown): TournamentStatus {
@@ -92,6 +94,59 @@ function normalizeVideo(raw: Partial<Video>): Video {
   };
 }
 
+const rankingSystems: Ranking["system"][] = [
+  "ITF Junior",
+  "UTR",
+  "ATP",
+  "Tennis Europe",
+];
+
+function normalizeRankings(raw: unknown): Ranking[] {
+  const list = Array.isArray(raw) ? raw : [];
+  const bySystem = new Map<string, Ranking>();
+
+  for (const item of list) {
+    const system = String((item as { system?: unknown })?.system || "").trim();
+    if (!rankingSystems.includes(system as Ranking["system"])) continue;
+    bySystem.set(system, {
+      system: system as Ranking["system"],
+      value: String((item as { value?: unknown })?.value || "").trim(),
+      note: String((item as { note?: unknown })?.note || "").trim(),
+    });
+  }
+
+  return rankingSystems.map((system) => {
+    const existing = bySystem.get(system);
+    if (existing) return existing;
+    if (system === "ITF Junior") {
+      return {
+        system,
+        value: "Live",
+        note: "Oficiálny profil na itftennis.com",
+      };
+    }
+    if (system === "UTR") {
+      return {
+        system,
+        value: "TBC",
+        note: "Doplníme po overení aktuálneho ratingu",
+      };
+    }
+    if (system === "ATP") {
+      return {
+        system,
+        value: "Cieľ",
+        note: "Dlhodobá ambícia: Top 20",
+      };
+    }
+    return {
+      system,
+      value: "~150",
+      note: "Historický juniorský míľnik",
+    };
+  });
+}
+
 export async function readCms(): Promise<CmsData> {
   try {
     const raw = await readCmsJson();
@@ -111,6 +166,7 @@ export async function readCms(): Promise<CmsData> {
         normalizeVideo(item as Partial<Video>),
       ),
       partners: parsed.partners ?? [],
+      rankings: normalizeRankings((parsed as { rankings?: unknown }).rankings),
     };
   } catch {
     return empty;

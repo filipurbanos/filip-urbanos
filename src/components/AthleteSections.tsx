@@ -554,8 +554,15 @@ export function Calendar({
   );
 }
 
-export function Rankings() {
+type RankingItem = {
+  system: string;
+  value: string;
+  note: string;
+};
+
+export function Rankings({ items }: { items?: RankingItem[] }) {
   const { t } = useLocale();
+  const list = items?.length ? items : t.rankings.items;
 
   return (
     <Section id="rankings" className="rankings" style={{ background: "#0b0d12" }}>
@@ -571,7 +578,7 @@ export function Rankings() {
         </p>
       </Reveal>
       <div className="rankings__grid">
-        {t.rankings.items.map((item, i) => (
+        {list.map((item, i) => (
           <Reveal key={item.system} delay={i * 60}>
             <article
               className="rank-card"

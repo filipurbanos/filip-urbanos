@@ -7,7 +7,7 @@ import {
   Results,
 } from "@/components/AthleteSections";
 import { PageBanner } from "@/components/PageBanner";
-import type { Match, Photo, Tournament, Video } from "@/lib/cms/types";
+import type { Match, Photo, Ranking, Tournament, Video } from "@/lib/cms/types";
 import { useLocale } from "@/lib/locale";
 
 export type CompletedResult = {
@@ -29,6 +29,7 @@ export function ResultsView({
   live,
   completed,
   upcoming,
+  rankings,
 }: {
   live?: Tournament | null;
   completed?: CompletedResult[];
@@ -39,6 +40,7 @@ export function ResultsView({
     surface: string;
     url?: string;
   }[];
+  rankings?: Ranking[];
 }) {
   const { t } = useLocale();
 
@@ -66,7 +68,7 @@ export function ResultsView({
       />
       <Calendar items={upcoming} />
       <Results items={completed} omitHeader />
-      <Rankings />
+      <Rankings items={rankings} />
     </>
   );
 }

@@ -150,6 +150,28 @@
       "createdAt": "2026-07-31T19:03:00.570Z"
     }
   ],
+  "rankings": [
+    {
+      "system": "ITF Junior",
+      "value": "Live",
+      "note": "Oficiálny profil na itftennis.com"
+    },
+    {
+      "system": "UTR",
+      "value": "TBC",
+      "note": "Doplníme po overení aktuálneho ratingu"
+    },
+    {
+      "system": "ATP",
+      "value": "Cieľ",
+      "note": "Dlhodobá ambícia: Top 20"
+    },
+    {
+      "system": "Tennis Europe",
+      "value": "~150",
+      "note": "Historický juniorský míľnik"
+    }
+  ],
   "partners": [
     {
       "id": "partner_agromepa",
