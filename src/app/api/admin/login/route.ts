@@ -11,9 +11,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Nesprávne heslo" }, { status: 401 });
   }
 
-  const token = await signSession(Date.now() + 1000 * 60 * 60 * 24 * 7);
-  const response = NextResponse.json({ ok: true });
-  const cookie = sessionCookieOptions(token);
-  response.cookies.set(cookie.name, cookie.value, cookie);
-  return response;
+  try {
+    const token = await signSession(Date.now() + 1000 * 60 * 60 * 24 * 7);
+    const response = NextResponse.json({ ok: true });
+    const cookie = sessionCookieOptions(token);
+    response.cookies.set(cookie.name, cookie.value, cookie);
+    return response;
+  } catch {
+    return NextResponse.json(
+      { error: "Admin nie je nakonfigurovaný (ADMIN_SECRET)" },
+      { status: 500 },
+    );
+  }
 }

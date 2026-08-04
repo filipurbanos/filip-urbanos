@@ -33,9 +33,7 @@ export default function AdminLoginPage() {
         <p className="eyebrow">Admin</p>
         <h1>Prihlásenie</h1>
         <p className="admin-login__hint">
-          Heslo z <code>ADMIN_PASSWORD</code> (lokálne default:{" "}
-          <code>filip-admin</code>). Po prihlásení ho vieš zmeniť v{" "}
-          <strong>Nastaveniach</strong>.
+          Po prihlásení vieš heslo zmeniť v <strong>Nastaveniach</strong>.
         </p>
         <label>
           Heslo

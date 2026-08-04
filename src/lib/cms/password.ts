@@ -63,7 +63,9 @@ async function readAuthFile(): Promise<AuthFile | null> {
 export async function verifyPassword(password: string): Promise<boolean> {
   const stored = await readAuthFile();
   if (!stored?.salt || !stored?.hash) {
-    return password === adminPassword();
+    const bootstrap = adminPassword();
+    if (!bootstrap) return false;
+    return password === bootstrap;
   }
   const hash = await deriveHash(password, stored.salt);
   return hash === stored.hash;

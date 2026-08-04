@@ -1,18 +1,33 @@
 const COOKIE = "fu_admin_session";
 
-function secret() {
-  return process.env.ADMIN_SECRET || "dev-filip-admin-secret-change-me";
+const DEV_SECRET = "dev-filip-admin-secret-change-me";
+const DEV_PASSWORD = "filip-admin";
+
+function isProd() {
+  return process.env.NODE_ENV === "production";
 }
 
-export function adminPassword() {
-  return process.env.ADMIN_PASSWORD || "filip-admin";
+/** Session signing secret. Required in production. */
+export function adminSecret(): string | null {
+  const value = process.env.ADMIN_SECRET?.trim();
+  if (value) return value;
+  if (isProd()) return null;
+  return DEV_SECRET;
 }
 
-async function hmac(payload: string): Promise<string> {
+/** Bootstrap password when data/auth.json is missing. Required in production. */
+export function adminPassword(): string | null {
+  const value = process.env.ADMIN_PASSWORD?.trim();
+  if (value) return value;
+  if (isProd()) return null;
+  return DEV_PASSWORD;
+}
+
+async function hmac(payload: string, secret: string): Promise<string> {
   const enc = new TextEncoder();
   const key = await crypto.subtle.importKey(
     "raw",
-    enc.encode(secret()),
+    enc.encode(secret),
     { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign"],
@@ -24,15 +39,20 @@ async function hmac(payload: string): Promise<string> {
 }
 
 export async function signSession(expiresAt: number): Promise<string> {
+  const secret = adminSecret();
+  if (!secret) {
+    throw new Error("ADMIN_SECRET is not configured");
+  }
   const payload = `ok.${expiresAt}`;
-  const sig = await hmac(payload);
+  const sig = await hmac(payload, secret);
   return `${payload}.${sig}`;
 }
 
 export async function verifySession(
   token: string | undefined,
 ): Promise<boolean> {
-  if (!token) return false;
+  const secret = adminSecret();
+  if (!secret || !token) return false;
   const parts = token.split(".");
   if (parts.length !== 3) return false;
   const [ok, exp, sig] = parts;
@@ -40,7 +60,7 @@ export async function verifySession(
   const expiresAt = Number(exp);
   if (!Number.isFinite(expiresAt) || Date.now() > expiresAt) return false;
   const payload = `${ok}.${exp}`;
-  const expected = await hmac(payload);
+  const expected = await hmac(payload, secret);
   return sig === expected;
 }
 
