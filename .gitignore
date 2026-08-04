@@ -37,6 +37,8 @@ yarn-error.log*
 
 # admin password hash (created after password change in admin)
 /data/auth.json
+/data/inquiries.json
+
 
 # vercel
 .vercel

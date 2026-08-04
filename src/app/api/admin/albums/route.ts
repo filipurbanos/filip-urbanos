@@ -67,6 +67,9 @@ export async function DELETE(request: Request) {
   data.videos = data.videos.map((video) =>
     video.albumId === id ? { ...video, albumId: "" } : video,
   );
+  data.tournaments = data.tournaments.map((tournament) =>
+    tournament.albumId === id ? { ...tournament, albumId: "" } : tournament,
+  );
   await writeCms(data);
   return NextResponse.json({ albums: data.albums });
 }

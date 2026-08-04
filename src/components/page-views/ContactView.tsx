@@ -1,5 +1,6 @@
 "use client";
 
+import { ContactForm } from "@/components/ContactForm";
 import { PageBanner } from "@/components/PageBanner";
 import { FlipBusinessCards } from "@/components/FlipBusinessCards";
 import { Faq } from "@/components/SiteSections";
@@ -18,6 +19,7 @@ export function ContactView() {
         lead={t.contact.lead}
         imageSrc={mediaAssets.about}
       />
+      <ContactForm />
       <FlipBusinessCards />
       <Faq />
     </>

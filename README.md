@@ -47,6 +47,7 @@ On first Blob read, if `cms/content.json` is missing, the app seeds it from the 
 - Turnaje (live / upcoming / completed + matches + optional album)
 - Albumy / Fotky / Videá
 - Partneri
+- Správy (kontaktný formulár → `cms/inquiries.json`, sealed on Blob)
 - Nastavenia (zmena hesla)
 
 ## Media uploads

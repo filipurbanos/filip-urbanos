@@ -148,12 +148,17 @@ export default function AdminTournamentsPage() {
     e.preventDefault();
     if (!matchForm.opponent.trim() && !matchForm.round.trim()) return;
 
+    const payload = {
+      ...matchForm,
+      date: matchForm.date.trim() || form.date.trim(),
+    };
+
     if (editingMatchId) {
       setForm({
         ...form,
         matches: form.matches.map((match) =>
           match.id === editingMatchId
-            ? { ...match, ...matchForm }
+            ? { ...match, ...payload }
             : match,
         ),
       });
@@ -164,13 +169,37 @@ export default function AdminTournamentsPage() {
           ...form.matches,
           {
             id: `m_${Date.now().toString(36)}`,
-            ...matchForm,
+            ...payload,
           },
         ],
       });
     }
     setMatchForm(blankMatch);
     setEditingMatchId(null);
+  }
+
+  async function createAlbumFromTournament() {
+    if (!form.event.trim()) return;
+    setError("");
+    const res = await fetch("/api/admin/albums", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: form.event.trim(),
+        date: form.date.trim(),
+        description: [form.place, form.notes].filter(Boolean).join(" · "),
+      }),
+    });
+    if (!res.ok) {
+      setError("Vytvorenie albumu zlyhalo");
+      return;
+    }
+    const data = (await res.json()) as { albums: Album[] };
+    setAlbums(data.albums);
+    const created = data.albums[0];
+    if (created) {
+      setForm((prev) => ({ ...prev, albumId: created.id }));
+    }
   }
 
   function editMatch(match: Match) {
@@ -298,23 +327,44 @@ export default function AdminTournamentsPage() {
           </label>
           <label className="admin-form__wide">
             Album (fotky / videá)
-            <select
-              value={form.albumId}
-              onChange={(e) => setForm({ ...form, albumId: e.target.value })}
-            >
-              <option value="">— bez albumu —</option>
-              {sortedAlbums.map((album) => (
-                <option key={album.id} value={album.id}>
-                  {album.title}
-                  {album.date ? ` · ${album.date}` : ""}
-                </option>
-              ))}
-            </select>
+            <div className="admin-inline-row">
+              <select
+                value={form.albumId}
+                onChange={(e) => setForm({ ...form, albumId: e.target.value })}
+              >
+                <option value="">— bez albumu —</option>
+                {sortedAlbums.map((album) => (
+                  <option key={album.id} value={album.id}>
+                    {album.title}
+                    {album.date ? ` · ${album.date}` : ""}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                className="btn btn--admin-ghost"
+                disabled={!form.event.trim()}
+                onClick={() => void createAlbumFromTournament()}
+              >
+                Vytvoriť album
+              </button>
+            </div>
           </label>
         </div>
 
         <div className="admin-matches">
-          <h2>Zápasy na turnaji</h2>
+          <h2>
+            Zápasy na turnaji
+            {form.status === "live" ? (
+              <span className="admin-live-pill">LIVE</span>
+            ) : null}
+          </h2>
+          {form.status === "live" ? (
+            <p className="admin-muted">
+              Po zápase doplň výsledok tu — na webe sa zobrazí v sekcii Aktuálny
+              turnaj.
+            </p>
+          ) : null}
           <div className="admin-form__grid">
             <label>
               Kolo

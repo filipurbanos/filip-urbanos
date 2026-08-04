@@ -10,6 +10,7 @@ const links = [
   { href: "/admin/gallery", label: "Fotky" },
   { href: "/admin/videos", label: "Videá" },
   { href: "/admin/partners", label: "Partneri" },
+  { href: "/admin/inquiries", label: "Správy" },
   { href: "/admin/settings", label: "Nastavenia" },
 ];
 

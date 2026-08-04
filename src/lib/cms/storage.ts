@@ -175,3 +175,61 @@ export async function deleteUpload(url: string): Promise<void> {
   const filePath = path.join(process.cwd(), "public", url);
   await fs.unlink(filePath).catch(() => undefined);
 }
+
+const INQUIRIES_PATHNAME = "cms/inquiries.json";
+
+export async function readInquiriesJson(): Promise<string | null> {
+  if (usesBlobStorage()) {
+    let result = await get(INQUIRIES_PATHNAME, {
+      access: "private",
+      useCache: false,
+    }).catch(() => null);
+
+    if (!result?.stream) {
+      result = await get(INQUIRIES_PATHNAME, {
+        access: "public",
+        useCache: false,
+      }).catch(() => null);
+    }
+
+    if (!result?.stream) return null;
+    const raw = await new Response(result.stream).text();
+    try {
+      const { openJson } = await import("@/lib/cms/secure-json");
+      return await openJson(raw);
+    } catch {
+      // Legacy plaintext inquiries (migrate on next write).
+      return raw;
+    }
+  }
+
+  return readTextFile(path.join(process.cwd(), "data", "inquiries.json"));
+}
+
+export async function writeInquiriesJson(json: string): Promise<void> {
+  if (usesBlobStorage()) {
+    const { sealJson } = await import("@/lib/cms/secure-json");
+    const sealed = await sealJson(json);
+    try {
+      await put(INQUIRIES_PATHNAME, sealed, {
+        access: "private",
+        contentType: "text/plain",
+        addRandomSuffix: false,
+        allowOverwrite: true,
+      });
+      return;
+    } catch {
+      await put(INQUIRIES_PATHNAME, sealed, {
+        access: "public",
+        contentType: "text/plain",
+        addRandomSuffix: false,
+        allowOverwrite: true,
+      });
+      return;
+    }
+  }
+
+  const filePath = path.join(process.cwd(), "data", "inquiries.json");
+  await fs.mkdir(path.dirname(filePath), { recursive: true });
+  await fs.writeFile(filePath, json, "utf8");
+}

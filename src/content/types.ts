@@ -186,6 +186,24 @@ export type Content = {
     responseLabel: string;
     responseValue: string;
     igCta: string;
+    form: {
+      eyebrow: string;
+      title: string;
+      lead: string;
+      name: string;
+      email: string;
+      topic: string;
+      message: string;
+      submit: string;
+      sending: string;
+      success: string;
+      error: string;
+      topics: {
+        partner: string;
+        media: string;
+        other: string;
+      };
+    };
   };
   footer: {
     rights: string;

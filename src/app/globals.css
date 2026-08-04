@@ -953,6 +953,32 @@ img {
   margin: 0 0 1rem;
   font-size: 1.1rem;
   color: #10141c;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.admin-live-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.45rem;
+  border: 1px solid #c8f000;
+  background: #10141c;
+  color: #c8f000;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.admin-inline-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: stretch;
+}
+
+.admin-inline-row select {
+  flex: 1 1 14rem;
 }
 
 .admin-match-list {
@@ -2322,6 +2348,70 @@ a.partner-card:hover {
   width: 0.4rem;
   height: 0.4rem;
   background: var(--ball);
+}
+
+/* Contact form */
+.contact-form-section {
+  background: #0a0c10;
+  color: #ffffff;
+}
+
+.contact-form {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1rem;
+  max-width: 40rem;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 0.45rem;
+  color: #c5ccd8;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #12161e;
+  color: #ffffff;
+  padding: 0.85rem 1rem;
+  font: inherit;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+  outline: 1px solid #c8f000;
+  border-color: #c8f000;
+}
+
+.contact-form__wide {
+  grid-column: 1 / -1;
+}
+
+.contact-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.contact-form__ok {
+  margin: 0;
+  color: #c8f000;
+}
+
+.contact-form__error {
+  margin: 0;
+  color: #ff8f8f;
 }
 
 /* Contact — flip business cards */

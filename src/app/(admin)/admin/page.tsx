@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { readInquiries } from "@/lib/cms/inquiries";
 import { readCms } from "@/lib/cms/store";
 
 export const metadata = {
@@ -8,7 +9,7 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
-  const data = await readCms();
+  const [data, inquiries] = await Promise.all([readCms(), readInquiries()]);
 
   const cards = [
     {
@@ -40,6 +41,12 @@ export default async function AdminDashboardPage() {
       label: "Partneri",
       count: data.partners.length,
       hint: "Hlavný + ďalší sponzori",
+    },
+    {
+      href: "/admin/inquiries",
+      label: "Správy",
+      count: inquiries.length,
+      hint: "Kontaktný formulár",
     },
   ];
 

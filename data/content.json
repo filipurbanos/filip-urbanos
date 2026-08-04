@@ -1,19 +1,6 @@
 {
   "tournaments": [
     {
-      "id": "t_utr_live",
-      "date": "2026-08-01",
-      "event": "UTR Junior Event",
-      "place": "Florida, USA",
-      "surface": "Hard",
-      "status": "live",
-      "resultSingles": "",
-      "resultDoubles": "",
-      "notes": "UTR Sports · live draw",
-      "url": "https://app.utrsports.net/events/326809?divisionId=516419&t=1",
-      "matches": []
-    },
-    {
       "id": "t_utr_388585",
       "date": "2026-08-12",
       "event": "Inspiration Tennis Academy vs Clearwater Tennis Club HP Academy",
@@ -24,7 +11,7 @@
       "resultDoubles": "",
       "notes": "Verified matchplay · singles aj doubles",
       "url": "https://app.utrsports.net/events/388585?t=2",
-      "albumId": "",
+      "albumId": "a_inspiration",
       "matches": []
     },
     {
@@ -38,6 +25,7 @@
       "resultDoubles": "—",
       "notes": "UTR Men's Open (Main) · Prize Money Event",
       "url": "https://app.utrsports.net/events/326803?d=c7958fa2-243a-4755-b3a0-218997694870&t=2",
+      "albumId": "a_battle_bay",
       "matches": [
         {
           "id": "m_bb_r16",
@@ -79,6 +67,7 @@
       "resultDoubles": "—",
       "notes": "ITF East Africa Junior Circuit",
       "url": "",
+      "albumId": "",
       "matches": []
     },
     {
@@ -92,10 +81,25 @@
       "resultDoubles": "Vicemajster",
       "notes": "Národný okruh · U14",
       "url": "",
+      "albumId": "",
       "matches": []
     }
   ],
   "albums": [
+    {
+      "id": "a_inspiration",
+      "title": "Inspiration Academy",
+      "date": "2026",
+      "description": "Škola, tréning a život v Bradentone.",
+      "createdAt": "2026-07-31T00:00:00.000Z"
+    },
+    {
+      "id": "a_battle_bay",
+      "title": "Battle on the Bay",
+      "date": "2026-04",
+      "description": "UTR Men's Open · Inspiration Academy — cesta do SF.",
+      "createdAt": "2026-04-12T00:00:00.000Z"
+    },
     {
       "id": "a_training",
       "title": "Tréning",
@@ -120,7 +124,7 @@
       "title": "Rozhovor v Inspiration Academy",
       "url": "/uploads/vid_ms9b8flv_tnp4a.mp4",
       "description": "Rozhovor o pocitoch a ako našiel akadémiu Inspiration Academy v Bradentone na Floride",
-      "albumId": "",
+      "albumId": "a_inspiration",
       "createdAt": "2026-07-31T19:03:00.570Z"
     }
   ],
@@ -163,7 +167,7 @@
       "url": "https://agroobchod.sk",
       "logo": "/partners/agromepa.png",
       "tier": "main",
-      "description": "",
+      "description": "Hlavný partner — podporuje Filipovu cestu zo Slovenska na medzinárodný okruh.",
       "order": 0
     }
   ]
