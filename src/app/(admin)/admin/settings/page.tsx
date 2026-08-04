@@ -1,16 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { emptyRankingsTemplate } from "@/lib/cms/rankings";
 import type { Ranking } from "@/lib/cms/types";
 
-const defaultRankings: Ranking[] = [
-  { system: "ITF Junior", value: "Live", note: "Oficiálny profil na itftennis.com" },
-  { system: "ITF Doubles", value: "TBC", note: "Aktuálne ITF Junior poradie vo štvorhre" },
-  { system: "UTR", value: "TBC", note: "Doplníme po overení aktuálneho ratingu" },
-  { system: "UTR Doubles", value: "TBC", note: "Doplníme po overení aktuálneho ratingu vo štvorhre" },
-  { system: "ATP", value: "Cieľ", note: "Dlhodobá ambícia: Top 20" },
-  { system: "Tennis Europe", value: "~150", note: "Historický juniorský míľnik" },
-];
+const defaultRankings: Ranking[] = emptyRankingsTemplate().map((item) =>
+  item.system === "Tennis Europe"
+    ? {
+        ...item,
+        value: "~150",
+        note: "Historický juniorský míľnik",
+      }
+    : item,
+);
 
 function rankingLabel(system: Ranking["system"]) {
   if (system === "ITF Junior") return "ITF 2-hra";
@@ -161,7 +163,9 @@ export default function AdminSettingsPage() {
       <form className="admin-form" onSubmit={saveRankings}>
         <h2>Rebríčky na webe</h2>
         <p className="admin-lead">
-          Tieto hodnoty sa zobrazujú v sekcii ITF · UTR · ATP na stránke Výsledky.
+          Na webe sa zobrazia len vyplnené hodnoty (nie Live / TBC / Cieľ /
+          prázdne). Tennis Europe ~150 je overený míľnik; ITF/UTR doplň, keď máš
+          aktuálne číslo.
         </p>
         <div className="admin-table">
           {rankings.map((item) => (
@@ -178,7 +182,7 @@ export default function AdminSettingsPage() {
                     onChange={(e) =>
                       updateRanking(item.system, { value: e.target.value })
                     }
-                    placeholder="napr. 12.34 / #178 / Live"
+                    placeholder="napr. #178 / 8.5 / ~150"
                   />
                 </label>
                 <label className="admin-form__wide">

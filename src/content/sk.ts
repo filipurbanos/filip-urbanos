@@ -95,8 +95,7 @@ export const sk: Content = {
     outlineTitle: "ITF · UTR · Kalendár",
     pageLead:
       "Kalendár, odohrané turnaje a rebríčky — všetko na jednom mieste.",
-    lead:
-      "Klikni na riadok s „+“, ak má turnaj popis, zápasy alebo médiá.",
+    lead: "Turnaje a míľniky z Filipovej cesty.",
     columns: {
       date: "Dátum",
       event: "Turnaj",
@@ -159,23 +158,19 @@ export const sk: Content = {
   rankings: {
     eyebrow: "Rebríčky",
     title: "ITF · UTR · ATP",
-    lead: "Aktuálne pozície a dôležité míľniky, ktoré priebežne aktualizujeme podľa oficiálnych zdrojov.",
+    lead: "Overené pozície a míľniky. Ďalšie čísla dopĺňame, keď ich máme z oficiálnych zdrojov.",
+    empty:
+      "Aktuálne čísla dopĺňame priebežne. Medzitým je Filipov oficiálny ITF profil.",
+    profileLink: "ITF profil",
+    systems: {
+      "ITF Junior": "ITF 2-hra",
+      "ITF Doubles": "ITF 4-hra",
+      UTR: "UTR 2-hra",
+      "UTR Doubles": "UTR 4-hra",
+      ATP: "ATP",
+      "Tennis Europe": "Tennis Europe",
+    },
     items: [
-      {
-        system: "ITF Junior",
-        value: "Live",
-        note: "Oficiálny profil na itftennis.com",
-      },
-      {
-        system: "UTR",
-        value: "TBC",
-        note: "Doplníme po overení aktuálneho ratingu",
-      },
-      {
-        system: "ATP",
-        value: "Cieľ",
-        note: "Dlhodobá ambícia: Top 20",
-      },
       {
         system: "Tennis Europe",
         value: "~150",

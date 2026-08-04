@@ -95,8 +95,7 @@ export const en: Content = {
     outlineTitle: "ITF · UTR · Calendar",
     pageLead:
       "Calendar, completed events, and rankings — all in one place.",
-    lead:
-      "Click a row with “+” when a tournament has notes, matches, or media.",
+    lead: "Tournaments and milestones from Filip’s path.",
     columns: {
       date: "Date",
       event: "Event",
@@ -159,23 +158,19 @@ export const en: Content = {
   rankings: {
     eyebrow: "Rankings",
     title: "ITF · UTR · ATP",
-    lead: "Current positions and key milestones, updated over time from official sources.",
+    lead: "Verified positions and milestones. We add more numbers once they’re confirmed from official sources.",
+    empty:
+      "Current numbers are added as they land. Meanwhile, see Filip’s official ITF profile.",
+    profileLink: "ITF profile",
+    systems: {
+      "ITF Junior": "ITF singles",
+      "ITF Doubles": "ITF doubles",
+      UTR: "UTR singles",
+      "UTR Doubles": "UTR doubles",
+      ATP: "ATP",
+      "Tennis Europe": "Tennis Europe",
+    },
     items: [
-      {
-        system: "ITF Junior",
-        value: "Live",
-        note: "Official profile on itftennis.com",
-      },
-      {
-        system: "UTR",
-        value: "TBC",
-        note: "To confirm with current rating",
-      },
-      {
-        system: "ATP",
-        value: "Goal",
-        note: "Long-term aim: Top 20",
-      },
       {
         system: "Tennis Europe",
         value: "~150",

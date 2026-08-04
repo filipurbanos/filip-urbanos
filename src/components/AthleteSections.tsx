@@ -7,7 +7,9 @@ import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
 import { sortByDateDesc, youtubeEmbedUrl } from "@/lib/cms/dates";
 import { isPlayableMediaUrl } from "@/lib/cms/media-url";
-import type { Match } from "@/lib/cms/types";
+import { filterPublishedRankings } from "@/lib/cms/rankings";
+import type { Match, Ranking } from "@/lib/cms/types";
+import { mediaLinks } from "@/content";
 import { useLocale } from "@/lib/locale";
 import { mediaAssets } from "@/lib/media";
 import { routes } from "@/lib/routes";
@@ -181,251 +183,177 @@ export function Results({
         />
       )}
       <div
-        className={`results-table-wrap ${omitHeader ? "results-table-wrap--flush" : ""}`}
+        className={`results-list ${omitHeader ? "results-list--flush" : ""}`}
       >
-        <div
-          className="results-table"
-          role="table"
-          style={{ border: "1px solid rgba(255,255,255,0.18)" }}
-        >
-          <div
-            className="results-table__row results-table__row--head"
-            role="row"
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                "6.5rem minmax(12rem, 1.5fr) minmax(9rem, 1.1fr) 6.5rem 7.5rem 8.5rem 2.5rem",
-              borderBottom: "1px solid rgba(200,240,0,0.45)",
-              background: "rgba(255,255,255,0.04)",
-            }}
-          >
-            {(
-              [
-                cols.date,
-                cols.event,
-                cols.place,
-                cols.surface,
-                cols.singles,
-                cols.doubles,
-                "",
-              ] as const
-            ).map((label, index, arr) => (
-              <div
-                key={`${label}-${index}`}
-                role="columnheader"
-                style={{
-                  color: "#c8f000",
-                  padding: "0.85rem 0.9rem",
-                  borderRight:
-                    index === arr.length - 1
-                      ? "none"
-                      : "1px solid rgba(255,255,255,0.12)",
+        {list.map((item, i) => {
+          const rowId = item.id || `${item.event}-${item.date}-${i}`;
+          const open = openId === rowId;
+          const hasDetail = canExpand(item);
+
+          return (
+            <article
+              key={rowId}
+              className={`result-item ${hasDetail ? "result-item--interactive" : ""} ${open ? "is-open" : ""}`}
+            >
+              <button
+                type="button"
+                className="result-item__main"
+                disabled={!hasDetail}
+                aria-expanded={hasDetail ? open : undefined}
+                aria-label={
+                  hasDetail
+                    ? open
+                      ? t.results.collapseLabel
+                      : t.results.expandLabel
+                    : undefined
+                }
+                onClick={() => {
+                  if (!hasDetail) return;
+                  setOpenId(open ? null : rowId);
                 }}
               >
-                {label}
-              </div>
-            ))}
-          </div>
-          {list.map((item, i) => {
-            const rowId = item.id || `${item.event}-${item.date}-${i}`;
-            const open = openId === rowId;
-            const hasDetail = canExpand(item);
-            const cells = [
-              item.date || "—",
-              item.event,
-              item.place || "—",
-              item.surface || "—",
-              item.resultSingles || "—",
-              item.resultDoubles || "—",
-            ];
+                <div className="result-item__top">
+                  <time className="result-item__date">{item.date || "—"}</time>
+                  {hasDetail ? (
+                    <span className="result-item__toggle" aria-hidden>
+                      {open ? "−" : "+"}
+                    </span>
+                  ) : null}
+                </div>
+                <h3 className="result-item__event">{item.event}</h3>
+                <p className="result-item__place">
+                  {[item.place, item.surface].filter(Boolean).join(" · ") ||
+                    "—"}
+                </p>
+                <dl className="result-item__scores">
+                  <div>
+                    <dt>{cols.singles}</dt>
+                    <dd>{item.resultSingles || "—"}</dd>
+                  </div>
+                  <div>
+                    <dt>{cols.doubles}</dt>
+                    <dd>{item.resultDoubles || "—"}</dd>
+                  </div>
+                </dl>
+              </button>
 
-            return (
-              <div key={rowId} className="results-table__block">
-                <div
-                  className={`results-table__row ${hasDetail ? "results-table__row--interactive" : ""} ${open ? "is-open" : ""}`}
-                  role="row"
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns:
-                      "6.5rem minmax(12rem, 1.5fr) minmax(9rem, 1.1fr) 6.5rem 7.5rem 8.5rem 2.5rem",
-                    borderBottom: open
-                      ? "none"
-                      : "1px solid rgba(255,255,255,0.14)",
-                    cursor: hasDetail ? "pointer" : "default",
-                  }}
-                  onClick={() => {
-                    if (!hasDetail) return;
-                    setOpenId(open ? null : rowId);
-                  }}
-                  onKeyDown={(e) => {
-                    if (!hasDetail) return;
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      setOpenId(open ? null : rowId);
-                    }
-                  }}
-                  tabIndex={hasDetail ? 0 : undefined}
-                  aria-expanded={hasDetail ? open : undefined}
-                  aria-label={
-                    hasDetail
-                      ? open
-                        ? t.results.collapseLabel
-                        : t.results.expandLabel
-                      : undefined
-                  }
-                >
-                  {cells.map((value, index, arr) => (
-                    <div
-                      key={`${rowId}-${index}`}
-                      role="cell"
-                      className={
-                        index === 1
-                          ? "results-table__event"
-                          : index >= 4
-                            ? "results-table__place"
-                            : undefined
-                      }
-                      style={{
-                        color: index === 1 || index >= 4 ? "#ffffff" : "#c5ccd8",
-                        padding: "1rem 0.9rem",
-                        borderRight: "1px solid rgba(255,255,255,0.1)",
-                      }}
-                    >
-                      {value}
-                    </div>
-                  ))}
-                  <div
-                    role="cell"
-                    className="results-table__toggle"
-                    style={{
-                      color: hasDetail ? "#c8f000" : "transparent",
-                      padding: "1rem 0.5rem",
-                      textAlign: "center",
-                    }}
-                    aria-hidden
-                  >
-                    {hasDetail ? (open ? "−" : "+") : ""}
+              {open && hasDetail ? (
+                <div className="results-detail">
+                  <div className="results-detail__inner">
+                    {item.notes ? (
+                      <div className="results-detail__block">
+                        <p className="results-detail__label">
+                          {t.results.detailNotes}
+                        </p>
+                        <p className="results-detail__text">{item.notes}</p>
+                      </div>
+                    ) : null}
+
+                    {item.matches && item.matches.length > 0 ? (
+                      <div className="results-detail__block">
+                        <p className="results-detail__label">
+                          {t.results.detailMatches}
+                        </p>
+                        <ul className="results-detail__matches">
+                          {item.matches.map((match) => (
+                            <li key={match.id}>
+                              <strong>{match.round || "—"}</strong>
+                              <span>
+                                {match.opponent || "—"}
+                                {match.score ? ` · ${match.score}` : ""}
+                              </span>
+                              <em>
+                                {t.live.resultLabels[match.result] ||
+                                  match.result}
+                              </em>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+
+                    {item.photos?.length || item.videos?.length ? (
+                      <div className="results-detail__block">
+                        <p className="results-detail__label">
+                          {t.results.detailMedia}
+                        </p>
+                        {item.photos && item.photos.length > 0 ? (
+                          <div className="results-detail__photos">
+                            {item.photos.map((photo) => (
+                              <figure key={photo.id}>
+                                <div className="results-detail__photo">
+                                  <Image
+                                    src={photo.src}
+                                    alt={photo.alt || item.event}
+                                    fill
+                                    sizes="(max-width: 700px) 50vw, 180px"
+                                  />
+                                </div>
+                                {photo.caption ? (
+                                  <figcaption>{photo.caption}</figcaption>
+                                ) : null}
+                              </figure>
+                            ))}
+                          </div>
+                        ) : null}
+                        {item.videos && item.videos.length > 0 ? (
+                          <ul className="results-detail__videos">
+                            {item.videos.map((video) => {
+                              const embed = youtubeEmbedUrl(video.url);
+                              return (
+                                <li key={video.id}>
+                                  {embed ? (
+                                    <div className="results-detail__embed">
+                                      <iframe
+                                        src={embed}
+                                        title={video.title}
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                      />
+                                    </div>
+                                  ) : isPlayableMediaUrl(video.url) ? (
+                                    <video
+                                      controls
+                                      playsInline
+                                      preload="metadata"
+                                      src={video.url}
+                                    >
+                                      {video.title}
+                                    </video>
+                                  ) : (
+                                    <a
+                                      href={video.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      {video.title} ↗
+                                    </a>
+                                  )}
+                                  <p>{video.title}</p>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        ) : null}
+                      </div>
+                    ) : null}
+
+                    {item.url ? (
+                      <a
+                        className="results-detail__link"
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {t.results.detailLink} ↗
+                      </a>
+                    ) : null}
                   </div>
                 </div>
-                {open && hasDetail ? (
-                  <div className="results-detail" role="row">
-                    <div className="results-detail__inner" role="cell">
-                      {item.notes ? (
-                        <div className="results-detail__block">
-                          <p className="results-detail__label">
-                            {t.results.detailNotes}
-                          </p>
-                          <p className="results-detail__text">{item.notes}</p>
-                        </div>
-                      ) : null}
-
-                      {item.matches && item.matches.length > 0 ? (
-                        <div className="results-detail__block">
-                          <p className="results-detail__label">
-                            {t.results.detailMatches}
-                          </p>
-                          <ul className="results-detail__matches">
-                            {item.matches.map((match) => (
-                              <li key={match.id}>
-                                <strong>{match.round || "—"}</strong>
-                                <span>
-                                  {match.opponent || "—"}
-                                  {match.score ? ` · ${match.score}` : ""}
-                                </span>
-                                <em>
-                                  {t.live.resultLabels[match.result] ||
-                                    match.result}
-                                </em>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ) : null}
-
-                      {(item.photos?.length || item.videos?.length) ? (
-                        <div className="results-detail__block">
-                          <p className="results-detail__label">
-                            {t.results.detailMedia}
-                          </p>
-                          {item.photos && item.photos.length > 0 ? (
-                            <div className="results-detail__photos">
-                              {item.photos.map((photo) => (
-                                <figure key={photo.id}>
-                                  <div className="results-detail__photo">
-                                    <Image
-                                      src={photo.src}
-                                      alt={photo.alt || item.event}
-                                      fill
-                                      sizes="(max-width: 700px) 50vw, 180px"
-                                    />
-                                  </div>
-                                  {photo.caption ? (
-                                    <figcaption>{photo.caption}</figcaption>
-                                  ) : null}
-                                </figure>
-                              ))}
-                            </div>
-                          ) : null}
-                          {item.videos && item.videos.length > 0 ? (
-                            <ul className="results-detail__videos">
-                              {item.videos.map((video) => {
-                                const embed = youtubeEmbedUrl(video.url);
-                                return (
-                                  <li key={video.id}>
-                                    {embed ? (
-                                      <div className="results-detail__embed">
-                                        <iframe
-                                          src={embed}
-                                          title={video.title}
-                                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                          allowFullScreen
-                                        />
-                                      </div>
-                                    ) : isPlayableMediaUrl(video.url) ? (
-                                      <video
-                                        controls
-                                        playsInline
-                                        preload="metadata"
-                                        src={video.url}
-                                      >
-                                        {video.title}
-                                      </video>
-                                    ) : (
-                                      <a
-                                        href={video.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                      >
-                                        {video.title} ↗
-                                      </a>
-                                    )}
-                                    <p>{video.title}</p>
-                                  </li>
-                                );
-                              })}
-                            </ul>
-                          ) : null}
-                        </div>
-                      ) : null}
-
-                      {item.url ? (
-                        <a
-                          className="results-detail__link"
-                          href={item.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          {t.results.detailLink} ↗
-                        </a>
-                      ) : null}
-                    </div>
-                  </div>
-                ) : null}
-              </div>
-            );
-          })}
-        </div>
+              ) : null}
+            </article>
+          );
+        })}
       </div>
     </Section>
   );
@@ -613,54 +541,58 @@ type RankingItem = {
   note: string;
 };
 
-function rankingLabel(system: string) {
-  if (system === "ITF Junior") return "ITF 2-hra";
-  if (system === "ITF Doubles") return "ITF 4-hra";
-  if (system === "UTR") return "UTR 2-hra";
-  if (system === "UTR Doubles") return "UTR 4-hra";
-  return system;
-}
-
 export function Rankings({ items }: { items?: RankingItem[] }) {
   const { t } = useLocale();
-  const list = items?.length ? items : t.rankings.items;
+  const source = items?.length ? items : t.rankings.items;
+  const list = filterPublishedRankings(
+    source.map(
+      (item): Ranking => ({
+        system: item.system as Ranking["system"],
+        value: item.value,
+        note: item.note,
+      }),
+    ),
+  );
 
   return (
-    <Section id="rankings" className="rankings" style={{ background: "#0b0d12" }}>
+    <Section id="rankings" className="rankings">
       <Reveal>
-        <p className="eyebrow" style={{ color: "#c8f000" }}>
-          {t.rankings.eyebrow}
-        </p>
-        <h2 className="section-title" style={{ color: "#ffffff" }}>
-          {t.rankings.title}
-        </h2>
-        <p className="section-lead" style={{ color: "#c5ccd8" }}>
-          {t.rankings.lead}
-        </p>
+        <p className="eyebrow">{t.rankings.eyebrow}</p>
+        <h2 className="section-title">{t.rankings.title}</h2>
+        <p className="section-lead">{t.rankings.lead}</p>
       </Reveal>
-      <div className="rankings__grid">
-        {list.map((item, i) => (
-          <Reveal key={item.system} delay={i * 60}>
-            <article
-              className="rank-card"
-              style={{
-                background: "#12161e",
-                border: "1px solid rgba(255,255,255,0.12)",
-              }}
+
+      {list.length === 0 ? (
+        <Reveal delay={60}>
+          <div className="rankings__empty">
+            <p className="placeholder-note">{t.rankings.empty}</p>
+            <a
+              className="rankings__profile"
+              href={mediaLinks.itf}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <p className="rank-card__system" style={{ color: "#c8f000" }}>
-                {rankingLabel(item.system)}
-              </p>
-              <p className="rank-card__value" style={{ color: "#ffffff" }}>
-                {item.value}
-              </p>
-              <p className="rank-card__note" style={{ color: "#c5ccd8" }}>
-                {item.note}
-              </p>
-            </article>
-          </Reveal>
-        ))}
-      </div>
+              {t.rankings.profileLink} ↗
+            </a>
+          </div>
+        </Reveal>
+      ) : (
+        <div className="rankings__grid">
+          {list.map((item, i) => (
+            <Reveal key={item.system} delay={i * 60}>
+              <article className="rank-card">
+                <p className="rank-card__system">
+                  {t.rankings.systems[item.system] || item.system}
+                </p>
+                <p className="rank-card__value">{item.value}</p>
+                {item.note ? (
+                  <p className="rank-card__note">{item.note}</p>
+                ) : null}
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      )}
     </Section>
   );
 }

@@ -131,28 +131,28 @@
   "rankings": [
     {
       "system": "ITF Junior",
-      "value": "Live",
-      "note": "Oficiálny profil na itftennis.com"
+      "value": "",
+      "note": ""
     },
     {
       "system": "ITF Doubles",
-      "value": "TBC",
-      "note": "Aktuálne ITF Junior poradie vo štvorhre"
+      "value": "",
+      "note": ""
     },
     {
       "system": "UTR",
-      "value": "TBC",
-      "note": "Doplníme po overení aktuálneho ratingu"
+      "value": "",
+      "note": ""
     },
     {
       "system": "UTR Doubles",
-      "value": "TBC",
-      "note": "Doplníme po overení aktuálneho ratingu vo štvorhre"
+      "value": "",
+      "note": ""
     },
     {
       "system": "ATP",
-      "value": "Cieľ",
-      "note": "Dlhodobá ambícia: Top 20"
+      "value": "",
+      "note": ""
     },
     {
       "system": "Tennis Europe",

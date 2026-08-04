@@ -7,6 +7,7 @@ import type {
   TournamentStatus,
   Video,
 } from "@/lib/cms/types";
+import { RANKING_SYSTEMS } from "@/lib/cms/rankings";
 import { readCmsJson, writeCmsJson } from "@/lib/cms/storage";
 
 const empty: CmsData = {
@@ -94,22 +95,13 @@ function normalizeVideo(raw: Partial<Video>): Video {
   };
 }
 
-const rankingSystems: Ranking["system"][] = [
-  "ITF Junior",
-  "ITF Doubles",
-  "UTR",
-  "UTR Doubles",
-  "ATP",
-  "Tennis Europe",
-];
-
 function normalizeRankings(raw: unknown): Ranking[] {
   const list = Array.isArray(raw) ? raw : [];
   const bySystem = new Map<string, Ranking>();
 
   for (const item of list) {
     const system = String((item as { system?: unknown })?.system || "").trim();
-    if (!rankingSystems.includes(system as Ranking["system"])) continue;
+    if (!RANKING_SYSTEMS.includes(system as Ranking["system"])) continue;
     bySystem.set(system, {
       system: system as Ranking["system"],
       value: String((item as { value?: unknown })?.value || "").trim(),
@@ -117,49 +109,10 @@ function normalizeRankings(raw: unknown): Ranking[] {
     });
   }
 
-  return rankingSystems.map((system) => {
+  return RANKING_SYSTEMS.map((system) => {
     const existing = bySystem.get(system);
     if (existing) return existing;
-    if (system === "ITF Junior") {
-      return {
-        system,
-        value: "Live",
-        note: "Oficiálny profil na itftennis.com",
-      };
-    }
-    if (system === "UTR") {
-      return {
-        system,
-        value: "TBC",
-        note: "Doplníme po overení aktuálneho ratingu",
-      };
-    }
-    if (system === "UTR Doubles") {
-      return {
-        system,
-        value: "TBC",
-        note: "Doplníme po overení aktuálneho ratingu vo štvorhre",
-      };
-    }
-    if (system === "ITF Doubles") {
-      return {
-        system,
-        value: "TBC",
-        note: "Aktuálne ITF Junior poradie vo štvorhre",
-      };
-    }
-    if (system === "ATP") {
-      return {
-        system,
-        value: "Cieľ",
-        note: "Dlhodobá ambícia: Top 20",
-      };
-    }
-    return {
-      system,
-      value: "~150",
-      note: "Historický juniorský míľnik",
-    };
+    return { system, value: "", note: "" };
   });
 }
 
