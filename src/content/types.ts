@@ -32,7 +32,6 @@ export type Content = {
     eyebrow: string;
     title: string;
     lead: string;
-    signalKeys: string[];
     cards: {
       about: string;
       journey: string;

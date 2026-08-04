@@ -27,7 +27,6 @@ export const sk: Content = {
     eyebrow: "Cesta",
     title: "Zo Slovenska na Floridu",
     lead: "Tri hlavné kapitoly — príbeh, výsledky a USA. Ďalšie stránky sú hneď pod nimi.",
-    signalKeys: ["Výška", "Povrch", "Cieľ", "Krajina"],
     cards: {
       about: "Kto je Filip a kam smeruje.",
       journey: "Od Slovenska cez Barcelonu do USA.",
