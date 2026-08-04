@@ -5,7 +5,6 @@ import Image from "next/image";
 import { ContactDetails } from "@/components/ContactDetails";
 import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
-import { mediaLinks } from "@/content";
 import type { Partner } from "@/lib/cms/types";
 import { useLocale } from "@/lib/locale";
 import { routes } from "@/lib/routes";
