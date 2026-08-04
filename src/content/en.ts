@@ -26,7 +26,7 @@ export const en: Content = {
   homeHub: {
     eyebrow: "The path",
     title: "From Slovakia to Florida",
-    lead: "Story, results, and the USA chapter — open what matters to you.",
+    lead: "Three main chapters — story, results, and the USA. More pages sit just below.",
     signalKeys: ["Height", "Surface", "Goal", "Country"],
     cards: {
       about: "Who Filip is and where he’s headed.",
