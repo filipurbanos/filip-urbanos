@@ -3,7 +3,7 @@ type BrandMarkProps = {
   title?: string;
 };
 
-/** FU monogram with lime tennis-ball accent */
+/** FU monogram — lime frame + ball accent, tuned for ~34px header size */
 export function BrandMark({ className = "brand__mark", title }: BrandMarkProps) {
   return (
     <svg
@@ -22,24 +22,24 @@ export function BrandMark({ className = "brand__mark", title }: BrandMarkProps) 
         width="37"
         height="37"
         stroke="#c8f000"
-        strokeWidth="1.5"
+        strokeWidth="2"
       />
-      {/* F */}
+      {/* F — heavier bars for small size */}
       <path
         fill="#ffffff"
-        d="M7.5 8.5h13v3.2H11v4.8h8.2v3H11V31.5H7.5V8.5Z"
+        d="M6.5 7.5h14.2v3.6H10.5v5.1h8.8v3.4H10.5V32.5H6.5V7.5Z"
       />
-      {/* U — shortened to leave room for ball */}
+      {/* U */}
       <path
         fill="#ffffff"
-        d="M22.5 8.5h3.5v12.2c0 2.9 1.35 4.4 3.55 4.4s3.55-1.5 3.55-4.4V8.5H36.6v12.4c0 4.9-2.95 7.6-6.55 7.6-3.6 0-6.55-2.7-6.55-7.6V8.5Z"
+        d="M22 7.5h4v13.4c0 2.6 1.2 4 3.2 4s3.2-1.4 3.2-4V7.5h4v13.6c0 4.85-2.75 7.5-7.2 7.5S22 26 22 21.1V7.5Z"
       />
-      {/* tennis ball */}
-      <circle cx="31.8" cy="31.5" r="4.35" fill="#c8f000" />
+      {/* ball */}
+      <circle cx="32.2" cy="32" r="5" fill="#c8f000" />
       <path
-        d="M28.9 29.85c1.15 1.75 2.85 2.7 4.85 2.8"
+        d="M28.9 30.1c1.3 2 3.2 3.1 5.4 3.2"
         stroke="#0a0c10"
-        strokeWidth="1.15"
+        strokeWidth="1.3"
         strokeLinecap="round"
       />
     </svg>
