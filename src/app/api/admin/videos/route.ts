@@ -1,11 +1,7 @@
-import { createWriteStream } from "fs";
-import { promises as fs } from "fs";
-import path from "path";
-import { Readable, Transform } from "stream";
-import { pipeline } from "stream/promises";
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/cms/auth";
 import { createId, readCms, writeCms } from "@/lib/cms/store";
+import { deleteUpload, saveUpload } from "@/lib/cms/storage";
 import type { Video } from "@/lib/cms/types";
 
 const VIDEO_TYPES = new Set([
@@ -31,29 +27,27 @@ function extFromName(name: string, contentType: string) {
   return "mp4";
 }
 
-async function saveUploadedFile(
+async function readBodyWithLimit(
   body: ReadableStream<Uint8Array>,
-  filepath: string,
-) {
+  maxBytes: number,
+): Promise<Buffer> {
+  const reader = body.getReader();
+  const chunks: Uint8Array[] = [];
   let written = 0;
-  const limiter = new Transform({
-    transform(chunk, _enc, cb) {
-      written += chunk.length;
-      if (written > MAX_BYTES) {
-        cb(new Error("TOO_LARGE"));
-        return;
-      }
-      cb(null, chunk);
-    },
-  });
 
-  await pipeline(
-    Readable.fromWeb(body as import("stream/web").ReadableStream),
-    limiter,
-    createWriteStream(filepath),
-  );
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    if (!value) continue;
+    written += value.byteLength;
+    if (written > maxBytes) {
+      reader.cancel().catch(() => undefined);
+      throw new Error("TOO_LARGE");
+    }
+    chunks.push(value);
+  }
 
-  return written;
+  return Buffer.concat(chunks.map((c) => Buffer.from(c)));
 }
 
 export async function GET() {
@@ -72,7 +66,6 @@ export async function POST(request: Request) {
   const contentType = request.headers.get("content-type") || "";
   const data = await readCms();
 
-  // Raw binary upload (avoids Next/undici FormData failures on large videos)
   const fileNameHeader = request.headers.get("x-file-name");
   const isRawUpload =
     Boolean(fileNameHeader) ||
@@ -112,18 +105,30 @@ export async function POST(request: Request) {
 
     const ext = extFromName(originalName, contentType);
     const filename = `${createId("vid")}.${ext}`;
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    await fs.mkdir(uploadDir, { recursive: true });
-    const filepath = path.join(uploadDir, filename);
 
     try {
-      const written = await saveUploadedFile(request.body, filepath);
-      if (written === 0) {
-        await fs.unlink(filepath).catch(() => undefined);
+      const buffer = await readBodyWithLimit(request.body, MAX_BYTES);
+      if (buffer.length === 0) {
         return NextResponse.json({ error: "Prázdny súbor" }, { status: 400 });
       }
+      const url = await saveUpload({
+        filename,
+        body: buffer,
+        contentType: contentType.split(";")[0].trim() || "video/mp4",
+      });
+
+      const video: Video = {
+        id: createId("v"),
+        title: title || originalName.replace(/\.[^.]+$/, "") || "Video",
+        url,
+        description,
+        albumId,
+        createdAt: new Date().toISOString(),
+      };
+      data.videos.unshift(video);
+      await writeCms(data);
+      return NextResponse.json({ videos: data.videos });
     } catch (err) {
-      await fs.unlink(filepath).catch(() => undefined);
       const message = err instanceof Error ? err.message : "";
       if (message === "TOO_LARGE") {
         return NextResponse.json(
@@ -131,24 +136,12 @@ export async function POST(request: Request) {
           { status: 400 },
         );
       }
-      console.error("Video upload stream failed:", err);
+      console.error("Video upload failed:", err);
       return NextResponse.json(
         { error: "Nahrávanie súboru zlyhalo. Skús znova." },
         { status: 500 },
       );
     }
-
-    const video: Video = {
-      id: createId("v"),
-      title: title || originalName.replace(/\.[^.]+$/, "") || "Video",
-      url: `/uploads/${filename}`,
-      description,
-      albumId,
-      createdAt: new Date().toISOString(),
-    };
-    data.videos.unshift(video);
-    await writeCms(data);
-    return NextResponse.json({ videos: data.videos });
   }
 
   if (contentType.includes("multipart/form-data")) {
@@ -189,15 +182,16 @@ export async function POST(request: Request) {
 
       const ext = extFromName(file.name, file.type);
       const filename = `${createId("vid")}.${ext}`;
-      const uploadDir = path.join(process.cwd(), "public", "uploads");
-      await fs.mkdir(uploadDir, { recursive: true });
-      const buffer = Buffer.from(await file.arrayBuffer());
-      await fs.writeFile(path.join(uploadDir, filename), buffer);
+      const url = await saveUpload({
+        filename,
+        body: Buffer.from(await file.arrayBuffer()),
+        contentType: file.type || "video/mp4",
+      });
 
       const video: Video = {
         id: createId("v"),
         title: title || file.name.replace(/\.[^.]+$/, "") || "Video",
-        url: `/uploads/${filename}`,
+        url,
         description,
         albumId,
         createdAt: new Date().toISOString(),
@@ -277,9 +271,8 @@ export async function DELETE(request: Request) {
   data.videos = data.videos.filter((item) => item.id !== id);
   await writeCms(data);
 
-  if (video?.url.startsWith("/uploads/")) {
-    const filePath = path.join(process.cwd(), "public", video.url);
-    await fs.unlink(filePath).catch(() => undefined);
+  if (video?.url) {
+    await deleteUpload(video.url);
   }
 
   return NextResponse.json({ videos: data.videos });

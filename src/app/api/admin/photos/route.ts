@@ -1,8 +1,7 @@
-import { promises as fs } from "fs";
-import path from "path";
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/cms/auth";
 import { createId, readCms, writeCms } from "@/lib/cms/store";
+import { deleteUpload, saveUpload } from "@/lib/cms/storage";
 import type { Photo } from "@/lib/cms/types";
 
 export async function GET() {
@@ -34,14 +33,15 @@ export async function POST(request: Request) {
 
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
   const filename = `${createId("img")}.${ext}`;
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
-  await fs.mkdir(uploadDir, { recursive: true });
-  const buffer = Buffer.from(await file.arrayBuffer());
-  await fs.writeFile(path.join(uploadDir, filename), buffer);
+  const src = await saveUpload({
+    filename,
+    body: Buffer.from(await file.arrayBuffer()),
+    contentType: file.type || "image/jpeg",
+  });
 
   const photo: Photo = {
     id: createId("p"),
-    src: `/uploads/${filename}`,
+    src,
     alt: alt || file.name,
     caption,
     albumId,
@@ -70,9 +70,8 @@ export async function DELETE(request: Request) {
   data.photos = data.photos.filter((item) => item.id !== id);
   await writeCms(data);
 
-  if (photo?.src.startsWith("/uploads/")) {
-    const filePath = path.join(process.cwd(), "public", photo.src);
-    await fs.unlink(filePath).catch(() => undefined);
+  if (photo?.src) {
+    await deleteUpload(photo.src);
   }
 
   return NextResponse.json({ photos: data.photos });

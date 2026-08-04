@@ -1,8 +1,7 @@
-import { promises as fs } from "fs";
-import path from "path";
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/cms/auth";
 import { createId, readCms, writeCms } from "@/lib/cms/store";
+import { deleteUpload, saveUpload } from "@/lib/cms/storage";
 import type { Partner, PartnerTier } from "@/lib/cms/types";
 
 export async function GET() {
@@ -42,13 +41,11 @@ export async function POST(request: Request) {
     }
     const ext = file.name.split(".").pop()?.toLowerCase() || "png";
     const filename = `${createId("logo")}.${ext}`;
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    await fs.mkdir(uploadDir, { recursive: true });
-    await fs.writeFile(
-      path.join(uploadDir, filename),
-      Buffer.from(await file.arrayBuffer()),
-    );
-    logo = `/uploads/${filename}`;
+    logo = await saveUpload({
+      filename,
+      body: Buffer.from(await file.arrayBuffer()),
+      contentType: file.type || "image/png",
+    });
   }
 
   if (id) {
@@ -98,10 +95,8 @@ export async function DELETE(request: Request) {
   data.partners = data.partners.filter((item) => item.id !== id);
   await writeCms(data);
 
-  if (partner?.logo.startsWith("/uploads/")) {
-    await fs
-      .unlink(path.join(process.cwd(), "public", partner.logo))
-      .catch(() => undefined);
+  if (partner?.logo) {
+    await deleteUpload(partner.logo);
   }
 
   return NextResponse.json({ partners: data.partners });

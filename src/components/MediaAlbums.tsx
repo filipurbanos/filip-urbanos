@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
 import { youtubeEmbedUrl, sortByDateDesc } from "@/lib/cms/dates";
+import { isPlayableMediaUrl } from "@/lib/cms/media-url";
 import { useLocale } from "@/lib/locale";
 import type { Album, Photo, Video } from "@/lib/cms/types";
 
@@ -161,10 +162,7 @@ export function MediaAlbums({ albums, photos, videos }: MediaAlbumsProps) {
               <div className="album-video-grid">
                 {filteredVideos.map((video, i) => {
                   const embed = youtubeEmbedUrl(video.url);
-                  const isLocal =
-                    video.url.startsWith("/uploads/") ||
-                    video.url.startsWith("/media/");
-                  return (
+                  const isLocal = isPlayableMediaUrl(video.url);                  return (
                     <Reveal key={video.id} delay={i * 50}>
                       <article className="album-video">
                         {embed ? (

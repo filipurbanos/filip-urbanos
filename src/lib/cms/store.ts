@@ -1,5 +1,3 @@
-import { promises as fs } from "fs";
-import path from "path";
 import type {
   Album,
   CmsData,
@@ -8,8 +6,7 @@ import type {
   TournamentStatus,
   Video,
 } from "@/lib/cms/types";
-
-const DATA_PATH = path.join(process.cwd(), "data", "content.json");
+import { readCmsJson, writeCmsJson } from "@/lib/cms/storage";
 
 const empty: CmsData = {
   tournaments: [],
@@ -96,7 +93,8 @@ function normalizeVideo(raw: Partial<Video>): Video {
 
 export async function readCms(): Promise<CmsData> {
   try {
-    const raw = await fs.readFile(DATA_PATH, "utf8");
+    const raw = await readCmsJson();
+    if (!raw) return empty;
     const parsed = JSON.parse(raw) as Partial<CmsData>;
     return {
       tournaments: (parsed.tournaments ?? []).map((item) =>
@@ -119,8 +117,7 @@ export async function readCms(): Promise<CmsData> {
 }
 
 export async function writeCms(data: CmsData): Promise<void> {
-  await fs.mkdir(path.dirname(DATA_PATH), { recursive: true });
-  await fs.writeFile(DATA_PATH, `${JSON.stringify(data, null, 2)}\n`, "utf8");
+  await writeCmsJson(`${JSON.stringify(data, null, 2)}\n`);
 }
 
 export function createId(prefix: string): string {

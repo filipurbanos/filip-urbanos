@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { Album, Video } from "@/lib/cms/types";
 import { sortByDateDesc } from "@/lib/cms/dates";
+import { isManagedUploadUrl } from "@/lib/cms/media-url";
 
 export default function AdminVideosPage() {
   const [videos, setVideos] = useState<Video[]>([]);
@@ -181,10 +182,10 @@ export default function AdminVideosPage() {
               <p>
                 {albumTitle(video.albumId)}
                 {video.description ? ` · ${video.description}` : ""}
-                {video.url.startsWith("/uploads/") ? " · súbor" : " · odkaz"}
+                {isManagedUploadUrl(video.url) ? " · súbor" : " · odkaz"}
               </p>
               <p>
-                {video.url.startsWith("/uploads/") ? (
+                {isManagedUploadUrl(video.url) ? (
                   <span>{video.url}</span>
                 ) : (
                   <a href={video.url} target="_blank" rel="noopener noreferrer">
