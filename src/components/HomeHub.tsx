@@ -17,13 +17,16 @@ const cards: { key: keyof Content["homeHub"]["cards"]; href: string }[] = [
 
 export function HomeHub() {
   const { t } = useLocale();
+  const signalFacts = t.homeHub.signalKeys
+    .map((key) => t.profile.facts.find((fact) => fact.label === key))
+    .filter((fact): fact is { label: string; value: string } => Boolean(fact));
 
   return (
     <>
       <section className="section home-signal">
         <div className="shell">
           <div className="home-signal__grid">
-            {t.profile.facts.slice(0, 4).map((fact, i) => (
+            {signalFacts.map((fact, i) => (
               <Reveal key={fact.label} delay={i * 60}>
                 <article className="home-signal__item">
                   <p className="home-signal__label">{fact.label}</p>
@@ -47,9 +50,6 @@ export function HomeHub() {
             {cards.map((card, i) => (
               <Reveal key={card.href} delay={i * 50}>
                 <Link href={card.href} className="home-card">
-                  <span className="home-card__index">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
                   <span className="home-card__label">{t.nav[card.key]}</span>
                   <span className="home-card__text">
                     {t.homeHub.cards[card.key]}

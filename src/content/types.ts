@@ -23,16 +23,16 @@ export type Content = {
   hero: {
     role: string;
     headline: string;
+    tagline: string;
     lead: string;
     ctaPrimary: string;
     ctaSecondary: string;
-    chapterLabel: string;
-    chapterValue: string;
   };
   homeHub: {
     eyebrow: string;
     title: string;
     lead: string;
+    signalKeys: string[];
     cards: {
       about: string;
       journey: string;

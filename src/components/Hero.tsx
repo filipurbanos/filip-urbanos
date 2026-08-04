@@ -2,37 +2,21 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocale } from "@/lib/locale";
 import { mediaAssets } from "@/lib/media";
 import { routes } from "@/lib/routes";
-
-function splitHeadline(headline: string) {
-  const parts = headline.trim().split(/\s+/);
-  if (parts.length < 2) {
-    return { before: headline, accent: "", after: "" };
-  }
-  const accentIndex = Math.max(0, parts.length - 2);
-  return {
-    before: parts.slice(0, accentIndex).join(" "),
-    accent: parts[accentIndex],
-    after: parts.slice(accentIndex + 1).join(" "),
-  };
-}
 
 export function Hero() {
   const { t } = useLocale();
   const [heroSrc, setHeroSrc] = useState<string>(mediaAssets.hero);
   const [usingFallback, setUsingFallback] = useState(false);
-  const { before, accent, after } = splitHeadline(t.hero.headline);
-
-  useEffect(() => {
-    setHeroSrc(mediaAssets.hero);
-    setUsingFallback(false);
-  }, []);
+  const nameParts = t.hero.headline.trim().split(/\s+/);
+  const firstName = nameParts[0] || t.hero.headline;
+  const lastName = nameParts.slice(1).join(" ");
 
   return (
-    <section className="hero" id="top" aria-label="Hero">
+    <section className="hero" id="top" aria-label={t.hero.role}>
       <div className="hero__media" aria-hidden="true">
         <Image
           className={`hero__photo ${usingFallback ? "is-fallback" : ""}`}
@@ -57,10 +41,15 @@ export function Hero() {
           {t.hero.role}
         </p>
         <h1 className="hero__headline">
-          {before ? <span>{before} </span> : null}
-          {accent ? <span className="hero__outline">{accent}</span> : null}
-          {after ? <span> {after}</span> : null}
+          <span>{firstName}</span>
+          {lastName ? (
+            <>
+              {" "}
+              <span className="hero__outline">{lastName}</span>
+            </>
+          ) : null}
         </h1>
+        <p className="hero__tagline">{t.hero.tagline}</p>
         <p className="hero__lead">{t.hero.lead}</p>
         <div className="hero__actions">
           <Link className="btn btn--primary" href={routes.results}>
@@ -70,11 +59,6 @@ export function Hero() {
           <Link className="btn btn--ghost" href={routes.partners}>
             {t.hero.ctaSecondary}
           </Link>
-        </div>
-
-        <div className="hero__chapter">
-          <p className="hero__chapter-label">{t.hero.chapterLabel}</p>
-          <p className="hero__chapter-value">{t.hero.chapterValue}</p>
         </div>
       </div>
     </section>
