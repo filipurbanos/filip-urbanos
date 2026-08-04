@@ -147,17 +147,17 @@ export default function AdminAlbumsPage() {
         zobrazia ako záložky. Keď album priradíš turnaju v admin → Turnaje,
         zobrazí sa aj po rozkliknutí výsledku.
       </p>
-      <div className="admin-form__actions" style={{ marginBottom: "1.25rem" }}>
+      <div className="admin-toolbar">
         <button
           type="button"
-          className="btn btn--admin-action"
+          className="btn btn--primary"
           disabled={syncing}
           onClick={() => void syncFromSeed()}
         >
           {syncing ? "Sync…" : "Doplniť albumy zo seedu"}
         </button>
+        {syncNote ? <p className="admin-success">{syncNote}</p> : null}
       </div>
-      {syncNote ? <p className="admin-success">{syncNote}</p> : null}
 
       <form className="admin-form" onSubmit={save}>
         <div className="admin-form__grid">
