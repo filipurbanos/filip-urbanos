@@ -146,7 +146,7 @@ export const en: Content = {
     lead: "Circuit plan — venues and dates can shift with draws and travel.",
     items: [],
     empty: "No upcoming tournaments scheduled yet.",
-    note: "Dates may shift with draws and travel.",
+    note: "",
   },
   rankings: {
     eyebrow: "Rankings",

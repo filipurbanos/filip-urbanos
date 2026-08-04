@@ -553,9 +553,11 @@ export function Calendar({
           <p className="placeholder-note">{t.calendar.empty}</p>
         </Reveal>
       )}
-      <Reveal delay={200}>
-        <p className="calendar__note">{t.calendar.note}</p>
-      </Reveal>
+      {t.calendar.note ? (
+        <Reveal delay={200}>
+          <p className="calendar__note">{t.calendar.note}</p>
+        </Reveal>
+      ) : null}
     </Section>
   );
 }

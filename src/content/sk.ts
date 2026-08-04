@@ -146,7 +146,7 @@ export const sk: Content = {
     lead: "Plán okruhu — miesta a dátumy sa môžu meniť podľa žrebovania a cestovania.",
     items: [],
     empty: "Zatiaľ nie sú naplánované ďalšie turnaje.",
-    note: "Termíny sa môžu meniť podľa žrebovania a cestovania.",
+    note: "",
   },
   rankings: {
     eyebrow: "Rebríčky",
