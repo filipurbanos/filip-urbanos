@@ -70,6 +70,12 @@ export default function AdminTournamentsPage() {
   }, []);
 
   const sortedItems = useMemo(() => sortByDateDesc(items), [items]);
+  const sortedAlbums = useMemo(() => sortByDateDesc(albums), [albums]);
+
+  function albumTitle(id: string) {
+    if (!id) return "";
+    return sortedAlbums.find((album) => album.id === id)?.title || "";
+  }
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
@@ -275,7 +281,7 @@ export default function AdminTournamentsPage() {
               onChange={(e) => setForm({ ...form, albumId: e.target.value })}
             >
               <option value="">— bez albumu —</option>
-              {albums.map((album) => (
+              {sortedAlbums.map((album) => (
                 <option key={album.id} value={album.id}>
                   {album.title}
                   {album.date ? ` · ${album.date}` : ""}
@@ -444,6 +450,7 @@ export default function AdminTournamentsPage() {
                 {item.matches.length
                   ? ` · ${item.matches.length} zápasov`
                   : ""}
+                {item.albumId ? ` · album ${albumTitle(item.albumId) || "priradený"}` : ""}
               </p>
             </div>
             <div className="admin-row__actions">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import type { Album } from "@/lib/cms/types";
+import type { Album, Photo, Tournament, Video } from "@/lib/cms/types";
 import { sortByDateDesc } from "@/lib/cms/dates";
 
 const blank = {
@@ -12,15 +12,37 @@ const blank = {
 
 export default function AdminAlbumsPage() {
   const [albums, setAlbums] = useState<Album[]>([]);
+  const [tournaments, setTournaments] = useState<Tournament[]>([]);
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
   const [form, setForm] = useState(blank);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState("");
 
   async function load() {
-    const res = await fetch("/api/admin/albums");
-    if (!res.ok) return;
-    const data = (await res.json()) as { albums: Album[] };
-    setAlbums(data.albums);
+    const [albumsRes, tournamentsRes, photosRes, videosRes] = await Promise.all([
+      fetch("/api/admin/albums"),
+      fetch("/api/admin/tournaments"),
+      fetch("/api/admin/photos"),
+      fetch("/api/admin/videos"),
+    ]);
+
+    if (albumsRes.ok) {
+      const data = (await albumsRes.json()) as { albums: Album[] };
+      setAlbums(data.albums);
+    }
+    if (tournamentsRes.ok) {
+      const data = (await tournamentsRes.json()) as { tournaments: Tournament[] };
+      setTournaments(data.tournaments);
+    }
+    if (photosRes.ok) {
+      const data = (await photosRes.json()) as { photos: Photo[] };
+      setPhotos(data.photos);
+    }
+    if (videosRes.ok) {
+      const data = (await videosRes.json()) as { videos: Video[] };
+      setVideos(data.videos);
+    }
   }
 
   useEffect(() => {
@@ -70,12 +92,21 @@ export default function AdminAlbumsPage() {
     });
   }
 
+  function albumStats(albumId: string) {
+    return {
+      photos: photos.filter((photo) => photo.albumId === albumId).length,
+      videos: videos.filter((video) => video.albumId === albumId).length,
+      tournaments: tournaments.filter((tournament) => tournament.albumId === albumId),
+    };
+  }
+
   return (
     <div className="admin-page">
       <h1>Albumy</h1>
       <p className="admin-lead">
         Zoskup fotky a videá z jednej akcie (turnaj, tréning, USA…). Na webe sa
-        zobrazia ako záložky.
+        zobrazia ako záložky. Keď album priradíš turnaju v admin → Turnaje,
+        zobrazí sa aj po rozkliknutí výsledku.
       </p>
 
       <form className="admin-form" onSubmit={save}>
@@ -129,25 +160,34 @@ export default function AdminAlbumsPage() {
       </form>
 
       <div className="admin-table">
-        {sorted.map((album) => (
-          <article key={album.id} className="admin-row">
-            <div>
-              <strong>
-                {album.date ? `${album.date} · ` : ""}
-                {album.title}
-              </strong>
-              {album.description ? <p>{album.description}</p> : null}
-            </div>
-            <div className="admin-row__actions">
-              <button type="button" onClick={() => edit(album)}>
-                Upraviť
-              </button>
-              <button type="button" onClick={() => remove(album.id)}>
-                Zmazať
-              </button>
-            </div>
-          </article>
-        ))}
+        {sorted.map((album) => {
+          const stats = albumStats(album.id);
+          return (
+            <article key={album.id} className="admin-row">
+              <div>
+                <strong>
+                  {album.date ? `${album.date} · ` : ""}
+                  {album.title}
+                </strong>
+                {album.description ? <p>{album.description}</p> : null}
+                <p className="admin-muted">
+                  {stats.photos} fotiek · {stats.videos} videí
+                  {stats.tournaments.length
+                    ? ` · turnaj: ${stats.tournaments.map((t) => t.event).join(", ")}`
+                    : " · zatiaľ bez priradeného turnaja"}
+                </p>
+              </div>
+              <div className="admin-row__actions">
+                <button type="button" onClick={() => edit(album)}>
+                  Upraviť
+                </button>
+                <button type="button" onClick={() => remove(album.id)}>
+                  Zmazať
+                </button>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </div>
   );
