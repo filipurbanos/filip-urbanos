@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useLocale } from "@/lib/locale";
@@ -11,7 +12,6 @@ function splitHeadline(headline: string) {
   if (parts.length < 2) {
     return { before: headline, accent: "", after: "" };
   }
-  // Highlight the penultimate word (ďalší / next)
   const accentIndex = Math.max(0, parts.length - 2);
   return {
     before: parts.slice(0, accentIndex).join(" "),
@@ -21,7 +21,7 @@ function splitHeadline(headline: string) {
 }
 
 export function Hero() {
-  const { t, locale } = useLocale();
+  const { t } = useLocale();
   const [heroSrc, setHeroSrc] = useState<string>(mediaAssets.hero);
   const [usingFallback, setUsingFallback] = useState(false);
   const { before, accent, after } = splitHeadline(t.hero.headline);
@@ -34,11 +34,13 @@ export function Hero() {
   return (
     <section className="hero" id="top" aria-label="Hero">
       <div className="hero__media" aria-hidden="true">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           className={`hero__photo ${usingFallback ? "is-fallback" : ""}`}
           src={heroSrc}
           alt=""
+          fill
+          priority
+          sizes="100vw"
           onError={() => {
             if (!usingFallback) {
               setHeroSrc(mediaAssets.heroFallback);
@@ -71,10 +73,8 @@ export function Hero() {
         </div>
 
         <div className="hero__chapter">
-          <p className="hero__chapter-label">
-            {locale === "sk" ? "Aktuálna kapitola" : "Current chapter"}
-          </p>
-          <p className="hero__chapter-value">Florida, USA</p>
+          <p className="hero__chapter-label">{t.hero.chapterLabel}</p>
+          <p className="hero__chapter-value">{t.hero.chapterValue}</p>
         </div>
       </div>
     </section>

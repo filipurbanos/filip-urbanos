@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
@@ -137,8 +138,14 @@ export function MediaAlbums({ albums, photos, videos }: MediaAlbumsProps) {
               {filteredPhotos.map((photo, i) => (
                 <Reveal key={photo.id} delay={i * 40}>
                   <figure className="gallery-item">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={photo.src} alt={photo.alt} />
+                    <div className="gallery-item__media">
+                      <Image
+                        src={photo.src}
+                        alt={photo.alt}
+                        fill
+                        sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                      />
+                    </div>
                     {photo.caption ? (
                       <figcaption>{photo.caption}</figcaption>
                     ) : null}

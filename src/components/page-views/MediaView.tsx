@@ -27,7 +27,7 @@ export function MediaView({
           locale === "sk" ? "Život v pohybe." : "Life in motion."
         }
         lead={t.gallery.lead}
-        imageSrc={mediaAssets.about}
+        imageSrc={mediaAssets.media}
       />
       <MediaAlbums albums={albums} photos={photos} videos={videos} />
       <News />

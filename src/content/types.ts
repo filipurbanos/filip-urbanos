@@ -26,6 +26,21 @@ export type Content = {
     lead: string;
     ctaPrimary: string;
     ctaSecondary: string;
+    chapterLabel: string;
+    chapterValue: string;
+  };
+  homeHub: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    cards: {
+      about: string;
+      journey: string;
+      results: string;
+      usa: string;
+      media: string;
+      partners: string;
+    };
   };
   about: SectionCopy & {
     paragraphs: string[];

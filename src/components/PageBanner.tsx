@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
 import { useEffect, useState } from "react";
 
@@ -30,10 +31,12 @@ export function PageBanner({
     <section className={`page-banner page-banner--${tone}`}>
       <div className="page-banner__media" aria-hidden="true">
         {src ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={src}
             alt=""
+            fill
+            priority
+            sizes="100vw"
             className="page-banner__img"
             onError={() => setSrc(null)}
           />

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
 import { sortByDateDesc } from "@/lib/cms/dates";
@@ -14,10 +15,12 @@ export function About({ omitHeader = false }: { omitHeader?: boolean }) {
       <div className="shell">
         <div className="about__layout">
           <figure className="about__photo">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/media/filip-backhand.jpg"
               alt="Filip Urbánoš — backhand na antuke"
+              fill
+              sizes="(max-width: 900px) 100vw, 50vw"
+              style={{ objectFit: "cover", objectPosition: "center top" }}
             />
           </figure>
           <div className="about__copy">
@@ -446,10 +449,12 @@ export function Usa({ omitHeader = false }: { omitHeader?: boolean }) {
         <div className={`usa-intro ${omitHeader ? "usa-intro--flush" : ""}`}>
           <Reveal>
             <figure className="usa-intro__photo">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src="/media/filip-backhand.jpg"
                 alt="Filip Urbánoš — tréning"
+                fill
+                sizes="(max-width: 900px) 100vw, 45vw"
+                style={{ objectFit: "cover" }}
               />
               <figcaption>Florida · hard court kapitola</figcaption>
             </figure>
@@ -466,8 +471,13 @@ export function Usa({ omitHeader = false }: { omitHeader?: boolean }) {
 
       <section className="usa-hero-strip" aria-hidden="true">
         <div className="usa-hero-strip__media">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={mediaAssets.usa} alt="" />
+          <Image
+            src={mediaAssets.usa}
+            alt=""
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+          />
           <div className="usa-hero-strip__veil" />
           <p className="usa-hero-strip__mark">BRADENTON · FL</p>
         </div>

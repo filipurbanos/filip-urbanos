@@ -21,6 +21,21 @@ export const en: Content = {
     lead: "From Slovakia to Florida. Study, discipline, and elite training with one aim — build a professional tennis career.",
     ctaPrimary: "View results",
     ctaSecondary: "Become a partner",
+    chapterLabel: "Current chapter",
+    chapterValue: "Florida, USA",
+  },
+  homeHub: {
+    eyebrow: "Explore",
+    title: "The full story, page by page",
+    lead: "Athlete profile, journey, results, USA chapter, media, and partnerships — each part has its own page.",
+    cards: {
+      about: "Who Filip is and where he’s headed.",
+      journey: "From Slovakia through Barcelona to the USA.",
+      results: "Results, calendar, and rankings.",
+      usa: "Study and tennis in the United States.",
+      media: "Photos, videos, news, and press.",
+      partners: "Partnerships, media kit, and collaboration.",
+    },
   },
   about: {
     eyebrow: "About Filip",

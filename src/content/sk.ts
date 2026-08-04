@@ -21,6 +21,21 @@ export const sk: Content = {
     lead: "Zo Slovenska na Floridu. Štúdium, disciplína a elitný tréning spojené s cieľom vybudovať profesionálnu tenisovú kariéru.",
     ctaPrimary: "Pozrieť výsledky",
     ctaSecondary: "Stať sa partnerom",
+    chapterLabel: "Aktuálna kapitola",
+    chapterValue: "Florida, USA",
+  },
+  homeHub: {
+    eyebrow: "Objavovať",
+    title: "Celý príbeh na jednom webe",
+    lead: "Športový profil, cesta, výsledky, USA kapitola, médiá a partnerstvá — každá časť má vlastnú stránku.",
+    cards: {
+      about: "Kto je Filip a kam smeruje.",
+      journey: "Od Slovenska cez Barcelonu do USA.",
+      results: "Výsledky, kalendár a rebríčky.",
+      usa: "Štúdium a tenis v Spojených štátoch.",
+      media: "Fotky, videá, novinky a press.",
+      partners: "Partnerstvá, media kit a spolupráca.",
+    },
   },
   about: {
     eyebrow: "O Filipovi",

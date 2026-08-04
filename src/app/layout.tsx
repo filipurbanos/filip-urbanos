@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bebas_Neue, Outfit } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import { dictionaries } from "@/content";
+import { siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const display = Bebas_Neue({
@@ -15,7 +16,10 @@ const body = Outfit({
   variable: "--font-body",
 });
 
+const site = siteUrl();
+
 export const metadata: Metadata = {
+  metadataBase: new URL(site),
   title: {
     default: dictionaries.sk.meta.title,
     template: "%s | Filip Urbánoš",
@@ -27,6 +31,26 @@ export const metadata: Metadata = {
     type: "website",
     locale: "sk_SK",
     alternateLocale: ["en_US"],
+    url: site,
+    siteName: "Filip Urbánoš",
+    images: [
+      {
+        url: "/media/hero.jpg",
+        width: 2400,
+        height: 1602,
+        alt: "Filip Urbánoš",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: dictionaries.sk.meta.title,
+    description: dictionaries.sk.meta.description,
+    images: ["/media/hero.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

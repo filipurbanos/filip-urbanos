@@ -80,20 +80,9 @@ export function Videos({
           ))}
         </div>
       ) : (
-        <>
-          <div className="video-grid">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <Reveal key={i} delay={i * 70}>
-                <div className="video-slot">
-                  <span>Video {i + 1}</span>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <Reveal delay={160}>
-            <p className="placeholder-note">{t.videos.placeholder}</p>
-          </Reveal>
-        </>
+        <Reveal delay={160}>
+          <p className="placeholder-note">{t.videos.placeholder}</p>
+        </Reveal>
       )}
     </Section>
   );
