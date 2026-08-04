@@ -107,6 +107,24 @@ export default function AdminTournamentsPage() {
     setItems(data.tournaments);
   }
 
+  async function quickStatus(item: Tournament, status: TournamentStatus) {
+    setError("");
+    const res = await fetch("/api/admin/tournaments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...item,
+        status,
+      }),
+    });
+    if (!res.ok) {
+      setError("Zmena stavu turnaja zlyhala");
+      return;
+    }
+    const data = (await res.json()) as { tournaments: Tournament[] };
+    setItems(data.tournaments);
+  }
+
   function edit(item: Tournament) {
     setEditingId(item.id);
     setForm({
@@ -187,6 +205,10 @@ export default function AdminTournamentsPage() {
         po skončení prepni na „Ukončený“. Na webe sa odohrané zoraďujú od
         najnovšieho. Ak má turnaj popis, zápasy alebo album s fotkami/videami,
         riadok sa na webe dá otvoriť.
+      </p>
+      <p className="admin-muted">
+        Live môže byť vždy len jeden turnaj naraz. Tlačidlo „Nastaviť live“
+        automaticky vypne predošlý aktuálny turnaj.
       </p>
 
       <form className="admin-form" onSubmit={save}>
@@ -454,6 +476,21 @@ export default function AdminTournamentsPage() {
               </p>
             </div>
             <div className="admin-row__actions">
+              {item.status !== "live" ? (
+                <button
+                  type="button"
+                  onClick={() => quickStatus(item, "live")}
+                >
+                  Nastaviť live
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => quickStatus(item, "completed")}
+                >
+                  Ukončiť
+                </button>
+              )}
               <button type="button" onClick={() => edit(item)}>
                 Upraviť
               </button>
