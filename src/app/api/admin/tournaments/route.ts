@@ -70,6 +70,8 @@ export async function POST(request: Request) {
         resultDoubles: body.resultDoubles ?? item.resultDoubles,
         notes: body.notes ?? item.notes,
         url: body.url ?? item.url,
+        albumId:
+          body.albumId !== undefined ? String(body.albumId) : item.albumId,
         matches:
           body.matches !== undefined
             ? parseMatches(body.matches, item.matches)
@@ -93,6 +95,7 @@ export async function POST(request: Request) {
       resultDoubles: body.resultDoubles?.trim() || "",
       notes: body.notes?.trim() || "",
       url: body.url?.trim() || "",
+      albumId: String(body.albumId || "").trim(),
       matches: parseMatches(body.matches),
     };
     data.tournaments.unshift(tournament);

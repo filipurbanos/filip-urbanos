@@ -89,7 +89,7 @@ export const en: Content = {
   results: {
     eyebrow: "Results",
     title: "Completed tournaments",
-    lead: "Completed tournaments and milestones. Follow the live event above — scores update after each match.",
+    lead: "Completed tournaments and milestones. Click a row with “+” when a tournament has notes, matches, or media.",
     columns: {
       date: "Date",
       event: "Event",
@@ -116,6 +116,12 @@ export const en: Content = {
         resultDoubles: "Runner-up",
       },
     ],
+    detailNotes: "Notes",
+    detailMatches: "Matches",
+    detailMedia: "Photos & videos",
+    detailLink: "Official results",
+    expandLabel: "Open tournament detail",
+    collapseLabel: "Close detail",
   },
   live: {
     eyebrow: "Current tournament",

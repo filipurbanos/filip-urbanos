@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type {
+  Album,
   Match,
   MatchResult,
   Tournament,
@@ -19,6 +20,7 @@ const blankTournament = {
   resultDoubles: "",
   notes: "",
   url: "",
+  albumId: "",
   matches: [] as Match[],
 };
 
@@ -39,6 +41,7 @@ function statusLabel(status: TournamentStatus) {
 
 export default function AdminTournamentsPage() {
   const [items, setItems] = useState<Tournament[]>([]);
+  const [albums, setAlbums] = useState<Album[]>([]);
   const [form, setForm] = useState(blankTournament);
   const [matchForm, setMatchForm] = useState(blankMatch);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -46,10 +49,20 @@ export default function AdminTournamentsPage() {
   const [error, setError] = useState("");
 
   async function load() {
-    const res = await fetch("/api/admin/tournaments");
-    if (!res.ok) return;
-    const data = (await res.json()) as { tournaments: Tournament[] };
-    setItems(data.tournaments);
+    const [tournamentsRes, albumsRes] = await Promise.all([
+      fetch("/api/admin/tournaments"),
+      fetch("/api/admin/albums"),
+    ]);
+    if (tournamentsRes.ok) {
+      const data = (await tournamentsRes.json()) as {
+        tournaments: Tournament[];
+      };
+      setItems(data.tournaments);
+    }
+    if (albumsRes.ok) {
+      const data = (await albumsRes.json()) as { albums: Album[] };
+      setAlbums(data.albums);
+    }
   }
 
   useEffect(() => {
@@ -100,6 +113,7 @@ export default function AdminTournamentsPage() {
       resultDoubles: item.resultDoubles,
       notes: item.notes,
       url: item.url,
+      albumId: item.albumId || "",
       matches: item.matches,
     });
     setMatchForm(blankMatch);
@@ -165,7 +179,8 @@ export default function AdminTournamentsPage() {
         Môžeš pridávať aj staršie turnaje spätne: nastav stav „Ukončený“, vyplň
         dátum, miesto, povrch a umiestnenie 2hra / 4hra. Aktuálny = živé zápasy;
         po skončení prepni na „Ukončený“. Na webe sa odohrané zoraďujú od
-        najnovšieho.
+        najnovšieho. Ak má turnaj popis, zápasy alebo album s fotkami/videami,
+        riadok sa na webe dá otvoriť.
       </p>
 
       <form className="admin-form" onSubmit={save}>
@@ -246,11 +261,27 @@ export default function AdminTournamentsPage() {
             />
           </label>
           <label className="admin-form__wide">
-            Poznámka
+            Poznámka / popis
             <input
               value={form.notes}
               onChange={(e) => setForm({ ...form, notes: e.target.value })}
+              placeholder="Krátky popis turnaja (zobrazí sa v detaile)"
             />
+          </label>
+          <label className="admin-form__wide">
+            Album (fotky / videá)
+            <select
+              value={form.albumId}
+              onChange={(e) => setForm({ ...form, albumId: e.target.value })}
+            >
+              <option value="">— bez albumu —</option>
+              {albums.map((album) => (
+                <option key={album.id} value={album.id}>
+                  {album.title}
+                  {album.date ? ` · ${album.date}` : ""}
+                </option>
+              ))}
+            </select>
           </label>
         </div>
 

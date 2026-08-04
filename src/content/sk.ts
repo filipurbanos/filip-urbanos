@@ -89,7 +89,7 @@ export const sk: Content = {
   results: {
     eyebrow: "Výsledky",
     title: "Odohrané turnaje",
-    lead: "Odohrané turnaje a míľniky. Aktuálny turnaj sleduj vyššie — po zápase doplníme skóre.",
+    lead: "Odohrané turnaje a míľniky. Klikni na riadok s „+“, ak má turnaj popis, zápasy alebo médiá.",
     columns: {
       date: "Dátum",
       event: "Turnaj",
@@ -116,6 +116,12 @@ export const sk: Content = {
         resultDoubles: "Vicemajster",
       },
     ],
+    detailNotes: "Popis",
+    detailMatches: "Zápasy",
+    detailMedia: "Fotky a videá",
+    detailLink: "Oficiálny výsledok",
+    expandLabel: "Otvoriť detail turnaja",
+    collapseLabel: "Zavrieť detail",
   },
   live: {
     eyebrow: "Aktuálny turnaj",

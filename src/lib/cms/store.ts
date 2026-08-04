@@ -38,6 +38,7 @@ function normalizeTournament(
     resultDoubles: String(raw.resultDoubles || ""),
     notes: String(raw.notes || ""),
     url: String(raw.url || ""),
+    albumId: String(raw.albumId || ""),
     matches: Array.isArray(raw.matches)
       ? raw.matches.map((match) => ({
           id: String(match.id || createId("m")),

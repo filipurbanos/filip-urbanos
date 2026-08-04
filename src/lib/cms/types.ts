@@ -30,6 +30,8 @@ export type Tournament = {
   resultDoubles: string;
   notes: string;
   url: string;
+  /** Optional album with photos/videos for this event */
+  albumId: string;
   matches: Match[];
 };
 

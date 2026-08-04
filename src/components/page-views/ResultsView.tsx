@@ -7,8 +7,23 @@ import {
   Results,
 } from "@/components/AthleteSections";
 import { PageBanner } from "@/components/PageBanner";
-import type { Tournament } from "@/lib/cms/types";
+import type { Match, Photo, Tournament, Video } from "@/lib/cms/types";
 import { useLocale } from "@/lib/locale";
+
+export type CompletedResult = {
+  id: string;
+  date: string;
+  event: string;
+  place: string;
+  surface: string;
+  resultSingles: string;
+  resultDoubles: string;
+  notes?: string;
+  url?: string;
+  matches?: Match[];
+  photos?: Pick<Photo, "id" | "src" | "alt" | "caption">[];
+  videos?: Pick<Video, "id" | "title" | "url">[];
+};
 
 export function ResultsView({
   live,
@@ -16,14 +31,7 @@ export function ResultsView({
   upcoming,
 }: {
   live?: Tournament | null;
-  completed?: {
-    date: string;
-    event: string;
-    place: string;
-    surface: string;
-    resultSingles: string;
-    resultDoubles: string;
-  }[];
+  completed?: CompletedResult[];
   upcoming?: {
     date: string;
     event: string;
@@ -57,7 +65,7 @@ export function ResultsView({
         }
       />
       <Calendar items={upcoming} />
-      <Results items={completed} />
+      <Results items={completed} omitHeader />
       <Rankings />
     </>
   );

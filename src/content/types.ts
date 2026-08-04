@@ -68,6 +68,12 @@ export type Content = {
       resultSingles: string;
       resultDoubles: string;
     }[];
+    detailNotes: string;
+    detailMatches: string;
+    detailMedia: string;
+    detailLink: string;
+    expandLabel: string;
+    collapseLabel: string;
   };
   live: SectionCopy & {
     badge: string;
