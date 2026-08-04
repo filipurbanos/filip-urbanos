@@ -513,40 +513,46 @@ export function Calendar({
   return (
     <Section id="calendar" className="calendar">
       <SectionHeader {...t.calendar} />
-      <div className="calendar__list">
-        {list.map((item, i) => (
-          <Reveal key={`${item.date}-${item.event}-${i}`} delay={i * 70}>
-            <article
-              className="event"
-              style={{
-                background: "#12161e",
-                border: "1px solid rgba(255,255,255,0.12)",
-              }}
-            >
-              <time className="event__date" style={{ color: "#c8f000" }}>
-                {item.date}
-              </time>
-              <div className="event__main">
-                <h3 style={{ color: "#ffffff" }}>{item.event}</h3>
-                <p style={{ color: "#c5ccd8" }}>{item.place}</p>
-                {item.url ? (
-                  <a
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: "#c8f000" }}
-                  >
-                    Link ↗
-                  </a>
-                ) : null}
-              </div>
-              <span className="event__surface" style={{ color: "#c8f000" }}>
-                {item.surface}
-              </span>
-            </article>
-          </Reveal>
-        ))}
-      </div>
+      {list.length ? (
+        <div className="calendar__list">
+          {list.map((item, i) => (
+            <Reveal key={`${item.date}-${item.event}-${i}`} delay={i * 70}>
+              <article
+                className="event"
+                style={{
+                  background: "#12161e",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                }}
+              >
+                <time className="event__date" style={{ color: "#c8f000" }}>
+                  {item.date}
+                </time>
+                <div className="event__main">
+                  <h3 style={{ color: "#ffffff" }}>{item.event}</h3>
+                  <p style={{ color: "#c5ccd8" }}>{item.place}</p>
+                  {item.url ? (
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: "#c8f000" }}
+                    >
+                      Link ↗
+                    </a>
+                  ) : null}
+                </div>
+                <span className="event__surface" style={{ color: "#c8f000" }}>
+                  {item.surface}
+                </span>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      ) : (
+        <Reveal>
+          <p className="placeholder-note">{t.calendar.empty}</p>
+        </Reveal>
+      )}
       <Reveal delay={200}>
         <p className="calendar__note">{t.calendar.note}</p>
       </Reveal>

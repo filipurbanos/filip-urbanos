@@ -144,20 +144,8 @@ export const en: Content = {
     eyebrow: "Calendar",
     title: "Upcoming tournaments",
     lead: "Circuit plan — venues and dates can shift with draws and travel.",
-    items: [
-      {
-        date: "Aug 2026",
-        event: "ITF Junior Circuit",
-        place: "Europe · TBC",
-        surface: "Hard",
-      },
-      {
-        date: "Sep 2026",
-        event: "ITF Junior Circuit",
-        place: "Europe · TBC",
-        surface: "Clay / Hard",
-      },
-    ],
+    items: [],
+    empty: "No upcoming tournaments scheduled yet. Add dates in admin → Tournaments.",
     note: "The live tournament is above. Manage the calendar in admin → Tournaments.",
   },
   rankings: {

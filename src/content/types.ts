@@ -97,6 +97,7 @@ export type Content = {
       surface: string;
       url?: string;
     }[];
+    empty: string;
     note: string;
   };
   rankings: SectionCopy & {

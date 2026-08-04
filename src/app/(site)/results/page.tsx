@@ -65,7 +65,7 @@ export default async function ResultsPage() {
       <ResultsView
         live={live}
         completed={completed.length ? completed : undefined}
-        upcoming={upcoming.length ? upcoming : undefined}
+        upcoming={upcoming}
         rankings={data.rankings}
       />
     </div>

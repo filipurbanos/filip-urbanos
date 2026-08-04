@@ -144,20 +144,8 @@ export const sk: Content = {
     eyebrow: "Kalendár",
     title: "Nadchádzajúce turnaje",
     lead: "Plán okruhu — miesta a dátumy sa môžu meniť podľa žrebovania a cestovania.",
-    items: [
-      {
-        date: "Aug 2026",
-        event: "ITF Junior Circuit",
-        place: "Európa · TBC",
-        surface: "Hard",
-      },
-      {
-        date: "Sep 2026",
-        event: "ITF Junior Circuit",
-        place: "Európa · TBC",
-        surface: "Clay / Hard",
-      },
-    ],
+    items: [],
+    empty: "Zatiaľ nie sú naplánované ďalšie turnaje. Nové termíny doplníme v admin → Turnaje.",
     note: "Aktuálny turnaj je vyššie. Kalendár spravuješ v admin → Turnaje.",
   },
   rankings: {

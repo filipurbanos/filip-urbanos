@@ -28,32 +28,6 @@
       "matches": []
     },
     {
-      "id": "t1",
-      "date": "2026-08",
-      "event": "ITF Junior Circuit",
-      "place": "Europe · TBC",
-      "surface": "Hard",
-      "status": "upcoming",
-      "resultSingles": "",
-      "resultDoubles": "",
-      "notes": "",
-      "url": "",
-      "matches": []
-    },
-    {
-      "id": "t2",
-      "date": "2026-09",
-      "event": "ITF Junior Circuit",
-      "place": "Europe · TBC",
-      "surface": "Clay / Hard",
-      "status": "upcoming",
-      "resultSingles": "",
-      "resultDoubles": "",
-      "notes": "",
-      "url": "",
-      "matches": []
-    },
-    {
       "id": "t_battle_bay",
       "date": "2026-04-11",
       "event": "Battle on the Bay · Inspiration Academy",
