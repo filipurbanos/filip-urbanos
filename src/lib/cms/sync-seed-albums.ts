@@ -1,12 +1,13 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { parseCmsData, readCms, writeCms } from "@/lib/cms/store";
-import type { CmsData } from "@/lib/cms/types";
+import type { Album, CmsData } from "@/lib/cms/types";
 
 export type SeedAlbumSyncResult = {
   addedAlbums: string[];
   linkedTournaments: string[];
   linkedVideos: string[];
+  albums: Album[];
 };
 
 async function readSeedCms(): Promise<CmsData | null> {
@@ -72,5 +73,5 @@ export async function syncSeedAlbums(): Promise<SeedAlbumSyncResult> {
   }
 
   await writeCms(data);
-  return result;
+  return { ...result, albums: data.albums };
 }

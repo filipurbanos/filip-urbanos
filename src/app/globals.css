@@ -109,11 +109,13 @@ img {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  cursor: pointer;
   transition:
     background 180ms ease,
     color 180ms ease,
     border-color 180ms ease,
-    transform 180ms ease;
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .btn--primary {
@@ -3104,9 +3106,44 @@ a.fu-vcard__item:hover {
 }
 
 .btn--admin-ghost {
-  border: 1px solid var(--line);
-  background: transparent;
-  color: var(--ink);
+  border: 1.5px solid #10141c;
+  background: #ffffff;
+  color: #10141c;
+  cursor: pointer;
+}
+
+.btn--admin-ghost:hover:not(:disabled) {
+  background: #10141c;
+  color: #c8f000;
+  border-color: #10141c;
+  transform: translateY(-1px);
+}
+
+.btn--admin-ghost:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.btn--admin-action {
+  border: 2px solid #10141c;
+  background: #ffffff;
+  color: #10141c;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #10141c;
+}
+
+.btn--admin-action:hover:not(:disabled) {
+  background: #c8f000;
+  border-color: #10141c;
+  color: #0a0a0a;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 #10141c;
+}
+
+.btn--admin-action:disabled {
+  opacity: 0.55;
+  cursor: wait;
+  box-shadow: none;
 }
 
 .admin-error {
@@ -3152,16 +3189,19 @@ a.fu-vcard__item:hover {
 }
 
 .admin-row__actions button {
-  border: 1.5px solid #c5cedb;
-  background: #f4f6f9;
-  padding: 0.4rem 0.7rem;
+  border: 1.5px solid #10141c;
+  background: #ffffff;
+  padding: 0.55rem 0.9rem;
   cursor: pointer;
   color: #10141c;
+  font-weight: 600;
+  font-size: 0.82rem;
 }
 
 .admin-row__actions button:hover {
-  background: #e8edf4;
-  border-color: #9aa8bc;
+  background: #c8f000;
+  border-color: #10141c;
+  color: #0a0a0a;
 }
 
 .admin-partner-preview {

@@ -67,6 +67,7 @@ export default function AdminAlbumsPage() {
         addedAlbums: string[];
         linkedTournaments: string[];
         linkedVideos: string[];
+        albums?: Album[];
       };
       const parts = [
         data.addedAlbums.length
@@ -80,6 +81,9 @@ export default function AdminAlbumsPage() {
           : null,
       ].filter(Boolean);
       setSyncNote(`Sync hotový — ${parts.join(" · ")}`);
+      if (data.albums) {
+        setAlbums(data.albums);
+      }
       await load();
     } finally {
       setSyncing(false);
@@ -146,7 +150,7 @@ export default function AdminAlbumsPage() {
       <div className="admin-form__actions" style={{ marginBottom: "1.25rem" }}>
         <button
           type="button"
-          className="btn btn--admin-ghost"
+          className="btn btn--admin-action"
           disabled={syncing}
           onClick={() => void syncFromSeed()}
         >
