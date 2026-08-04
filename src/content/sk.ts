@@ -39,7 +39,9 @@ export const sk: Content = {
   about: {
     eyebrow: "O Filipovi",
     title: "Ambícia, disciplína, rast",
+    outlineTitle: "196 cm · Hard court",
     lead: "Slovenský junior, ktorý stavia kariéru cez tréning, medzinárodný okruh a ďalšiu kapitolu v USA.",
+    photoAlt: "Filip Urbánoš — backhand na antuke",
     paragraphs: [
       "Filip Urbánoš je 196 cm vysoký pravák s preferenciou hard courtu. Tenis hrá od štyroch–piatich rokov a dnes sa pohybuje na ITF Junior Tour.",
       "Jeho cieľ je jasný: rásť ako hráč aj ako človek — cez ťažké zápasy, kvalitnú prípravu a spojenie štúdia s tenisom v Spojených štátoch.",
@@ -77,12 +79,12 @@ export const sk: Content = {
     title: "Základné údaje",
     lead: "Rýchly prehľad pre trénerov, médiá, recruiting aj partnerov.",
     facts: [
-      { label: "Krajina", value: "Slovensko" },
-      { label: "Výška", value: "196 cm" },
-      { label: "Hrá", value: "Pravou rukou" },
-      { label: "Povrch", value: "Hard" },
-      { label: "Začiatok", value: "Od 4–5 rokov" },
       { label: "Cieľ", value: "Top 20 ATP" },
+      { label: "Výška", value: "196 cm" },
+      { label: "Povrch", value: "Hard" },
+      { label: "Hrá", value: "Pravou rukou" },
+      { label: "Krajina", value: "Slovensko" },
+      { label: "Začiatok", value: "Od 4–5 rokov" },
     ],
   },
   results: {

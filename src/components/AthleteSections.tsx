@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
@@ -9,6 +10,7 @@ import { isPlayableMediaUrl } from "@/lib/cms/media-url";
 import type { Match } from "@/lib/cms/types";
 import { useLocale } from "@/lib/locale";
 import { mediaAssets } from "@/lib/media";
+import { routes } from "@/lib/routes";
 
 export function About({ omitHeader = false }: { omitHeader?: boolean }) {
   const { t } = useLocale();
@@ -17,15 +19,17 @@ export function About({ omitHeader = false }: { omitHeader?: boolean }) {
     <section className="section about" id="about">
       <div className="shell">
         <div className="about__layout">
-          <figure className="about__photo">
-            <Image
-              src="/media/filip-backhand.jpg"
-              alt="Filip Urbánoš — backhand na antuke"
-              fill
-              sizes="(max-width: 900px) 100vw, 50vw"
-              style={{ objectFit: "cover", objectPosition: "center top" }}
-            />
-          </figure>
+          <Reveal>
+            <figure className="about__photo">
+              <Image
+                src="/media/filip-backhand.jpg"
+                alt={t.about.photoAlt}
+                fill
+                sizes="(max-width: 900px) 100vw, 50vw"
+                style={{ objectFit: "cover", objectPosition: "center top" }}
+              />
+            </figure>
+          </Reveal>
           <div className="about__copy">
             {omitHeader ? null : <SectionHeader {...t.about} />}
             <div
@@ -37,6 +41,17 @@ export function About({ omitHeader = false }: { omitHeader?: boolean }) {
                 </Reveal>
               ))}
             </div>
+            <Reveal delay={200}>
+              <div className="about__actions">
+                <Link className="btn btn--primary" href={routes.results}>
+                  {t.nav.results}
+                  <span aria-hidden="true">↗</span>
+                </Link>
+                <Link className="btn btn--ghost" href={routes.usa}>
+                  {t.nav.usa}
+                </Link>
+              </div>
+            </Reveal>
           </div>
         </div>
       </div>
@@ -84,14 +99,17 @@ export function Profile() {
     <Section id="profile" className="profile">
       <SectionHeader {...t.profile} />
       <div className="profile__grid">
-        {t.profile.facts.map((fact, i) => (
-          <Reveal key={fact.label} delay={i * 60}>
-            <article className="fact">
-              <p className="fact__label">{fact.label}</p>
-              <p className="fact__value">{fact.value}</p>
-            </article>
-          </Reveal>
-        ))}
+        {t.profile.facts.map((fact, i) => {
+          const isGoal = fact.label === "Cieľ" || fact.label === "Goal";
+          return (
+            <Reveal key={fact.label} delay={i * 60}>
+              <article className={`fact${isGoal ? " fact--goal" : ""}`}>
+                <p className="fact__label">{fact.label}</p>
+                <p className="fact__value">{fact.value}</p>
+              </article>
+            </Reveal>
+          );
+        })}
       </div>
     </Section>
   );

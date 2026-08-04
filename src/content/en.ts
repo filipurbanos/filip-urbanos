@@ -39,7 +39,9 @@ export const en: Content = {
   about: {
     eyebrow: "About Filip",
     title: "Ambition, discipline, growth",
+    outlineTitle: "196 cm · Hard court",
     lead: "A Slovak junior building a career through training, the international circuit, and a next chapter in the USA.",
+    photoAlt: "Filip Urbanos — backhand on clay",
     paragraphs: [
       "Filip Urbanos is a 196 cm right-hander with a hard-court preference. He has played tennis since age four or five and now competes on the ITF Junior Tour.",
       "His aim is clear: grow as a player and as a person — through tough matches, quality preparation, and combining study with tennis in the United States.",
@@ -77,12 +79,12 @@ export const en: Content = {
     title: "Quick facts",
     lead: "A fast overview for coaches, media, recruiting, and partners.",
     facts: [
-      { label: "Country", value: "Slovakia" },
-      { label: "Height", value: "196 cm" },
-      { label: "Plays", value: "Right-handed" },
-      { label: "Surface", value: "Hard" },
-      { label: "Started", value: "Age 4–5" },
       { label: "Goal", value: "Top 20 ATP" },
+      { label: "Height", value: "196 cm" },
+      { label: "Surface", value: "Hard" },
+      { label: "Plays", value: "Right-handed" },
+      { label: "Country", value: "Slovakia" },
+      { label: "Started", value: "Age 4–5" },
     ],
   },
   results: {

@@ -42,6 +42,8 @@ export type Content = {
     };
   };
   about: SectionCopy & {
+    outlineTitle: string;
+    photoAlt: string;
     paragraphs: string[];
   };
   journey: SectionCopy & {

@@ -13,6 +13,7 @@ export function AboutView() {
       <PageBanner
         eyebrow={t.about.eyebrow}
         title={t.about.title}
+        outlineTitle={t.about.outlineTitle}
         lead={t.about.lead}
         imageSrc={mediaAssets.about}
       />
