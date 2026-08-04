@@ -11,17 +11,53 @@ export default function AppleIcon() {
           width: "100%",
           height: "100%",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          position: "relative",
           background: "#0a0c10",
-          color: "#c8f000",
-          fontSize: 72,
-          fontWeight: 700,
-          letterSpacing: "-0.06em",
-          fontFamily: "system-ui, sans-serif",
+          border: "8px solid #c8f000",
+          boxSizing: "border-box",
         }}
       >
-        FU
+        <div
+          style={{
+            position: "absolute",
+            left: 28,
+            top: 32,
+            color: "#ffffff",
+            fontSize: 78,
+            fontWeight: 800,
+            letterSpacing: "-0.06em",
+            fontFamily: "system-ui, sans-serif",
+            lineHeight: 1,
+          }}
+        >
+          F
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: 88,
+            top: 32,
+            color: "#ffffff",
+            fontSize: 78,
+            fontWeight: 800,
+            letterSpacing: "-0.06em",
+            fontFamily: "system-ui, sans-serif",
+            lineHeight: 1,
+          }}
+        >
+          U
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            right: 22,
+            bottom: 22,
+            width: 42,
+            height: 42,
+            borderRadius: 999,
+            background: "#c8f000",
+          }}
+        />
       </div>
     ),
     size,

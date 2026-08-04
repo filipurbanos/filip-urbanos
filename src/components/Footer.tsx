@@ -1,5 +1,6 @@
 "use client";
 
+import { BrandMark } from "@/components/BrandMark";
 import { mediaLinks } from "@/content";
 import { useLocale } from "@/lib/locale";
 
@@ -10,9 +11,7 @@ export function Footer() {
     <footer className="site-footer">
       <div className="shell site-footer__inner">
         <div className="site-footer__brand-row">
-          <span className="brand__mark" aria-hidden="true">
-            FU
-          </span>
+          <BrandMark />
           <p className="site-footer__brand">Filip Urbánoš</p>
         </div>
         <p className="site-footer__tag">{t.footer.tagline}</p>

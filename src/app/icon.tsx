@@ -11,17 +11,53 @@ export default function Icon() {
           width: "100%",
           height: "100%",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          position: "relative",
           background: "#0a0c10",
-          color: "#c8f000",
-          fontSize: 16,
-          fontWeight: 700,
-          letterSpacing: "-0.04em",
-          fontFamily: "system-ui, sans-serif",
+          border: "1.5px solid #c8f000",
+          boxSizing: "border-box",
         }}
       >
-        FU
+        <div
+          style={{
+            position: "absolute",
+            left: 4,
+            top: 5,
+            color: "#ffffff",
+            fontSize: 14,
+            fontWeight: 800,
+            letterSpacing: "-0.06em",
+            fontFamily: "system-ui, sans-serif",
+            lineHeight: 1,
+          }}
+        >
+          F
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: 14,
+            top: 5,
+            color: "#ffffff",
+            fontSize: 14,
+            fontWeight: 800,
+            letterSpacing: "-0.06em",
+            fontFamily: "system-ui, sans-serif",
+            lineHeight: 1,
+          }}
+        >
+          U
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            right: 3,
+            bottom: 3,
+            width: 8,
+            height: 8,
+            borderRadius: 999,
+            background: "#c8f000",
+          }}
+        />
       </div>
     ),
     size,

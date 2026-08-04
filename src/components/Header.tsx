@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
+import { BrandMark } from "@/components/BrandMark";
 import type { Content } from "@/content/types";
 import { routes } from "@/lib/routes";
 import { useLocale } from "@/lib/locale";
@@ -67,9 +68,7 @@ export function Header() {
     >
       <div className="site-header__inner">
         <Link href={routes.home} className="brand" onClick={() => setOpen(false)}>
-          <span className="brand__mark" aria-hidden="true">
-            FU
-          </span>
+          <BrandMark />
           <span className="brand__name">Filip Urbánoš</span>
         </Link>
 
