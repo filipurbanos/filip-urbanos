@@ -54,14 +54,28 @@ function coverForAlbum(photos: Photo[], albumId: string | null) {
   return list[0] ?? null;
 }
 
-function countLabel(
-  photos: number,
-  videos: number,
-  labels: { photos: string; videos: string },
-) {
+function skPlural(n: number, one: string, few: string, many: string) {
+  if (n === 1) return one;
+  if (n >= 2 && n <= 4) return few;
+  return many;
+}
+
+function countLabel(photos: number, videos: number, locale: "sk" | "en") {
   const parts: string[] = [];
-  if (photos > 0) parts.push(`${photos} ${labels.photos}`);
-  if (videos > 0) parts.push(`${videos} ${labels.videos}`);
+  if (photos > 0) {
+    parts.push(
+      locale === "sk"
+        ? `${photos} ${skPlural(photos, "fotka", "fotky", "fotiek")}`
+        : `${photos} ${photos === 1 ? "photo" : "photos"}`,
+    );
+  }
+  if (videos > 0) {
+    parts.push(
+      locale === "sk"
+        ? `${videos} ${skPlural(videos, "video", "videá", "videí")}`
+        : `${videos} ${videos === 1 ? "video" : "videos"}`,
+    );
+  }
   return parts.join(" · ");
 }
 
@@ -75,16 +89,18 @@ export function MediaAlbums({ albums, photos, videos }: MediaAlbumsProps) {
     videos.some((video) => !video.albumId);
 
   const albumStats = useMemo(() => {
-    return sortedAlbums.map((album) => {
-      const albumPhotos = photos.filter((photo) => photo.albumId === album.id);
-      const albumVideos = videos.filter((video) => video.albumId === album.id);
-      return {
-        album,
-        photoCount: albumPhotos.length,
-        videoCount: albumVideos.length,
-        cover: coverForAlbum(photos, album.id),
-      };
-    });
+    return sortedAlbums
+      .map((album) => {
+        const albumPhotos = photos.filter((photo) => photo.albumId === album.id);
+        const albumVideos = videos.filter((video) => video.albumId === album.id);
+        return {
+          album,
+          photoCount: albumPhotos.length,
+          videoCount: albumVideos.length,
+          cover: coverForAlbum(photos, album.id),
+        };
+      })
+      .filter((entry) => entry.photoCount > 0 || entry.videoCount > 0);
   }, [sortedAlbums, photos, videos]);
 
   const uncategorizedStats = useMemo(() => {
@@ -96,6 +112,8 @@ export function MediaAlbums({ albums, photos, videos }: MediaAlbumsProps) {
       cover: coverForAlbum(photos, null),
     };
   }, [photos, videos]);
+
+  const hasMedia = photos.length > 0 || videos.length > 0;
 
   const filteredPhotos = useMemo(() => {
     if (active === "index") return [];
@@ -121,11 +139,6 @@ export function MediaAlbums({ albums, photos, videos }: MediaAlbumsProps) {
     filteredPhotos.length === 0 &&
     filteredVideos.length === 0;
 
-  const countLabels = {
-    photos: locale === "sk" ? "fotiek" : "photos",
-    videos: locale === "sk" ? "videí" : "videos",
-  };
-
   const detailTitle =
     active === "all"
       ? t.albums.all
@@ -149,111 +162,112 @@ export function MediaAlbums({ albums, photos, videos }: MediaAlbumsProps) {
           <Reveal>
             <p className="album-index__label">{t.albums.indexLabel}</p>
           </Reveal>
-          <ul className="album-index">
-            <Reveal>
-              <li>
-                <button
-                  type="button"
-                  className="album-row"
-                  onClick={() => setActive("all")}
-                >
-                  <span className="album-row__cover album-row__cover--all" aria-hidden="true" />
-                  <span className="album-row__body">
-                    <span className="album-row__title">{t.albums.all}</span>
-                    <span className="album-row__meta">
-                      {countLabel(photos.length, videos.length, countLabels) ||
-                        t.albums.empty}
-                    </span>
-                  </span>
-                  <span className="album-row__open" aria-hidden="true">
-                    ↗
-                  </span>
-                </button>
-              </li>
-            </Reveal>
-
-            {albumStats.map(({ album, photoCount, videoCount, cover }, i) => (
-              <Reveal key={album.id} delay={40 + i * 40}>
-                <li>
-                  <button
-                    type="button"
-                    className="album-row"
-                    onClick={() => setActive(album.id)}
-                  >
-                    <span className="album-row__cover">
-                      {cover ? (
-                        <Image
-                          src={cover.src}
-                          alt=""
-                          fill
-                          sizes="96px"
-                          style={{ objectFit: "cover" }}
-                        />
-                      ) : null}
-                    </span>
-                    <span className="album-row__body">
-                      {album.date ? (
-                        <span className="album-row__date">{album.date}</span>
-                      ) : null}
-                      <span className="album-row__title">{album.title}</span>
-                      <span className="album-row__meta">
-                        {countLabel(photoCount, videoCount, countLabels) ||
-                          t.albums.empty}
-                      </span>
-                    </span>
-                    <span className="album-row__open" aria-hidden="true">
-                      ↗
-                    </span>
-                  </button>
-                </li>
-              </Reveal>
-            ))}
-
-            {hasUncategorized ? (
-              <Reveal delay={40 + albumStats.length * 40}>
-                <li>
-                  <button
-                    type="button"
-                    className="album-row"
-                    onClick={() => setActive("none")}
-                  >
-                    <span className="album-row__cover">
-                      {uncategorizedStats.cover ? (
-                        <Image
-                          src={uncategorizedStats.cover.src}
-                          alt=""
-                          fill
-                          sizes="96px"
-                          style={{ objectFit: "cover" }}
-                        />
-                      ) : null}
-                    </span>
-                    <span className="album-row__body">
-                      <span className="album-row__title">
-                        {t.albums.uncategorized}
-                      </span>
-                      <span className="album-row__meta">
-                        {countLabel(
-                          uncategorizedStats.photoCount,
-                          uncategorizedStats.videoCount,
-                          countLabels,
-                        )}
-                      </span>
-                    </span>
-                    <span className="album-row__open" aria-hidden="true">
-                      ↗
-                    </span>
-                  </button>
-                </li>
-              </Reveal>
-            ) : null}
-          </ul>
-
-          {sortedAlbums.length === 0 && !hasUncategorized && photos.length === 0 ? (
+          {!hasMedia ? (
             <Reveal delay={80}>
               <p className="placeholder-note">{t.albums.emptyIndex}</p>
             </Reveal>
-          ) : null}
+          ) : (
+            <ul className="album-index">
+              <Reveal>
+                <li>
+                  <button
+                    type="button"
+                    className="album-row"
+                    onClick={() => setActive("all")}
+                  >
+                    <span
+                      className="album-row__cover album-row__cover--all"
+                      aria-hidden="true"
+                    />
+                    <span className="album-row__body">
+                      <span className="album-row__title">{t.albums.all}</span>
+                      <span className="album-row__meta">
+                        {countLabel(photos.length, videos.length, locale)}
+                      </span>
+                    </span>
+                    <span className="album-row__open" aria-hidden="true">
+                      ↗
+                    </span>
+                  </button>
+                </li>
+              </Reveal>
+
+              {albumStats.map(({ album, photoCount, videoCount, cover }, i) => (
+                <Reveal key={album.id} delay={40 + i * 40}>
+                  <li>
+                    <button
+                      type="button"
+                      className="album-row"
+                      onClick={() => setActive(album.id)}
+                    >
+                      <span className="album-row__cover">
+                        {cover ? (
+                          <Image
+                            src={cover.src}
+                            alt=""
+                            fill
+                            sizes="96px"
+                            style={{ objectFit: "cover" }}
+                          />
+                        ) : null}
+                      </span>
+                      <span className="album-row__body">
+                        {album.date ? (
+                          <span className="album-row__date">{album.date}</span>
+                        ) : null}
+                        <span className="album-row__title">{album.title}</span>
+                        <span className="album-row__meta">
+                          {countLabel(photoCount, videoCount, locale)}
+                        </span>
+                      </span>
+                      <span className="album-row__open" aria-hidden="true">
+                        ↗
+                      </span>
+                    </button>
+                  </li>
+                </Reveal>
+              ))}
+
+              {hasUncategorized ? (
+                <Reveal delay={40 + albumStats.length * 40}>
+                  <li>
+                    <button
+                      type="button"
+                      className="album-row"
+                      onClick={() => setActive("none")}
+                    >
+                      <span className="album-row__cover">
+                        {uncategorizedStats.cover ? (
+                          <Image
+                            src={uncategorizedStats.cover.src}
+                            alt=""
+                            fill
+                            sizes="96px"
+                            style={{ objectFit: "cover" }}
+                          />
+                        ) : null}
+                      </span>
+                      <span className="album-row__body">
+                        <span className="album-row__title">
+                          {t.albums.uncategorized}
+                        </span>
+                        <span className="album-row__meta">
+                          {countLabel(
+                            uncategorizedStats.photoCount,
+                            uncategorizedStats.videoCount,
+                            locale,
+                          )}
+                        </span>
+                      </span>
+                      <span className="album-row__open" aria-hidden="true">
+                        ↗
+                      </span>
+                    </button>
+                  </li>
+                </Reveal>
+              ) : null}
+            </ul>
+          )}
         </>
       ) : (
         <>
