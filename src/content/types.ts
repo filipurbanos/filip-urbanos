@@ -47,6 +47,7 @@ export type Content = {
     paragraphs: string[];
   };
   journey: SectionCopy & {
+    outlineTitle: string;
     chapters: { year: string; title: string; body: string }[];
   };
   profile: SectionCopy & {

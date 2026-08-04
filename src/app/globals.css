@@ -808,6 +808,17 @@ img {
   color: var(--ball);
 }
 
+.path-row.is-accent .path-row__num {
+  color: var(--ball);
+}
+
+.story__actions {
+  margin-top: 2.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
 /* Live tournament */
 .live-tour {
   background:

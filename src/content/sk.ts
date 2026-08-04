@@ -39,7 +39,7 @@ export const sk: Content = {
   about: {
     eyebrow: "O Filipovi",
     title: "Ambícia, disciplína, rast",
-    outlineTitle: "196 cm · Hard court",
+    outlineTitle: "Slovensko → USA",
     lead: "Slovenský junior, ktorý stavia kariéru cez tréning, medzinárodný okruh a ďalšiu kapitolu v USA.",
     photoAlt: "Filip Urbánoš — backhand na antuke",
     paragraphs: [
@@ -50,6 +50,7 @@ export const sk: Content = {
   journey: {
     eyebrow: "Jeden smer",
     title: "Vpred.",
+    outlineTitle: "SK · BCN · FL",
     lead: "Každá kapitola pridala tempo, súperov a jasnejší cieľ.",
     chapters: [
       {

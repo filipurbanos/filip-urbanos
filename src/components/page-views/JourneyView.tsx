@@ -13,6 +13,7 @@ export function JourneyView() {
       <PageBanner
         eyebrow={t.journey.eyebrow}
         title={t.journey.title}
+        outlineTitle={t.journey.outlineTitle}
         lead={t.journey.lead}
         imageSrc={mediaAssets.journey}
       />

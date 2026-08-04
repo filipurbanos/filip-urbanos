@@ -39,7 +39,7 @@ export const en: Content = {
   about: {
     eyebrow: "About Filip",
     title: "Ambition, discipline, growth",
-    outlineTitle: "196 cm · Hard court",
+    outlineTitle: "Slovakia → USA",
     lead: "A Slovak junior building a career through training, the international circuit, and a next chapter in the USA.",
     photoAlt: "Filip Urbanos — backhand on clay",
     paragraphs: [
@@ -50,6 +50,7 @@ export const en: Content = {
   journey: {
     eyebrow: "One direction",
     title: "Forward.",
+    outlineTitle: "SK · BCN · FL",
     lead: "Each chapter added pace, tougher opponents, and a clearer aim.",
     chapters: [
       {

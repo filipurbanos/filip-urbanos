@@ -88,6 +88,17 @@ export function Journey({ omitHeader = false }: { omitHeader?: boolean }) {
           );
         })}
       </ol>
+      <Reveal delay={320}>
+        <div className="story__actions">
+          <Link className="btn btn--primary" href={routes.usa}>
+            {t.nav.usa}
+            <span aria-hidden="true">↗</span>
+          </Link>
+          <Link className="btn btn--ghost" href={routes.results}>
+            {t.nav.results}
+          </Link>
+        </div>
+      </Reveal>
     </Section>
   );
 }
