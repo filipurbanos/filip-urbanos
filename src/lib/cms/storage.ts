@@ -63,12 +63,32 @@ export async function writeCmsJson(json: string): Promise<void> {
 
 export async function readAuthJson(): Promise<string | null> {
   if (usesBlobStorage()) {
-    const result = await get(AUTH_PATHNAME, {
-      access: "public",
+    // Prefer private store when available; fall back to public (legacy).
+    let result = await get(AUTH_PATHNAME, {
+      access: "private",
       useCache: false,
-    });
+    }).catch(() => null);
+
+    if (!result?.stream) {
+      result = await get(AUTH_PATHNAME, {
+        access: "public",
+        useCache: false,
+      }).catch(() => null);
+    }
+
     if (!result?.stream) return null;
-    return new Response(result.stream).text();
+    const raw = await new Response(result.stream).text();
+    try {
+      const { openJson } = await import("@/lib/cms/secure-json");
+      const opened = await openJson(raw);
+      // Migrate legacy plaintext auth.json to sealed storage.
+      if (!raw.trim().startsWith("fu1.")) {
+        await writeAuthJson(opened);
+      }
+      return opened;
+    } catch {
+      return null;
+    }
   }
 
   return readTextFile(path.join(process.cwd(), "data", "auth.json"));
@@ -76,13 +96,28 @@ export async function readAuthJson(): Promise<string | null> {
 
 export async function writeAuthJson(json: string): Promise<void> {
   if (usesBlobStorage()) {
-    await put(AUTH_PATHNAME, json, {
-      access: "public",
-      contentType: "application/json",
-      addRandomSuffix: false,
-      allowOverwrite: true,
-    });
-    return;
+    const { sealJson } = await import("@/lib/cms/secure-json");
+    const sealed = await sealJson(json);
+
+    // Encrypt at rest so a public Blob store never exposes the password hash.
+    // Try private store first; fall back to sealed public object.
+    try {
+      await put(AUTH_PATHNAME, sealed, {
+        access: "private",
+        contentType: "text/plain",
+        addRandomSuffix: false,
+        allowOverwrite: true,
+      });
+      return;
+    } catch {
+      await put(AUTH_PATHNAME, sealed, {
+        access: "public",
+        contentType: "text/plain",
+        addRandomSuffix: false,
+        allowOverwrite: true,
+      });
+      return;
+    }
   }
 
   const filePath = path.join(process.cwd(), "data", "auth.json");

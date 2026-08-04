@@ -33,7 +33,7 @@ export default async function AdminDashboardPage() {
       href: "/admin/videos",
       label: "Videá",
       count: data.videos.length,
-      hint: "YouTube / Instagram URL",
+      hint: "URL alebo upload súboru (na Vercel ide do Blob)",
     },
     {
       href: "/admin/partners",

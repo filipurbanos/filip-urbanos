@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
-import { isAdminAuthenticated } from "@/lib/cms/auth";
-import { setPassword, verifyPassword } from "@/lib/cms/password";
+import {
+  isAdminAuthenticated,
+  sessionCookieOptions,
+  signSession,
+} from "@/lib/cms/auth";
+import { authEpoch, setPassword, verifyPassword } from "@/lib/cms/password";
 
 export async function POST(request: Request) {
   if (!(await isAdminAuthenticated())) {
@@ -31,5 +35,15 @@ export async function POST(request: Request) {
   }
 
   await setPassword(body.newPassword);
-  return NextResponse.json({ ok: true });
+
+  // Re-issue cookie with new auth epoch so other sessions die.
+  const epoch = await authEpoch();
+  const token = await signSession(
+    Date.now() + 1000 * 60 * 60 * 24 * 7,
+    epoch,
+  );
+  const response = NextResponse.json({ ok: true });
+  const cookie = sessionCookieOptions(token);
+  response.cookies.set(cookie.name, cookie.value, cookie);
+  return response;
 }

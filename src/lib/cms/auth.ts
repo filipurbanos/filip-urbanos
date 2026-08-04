@@ -38,12 +38,15 @@ async function hmac(payload: string, secret: string): Promise<string> {
     .join("");
 }
 
-export async function signSession(expiresAt: number): Promise<string> {
+export async function signSession(
+  expiresAt: number,
+  epoch = 0,
+): Promise<string> {
   const secret = adminSecret();
   if (!secret) {
     throw new Error("ADMIN_SECRET is not configured");
   }
-  const payload = `ok.${expiresAt}`;
+  const payload = `ok.${expiresAt}.${epoch}`;
   const sig = await hmac(payload, secret);
   return `${payload}.${sig}`;
 }
@@ -54,14 +57,26 @@ export async function verifySession(
   const secret = adminSecret();
   if (!secret || !token) return false;
   const parts = token.split(".");
-  if (parts.length !== 3) return false;
-  const [ok, exp, sig] = parts;
+  // Legacy 3-part tokens are rejected (force re-login after deploy).
+  if (parts.length !== 4) return false;
+  const [ok, exp, epochRaw, sig] = parts;
   if (ok !== "ok") return false;
   const expiresAt = Number(exp);
+  const epoch = Number(epochRaw);
   if (!Number.isFinite(expiresAt) || Date.now() > expiresAt) return false;
-  const payload = `${ok}.${exp}`;
+  if (!Number.isFinite(epoch)) return false;
+  const payload = `${ok}.${exp}.${epoch}`;
   const expected = await hmac(payload, secret);
-  return sig === expected;
+  const { timingSafeEqualHex } = await import("@/lib/cms/secure-json");
+  if (!timingSafeEqualHex(sig, expected)) return false;
+
+  try {
+    const { authEpoch } = await import("@/lib/cms/password");
+    const current = await authEpoch();
+    return epoch === current;
+  } catch {
+    return false;
+  }
 }
 
 export async function isAdminAuthenticated(): Promise<boolean> {

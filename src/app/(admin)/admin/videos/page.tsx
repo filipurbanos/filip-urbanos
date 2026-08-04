@@ -109,7 +109,9 @@ export default function AdminVideosPage() {
       <h1>Videá</h1>
       <p className="admin-lead">
         Nahraj video z disku (MP4 / WebM / MOV, max ~100–150 MB) alebo vlož
-        odkaz na YouTube / Vimeo / Instagram. Potom priraď album.
+        odkaz na YouTube / Vimeo (odporúčané pre dlhé videá). Na produkcii ide
+        upload do Vercel Blob — lokálny súbor v <code>public/uploads</code> sa
+        na Vercel neservuje, treba ho tu nahrať znova.
       </p>
 
       <form className="admin-form" onSubmit={save}>

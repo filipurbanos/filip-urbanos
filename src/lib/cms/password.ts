@@ -1,4 +1,5 @@
 import { adminPassword } from "@/lib/cms/auth";
+import { timingSafeEqualHex } from "@/lib/cms/secure-json";
 import { readAuthJson, writeAuthJson } from "@/lib/cms/storage";
 
 type AuthFile = {
@@ -58,6 +59,14 @@ async function readAuthFile(): Promise<AuthFile | null> {
   }
 }
 
+/** Epoch used to invalidate sessions after password change. */
+export async function authEpoch(): Promise<number> {
+  const stored = await readAuthFile();
+  if (!stored?.updatedAt) return 0;
+  const t = Date.parse(stored.updatedAt);
+  return Number.isFinite(t) ? t : 0;
+}
+
 export async function verifyPassword(password: string): Promise<boolean> {
   const stored = await readAuthFile();
   if (!stored?.salt || !stored?.hash) {
@@ -66,7 +75,7 @@ export async function verifyPassword(password: string): Promise<boolean> {
     return password === bootstrap;
   }
   const hash = await deriveHash(password, stored.salt);
-  return hash === stored.hash;
+  return timingSafeEqualHex(hash, stored.hash);
 }
 
 export async function setPassword(password: string): Promise<void> {
