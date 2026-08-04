@@ -50,11 +50,13 @@ export function ResultsView({
       <PageBanner
         eyebrow={t.results.eyebrow}
         title={t.results.title}
+        outlineTitle={t.results.outlineTitle}
         lead={t.results.lead}
         imageSrc={mediaAssets.results}
       />
       {live ? (
         <LiveTournament
+          flushTop
           tournament={{
             date: live.date,
             event: live.event,
@@ -66,7 +68,7 @@ export function ResultsView({
           }}
         />
       ) : null}
-      <Calendar items={upcoming} />
+      <Calendar items={upcoming} flushTop={!live} />
       <Results items={completed} />
       <Rankings items={rankings} />
     </>

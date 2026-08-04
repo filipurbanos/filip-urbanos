@@ -91,6 +91,7 @@ export const sk: Content = {
   results: {
     eyebrow: "Výsledky",
     title: "Odohrané turnaje",
+    outlineTitle: "ITF · UTR · Kalendár",
     lead: "Odohrané turnaje a míľniky. Klikni na riadok s „+“, ak má turnaj popis, zápasy alebo médiá.",
     columns: {
       date: "Dátum",
@@ -201,9 +202,10 @@ export const sk: Content = {
     eyebrow: "USA",
     title: "Florida — štúdium a tenis",
     lead: "Inspiration Academy v Bradentone spája školu a high-performance tenis — aktuálna kapitola Filipa v USA.",
-    outlineTitle: "Hard court. Škola.",
+    outlineTitle: "Bradenton · FL",
     photoAlt: "Filip Urbánoš — tréning",
     photoCaption: "Florida · hard court kapitola",
+    schoolBadge: "Inspiration Academy Lions",
     points: [
       "Štúdium a denný tréning v Inspiration Academy na Floride.",
       "Hard court režim, silná konkurencia a jasný denný plán.",

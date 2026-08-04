@@ -91,6 +91,7 @@ export const en: Content = {
   results: {
     eyebrow: "Results",
     title: "Completed tournaments",
+    outlineTitle: "ITF · UTR · Calendar",
     lead: "Completed tournaments and milestones. Click a row with “+” when a tournament has notes, matches, or media.",
     columns: {
       date: "Date",
@@ -201,9 +202,10 @@ export const en: Content = {
     eyebrow: "USA",
     title: "Florida — study and tennis",
     lead: "Inspiration Academy in Bradenton combines school and high-performance tennis — Filip’s current USA chapter.",
-    outlineTitle: "Hard court. School.",
+    outlineTitle: "Bradenton · FL",
     photoAlt: "Filip Urbanos — training",
     photoCaption: "Florida · hard-court chapter",
+    schoolBadge: "Inspiration Academy Lions",
     points: [
       "Study and daily training at Inspiration Academy in Florida.",
       "Hard-court rhythm, strong competition, and a clear daily plan.",

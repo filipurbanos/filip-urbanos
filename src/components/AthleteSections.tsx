@@ -16,7 +16,10 @@ export function About({ omitHeader = false }: { omitHeader?: boolean }) {
   const { t } = useLocale();
 
   return (
-    <section className="section about" id="about">
+    <section
+      className={`section about${omitHeader ? " section--after-banner" : ""}`}
+      id="about"
+    >
       <div className="shell">
         <div className="about__layout">
           <Reveal>
@@ -64,7 +67,10 @@ export function Journey({ omitHeader = false }: { omitHeader?: boolean }) {
   const chapters = t.journey.chapters;
 
   return (
-    <Section id="journey" className="story story--dark">
+    <Section
+      id="journey"
+      className={`story story--dark${omitHeader ? " section--after-banner" : ""}`}
+    >
       {omitHeader ? null : (
         <div className="story__intro">
           <p className="eyebrow">{t.journey.eyebrow}</p>
@@ -427,6 +433,7 @@ export function Results({
 
 export function LiveTournament({
   tournament,
+  flushTop = false,
 }: {
   tournament?: {
     date: string;
@@ -445,11 +452,15 @@ export function LiveTournament({
       notes: string;
     }[];
   } | null;
+  flushTop?: boolean;
 }) {
   const { t } = useLocale();
 
   return (
-    <Section id="live" className="live-tour">
+    <Section
+      id="live"
+      className={`live-tour${flushTop ? " section--after-banner" : ""}`}
+    >
       <div className="live-tour__intro">
         <p className="eyebrow">{t.live.eyebrow}</p>
         <div className="live-tour__title-row">
@@ -527,6 +538,7 @@ export function LiveTournament({
 
 export function Calendar({
   items,
+  flushTop = false,
 }: {
   items?: {
     date: string;
@@ -535,12 +547,16 @@ export function Calendar({
     surface: string;
     url?: string;
   }[];
+  flushTop?: boolean;
 }) {
   const { t } = useLocale();
   const list = items ?? t.calendar.items;
 
   return (
-    <Section id="calendar" className="calendar">
+    <Section
+      id="calendar"
+      className={`calendar${flushTop ? " section--after-banner" : ""}`}
+    >
       <SectionHeader {...t.calendar} />
       {list.length ? (
         <div className="calendar__list">
@@ -676,7 +692,10 @@ export function Usa({ omitHeader = false }: { omitHeader?: boolean }) {
 
   return (
     <>
-      <Section id="usa" className="usa">
+      <Section
+        id="usa"
+        className={`usa${omitHeader ? " section--after-banner" : ""}`}
+      >
         {omitHeader ? null : <SectionHeader {...t.usa} />}
         <div className={`usa-intro ${omitHeader ? "usa-intro--flush" : ""}`}>
           <Reveal>
@@ -691,29 +710,28 @@ export function Usa({ omitHeader = false }: { omitHeader?: boolean }) {
               <figcaption>{t.usa.photoCaption}</figcaption>
             </figure>
           </Reveal>
-          <ul className="point-list point-list--flush usa-intro__points">
-            {t.usa.points.map((point, i) => (
-              <Reveal key={point.slice(0, 20)} delay={i * 70}>
-                <li>{point}</li>
-              </Reveal>
-            ))}
-          </ul>
+          <div>
+            <ul className="point-list point-list--flush usa-intro__points">
+              {t.usa.points.map((point, i) => (
+                <Reveal key={point.slice(0, 20)} delay={i * 70}>
+                  <li>{point}</li>
+                </Reveal>
+              ))}
+            </ul>
+            <Reveal delay={280}>
+              <div className="usa-intro__actions">
+                <Link className="btn btn--primary" href={routes.results}>
+                  {t.nav.results}
+                  <span aria-hidden="true">↗</span>
+                </Link>
+                <Link className="btn btn--ghost" href={routes.contact}>
+                  {t.nav.contact}
+                </Link>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </Section>
-
-      <section className="usa-hero-strip" aria-hidden="true">
-        <div className="usa-hero-strip__media">
-          <Image
-            src={mediaAssets.usa}
-            alt=""
-            fill
-            sizes="100vw"
-            style={{ objectFit: "cover" }}
-          />
-          <div className="usa-hero-strip__veil" />
-          <p className="usa-hero-strip__mark">BRADENTON · FL</p>
-        </div>
-      </section>
 
       <Section id="usa-school" className="usa-school">
         <div className="usa-school__brand">
@@ -769,7 +787,7 @@ export function Usa({ omitHeader = false }: { omitHeader?: boolean }) {
             <aside className="usa-school__visual">
               <Image
                 src={mediaAssets.inspirationLion}
-                alt="Inspiration Academy Lions mascot"
+                alt={t.usa.schoolBadge}
                 fill
                 sizes="(max-width: 900px) 100vw, 40vw"
                 style={{ objectFit: "cover", objectPosition: "center top" }}
@@ -782,7 +800,7 @@ export function Usa({ omitHeader = false }: { omitHeader?: boolean }) {
                   height={40}
                   className="usa-school__badge-mark"
                 />
-                <p>Inspiration Academy Lions</p>
+                <p>{t.usa.schoolBadge}</p>
               </div>
             </aside>
           </Reveal>

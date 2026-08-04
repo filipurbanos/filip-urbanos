@@ -54,6 +54,7 @@ export type Content = {
     facts: { label: string; value: string }[];
   };
   results: SectionCopy & {
+    outlineTitle: string;
     columns: {
       date: string;
       event: string;
@@ -113,6 +114,7 @@ export type Content = {
     outlineTitle: string;
     photoAlt: string;
     photoCaption: string;
+    schoolBadge: string;
     points: string[];
     school: {
       eyebrow: string;
