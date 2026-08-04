@@ -2,7 +2,7 @@
 
 import { MediaAlbums } from "@/components/MediaAlbums";
 import { PageBanner } from "@/components/PageBanner";
-import { News, Press } from "@/components/SiteSections";
+import { Press } from "@/components/SiteSections";
 import { useLocale } from "@/lib/locale";
 import { mediaAssets } from "@/lib/media";
 import type { Album, Photo, Video } from "@/lib/cms/types";
@@ -28,7 +28,6 @@ export function MediaView({
         imageSrc={mediaAssets.media}
       />
       <MediaAlbums albums={albums} photos={photos} videos={videos} />
-      <News />
       <Press />
     </>
   );

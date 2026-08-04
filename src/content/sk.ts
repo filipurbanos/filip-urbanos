@@ -32,7 +32,7 @@ export const sk: Content = {
       journey: "Od Slovenska cez Barcelonu do USA.",
       results: "Výsledky, kalendár a rebríčky.",
       usa: "Štúdium a tenis v Spojených štátoch.",
-      media: "Fotky, videá, novinky a press.",
+      media: "Fotky, videá a press odkazy.",
       partners: "Partnerstvá, media kit a spolupráca.",
     },
   },

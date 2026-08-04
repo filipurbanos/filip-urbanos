@@ -32,7 +32,7 @@ export const en: Content = {
       journey: "From Slovakia through Barcelona to the USA.",
       results: "Results, calendar, and rankings.",
       usa: "Study and tennis in the United States.",
-      media: "Photos, videos, news, and press.",
+      media: "Photos, videos, and press links.",
       partners: "Partnerships, media kit, and collaboration.",
     },
   },
