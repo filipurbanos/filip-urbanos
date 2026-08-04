@@ -33,10 +33,10 @@ export async function syncSeedAlbums(): Promise<SeedAlbumSyncResult> {
   }
 
   const data = await readCms();
-  const result: SeedAlbumSyncResult = {
-    addedAlbums: [],
-    linkedTournaments: [],
-    linkedVideos: [],
+  const result = {
+    addedAlbums: [] as string[],
+    linkedTournaments: [] as string[],
+    linkedVideos: [] as string[],
   };
 
   const albumIds = new Set(data.albums.map((album) => album.id));

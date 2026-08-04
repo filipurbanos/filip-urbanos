@@ -147,16 +147,48 @@ export default function AdminAlbumsPage() {
         zobrazia ako záložky. Keď album priradíš turnaju v admin → Turnaje,
         zobrazí sa aj po rozkliknutí výsledku.
       </p>
-      <div className="admin-toolbar">
+      <div
+        className="admin-toolbar"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          gap: "1rem",
+          margin: "0 0 1.5rem",
+          padding: "1rem 1.1rem",
+          border: "1.5px solid #10141c",
+          background: "#ffffff",
+        }}
+      >
         <button
           type="button"
-          className="btn btn--primary"
           disabled={syncing}
           onClick={() => void syncFromSeed()}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "3rem",
+            padding: "0.75rem 1.35rem",
+            border: "2px solid #10141c",
+            background: "#c8f000",
+            color: "#0a0a0a",
+            fontWeight: 700,
+            fontSize: "0.82rem",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            cursor: syncing ? "wait" : "pointer",
+            boxShadow: "0 2px 0 #10141c",
+            opacity: syncing ? 0.6 : 1,
+          }}
         >
           {syncing ? "Sync…" : "Doplniť albumy zo seedu"}
         </button>
-        {syncNote ? <p className="admin-success">{syncNote}</p> : null}
+        {syncNote ? (
+          <p className="admin-success" style={{ margin: 0 }}>
+            {syncNote}
+          </p>
+        ) : null}
       </div>
 
       <form className="admin-form" onSubmit={save}>
