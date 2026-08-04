@@ -1548,6 +1548,7 @@ img {
 
 .usa-school__badge {
   position: absolute;
+  z-index: 1;
   right: 1rem;
   bottom: 1rem;
   display: flex;

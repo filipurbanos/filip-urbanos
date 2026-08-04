@@ -147,6 +147,7 @@ export const en: Content = {
     items: [],
     empty: "No upcoming tournaments scheduled yet.",
     note: "",
+    linkLabel: "Link",
   },
   rankings: {
     eyebrow: "Rankings",

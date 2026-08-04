@@ -537,7 +537,7 @@ export function Calendar({
                       rel="noopener noreferrer"
                       style={{ color: "#c8f000" }}
                     >
-                      Link ↗
+                      {t.calendar.linkLabel} ↗
                     </a>
                   ) : null}
                 </div>
@@ -689,11 +689,12 @@ export function Usa({ omitHeader = false }: { omitHeader?: boolean }) {
       <Section id="usa-school" className="usa-school">
         <div className="usa-school__brand">
           <Reveal>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               className="usa-school__logo"
               src={mediaAssets.inspirationLogo}
               alt="Inspiration Academy"
+              width={320}
+              height={96}
             />
           </Reveal>
         </div>
@@ -737,16 +738,19 @@ export function Usa({ omitHeader = false }: { omitHeader?: boolean }) {
 
           <Reveal delay={120}>
             <aside className="usa-school__visual">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={mediaAssets.inspirationLion}
                 alt="Inspiration Academy Lions mascot"
+                fill
+                sizes="(max-width: 900px) 100vw, 40vw"
+                style={{ objectFit: "cover", objectPosition: "center top" }}
               />
               <div className="usa-school__badge">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={mediaAssets.inspirationMark}
                   alt=""
+                  width={40}
+                  height={40}
                   className="usa-school__badge-mark"
                 />
                 <p>Inspiration Academy Lions</p>

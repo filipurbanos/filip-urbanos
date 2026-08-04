@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { FlipBusinessCards } from "@/components/FlipBusinessCards";
 import { Reveal } from "@/components/Reveal";
@@ -27,8 +28,14 @@ export function Gallery({
           {list.map((photo, i) => (
             <Reveal key={photo.id} delay={i * 50}>
               <figure className="gallery-item">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={photo.src} alt={photo.alt} />
+                <div className="gallery-item__media">
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                  />
+                </div>
                 {photo.caption ? <figcaption>{photo.caption}</figcaption> : null}
               </figure>
             </Reveal>
@@ -190,8 +197,13 @@ function PartnerCard({
   const inner = (
     <>
       {partner.logo ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={partner.logo} alt="" className="partner-card__logo" />
+        <Image
+          src={partner.logo}
+          alt=""
+          width={featured ? 224 : 88}
+          height={featured ? 76 : 56}
+          className="partner-card__logo"
+        />
       ) : (
         <span className="partner-card__mark" aria-hidden="true">
           {partner.name.slice(0, 2).toUpperCase()}

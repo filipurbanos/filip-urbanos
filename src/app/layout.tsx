@@ -36,8 +36,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/media/hero.jpg",
-        width: 2400,
-        height: 1602,
+        width: 1600,
+        height: 1068,
         alt: "Filip Urbánoš",
       },
     ],

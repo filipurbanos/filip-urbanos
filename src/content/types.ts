@@ -99,6 +99,7 @@ export type Content = {
     }[];
     empty: string;
     note: string;
+    linkLabel: string;
   };
   rankings: SectionCopy & {
     items: { system: string; value: string; note: string }[];

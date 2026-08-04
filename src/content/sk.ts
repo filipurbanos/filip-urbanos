@@ -147,6 +147,7 @@ export const sk: Content = {
     items: [],
     empty: "Zatiaľ nie sú naplánované ďalšie turnaje.",
     note: "",
+    linkLabel: "Odkaz",
   },
   rankings: {
     eyebrow: "Rebríčky",
