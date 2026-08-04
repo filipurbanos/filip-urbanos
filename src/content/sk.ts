@@ -284,7 +284,7 @@ export const sk: Content = {
   news: {
     eyebrow: "Novinky",
     title: "Čo je nové",
-    lead: "Krátke správy z okruhu, prípravy a USA kapitoly. Neskôr plný blog z administrácie.",
+    lead: "Krátke správy z okruhu, prípravy a USA kapitoly.",
     items: [
       {
         date: "2026",

@@ -284,7 +284,7 @@ export const en: Content = {
   news: {
     eyebrow: "News",
     title: "What’s new",
-    lead: "Short updates from the circuit, preparation, and the USA chapter. Full blog follows with admin.",
+    lead: "Short updates from the circuit, preparation, and the USA chapter.",
     items: [
       {
         date: "2026",

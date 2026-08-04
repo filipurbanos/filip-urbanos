@@ -2112,6 +2112,10 @@ img {
   font-size: 0.85rem;
 }
 
+.news {
+  background: var(--fog);
+}
+
 .news__list {
   margin-top: 2.5rem;
   display: grid;
