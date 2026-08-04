@@ -163,27 +163,31 @@ function normalizeRankings(raw: unknown): Ranking[] {
   });
 }
 
+export function parseCmsData(parsed: Partial<CmsData>): CmsData {
+  return {
+    tournaments: (parsed.tournaments ?? []).map((item) =>
+      normalizeTournament(item as Partial<Tournament>),
+    ),
+    albums: (parsed.albums ?? []).map((item) =>
+      normalizeAlbum(item as Partial<Album>),
+    ),
+    photos: (parsed.photos ?? []).map((item) =>
+      normalizePhoto(item as Partial<Photo>),
+    ),
+    videos: (parsed.videos ?? []).map((item) =>
+      normalizeVideo(item as Partial<Video>),
+    ),
+    partners: parsed.partners ?? [],
+    rankings: normalizeRankings((parsed as { rankings?: unknown }).rankings),
+  };
+}
+
 export async function readCms(): Promise<CmsData> {
   try {
     const raw = await readCmsJson();
     if (!raw) return empty;
     const parsed = JSON.parse(raw) as Partial<CmsData>;
-    return {
-      tournaments: (parsed.tournaments ?? []).map((item) =>
-        normalizeTournament(item as Partial<Tournament>),
-      ),
-      albums: (parsed.albums ?? []).map((item) =>
-        normalizeAlbum(item as Partial<Album>),
-      ),
-      photos: (parsed.photos ?? []).map((item) =>
-        normalizePhoto(item as Partial<Photo>),
-      ),
-      videos: (parsed.videos ?? []).map((item) =>
-        normalizeVideo(item as Partial<Video>),
-      ),
-      partners: parsed.partners ?? [],
-      rankings: normalizeRankings((parsed as { rankings?: unknown }).rankings),
-    };
+    return parseCmsData(parsed);
   } catch {
     return empty;
   }

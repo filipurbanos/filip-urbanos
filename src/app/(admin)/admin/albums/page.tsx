@@ -18,6 +18,8 @@ export default function AdminAlbumsPage() {
   const [form, setForm] = useState(blank);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [syncNote, setSyncNote] = useState("");
+  const [syncing, setSyncing] = useState(false);
 
   async function load() {
     const [albumsRes, tournamentsRes, photosRes, videosRes] = await Promise.all([
@@ -50,6 +52,39 @@ export default function AdminAlbumsPage() {
   }, []);
 
   const sorted = useMemo(() => sortByDateDesc(albums), [albums]);
+
+  async function syncFromSeed() {
+    setError("");
+    setSyncNote("");
+    setSyncing(true);
+    try {
+      const res = await fetch("/api/admin/albums/sync-seed", { method: "POST" });
+      if (!res.ok) {
+        setError("Sync zo seedu zlyhal");
+        return;
+      }
+      const data = (await res.json()) as {
+        addedAlbums: string[];
+        linkedTournaments: string[];
+        linkedVideos: string[];
+      };
+      const parts = [
+        data.addedAlbums.length
+          ? `albumy: ${data.addedAlbums.join(", ")}`
+          : "žiadne nové albumy",
+        data.linkedTournaments.length
+          ? `turnaje: ${data.linkedTournaments.length}`
+          : null,
+        data.linkedVideos.length
+          ? `videá: ${data.linkedVideos.length}`
+          : null,
+      ].filter(Boolean);
+      setSyncNote(`Sync hotový — ${parts.join(" · ")}`);
+      await load();
+    } finally {
+      setSyncing(false);
+    }
+  }
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
@@ -108,6 +143,17 @@ export default function AdminAlbumsPage() {
         zobrazia ako záložky. Keď album priradíš turnaju v admin → Turnaje,
         zobrazí sa aj po rozkliknutí výsledku.
       </p>
+      <div className="admin-form__actions" style={{ marginBottom: "1.25rem" }}>
+        <button
+          type="button"
+          className="btn btn--admin-ghost"
+          disabled={syncing}
+          onClick={() => void syncFromSeed()}
+        >
+          {syncing ? "Sync…" : "Doplniť albumy zo seedu"}
+        </button>
+      </div>
+      {syncNote ? <p className="admin-success">{syncNote}</p> : null}
 
       <form className="admin-form" onSubmit={save}>
         <div className="admin-form__grid">
