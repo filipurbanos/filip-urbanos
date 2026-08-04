@@ -654,12 +654,12 @@ export function Usa({ omitHeader = false }: { omitHeader?: boolean }) {
             <figure className="usa-intro__photo">
               <Image
                 src="/media/filip-backhand.jpg"
-                alt="Filip Urbánoš — tréning"
+                alt={t.usa.photoAlt}
                 fill
                 sizes="(max-width: 900px) 100vw, 45vw"
                 style={{ objectFit: "cover" }}
               />
-              <figcaption>Florida · hard court kapitola</figcaption>
+              <figcaption>{t.usa.photoCaption}</figcaption>
             </figure>
           </Reveal>
           <ul className="point-list point-list--flush usa-intro__points">

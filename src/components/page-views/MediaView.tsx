@@ -16,16 +16,14 @@ export function MediaView({
   photos: Photo[];
   videos: Video[];
 }) {
-  const { t, locale } = useLocale();
+  const { t } = useLocale();
 
   return (
     <>
       <PageBanner
         eyebrow={t.gallery.eyebrow}
         title={t.gallery.title}
-        outlineTitle={
-          locale === "sk" ? "Život v pohybe." : "Life in motion."
-        }
+        outlineTitle={t.gallery.outlineTitle}
         lead={t.gallery.lead}
         imageSrc={mediaAssets.media}
       />

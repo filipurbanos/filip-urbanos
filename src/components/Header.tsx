@@ -24,9 +24,9 @@ export function Header() {
   const [scrolled, setScrolled] = useState(!isHome);
   const [open, setOpen] = useState(false);
   const navId = useId();
-  const menuLabel = locale === "sk" ? "Menu" : "Menu";
-  const navLabel = locale === "sk" ? "Hlavná navigácia" : "Primary navigation";
-  const langLabel = locale === "sk" ? "Jazyk" : "Language";
+  const menuLabel = t.chrome.menu;
+  const navLabel = t.chrome.nav;
+  const langLabel = t.chrome.lang;
 
   useEffect(() => {
     if (!isHome) {

@@ -22,7 +22,7 @@ export function Footer() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Instagram ↗
+          {t.footer.instagram}
         </a>
         <p className="site-footer__rights">{t.footer.rights}</p>
       </div>

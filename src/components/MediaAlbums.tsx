@@ -45,7 +45,7 @@ function LocalVideo({ src, title }: { src: string; title: string }) {
 }
 
 export function MediaAlbums({ albums, photos, videos }: MediaAlbumsProps) {
-  const { t, locale } = useLocale();
+  const { t } = useLocale();
   const sortedAlbums = useMemo(() => sortByDateDesc(albums), [albums]);
   const [activeId, setActiveId] = useState<string>("all");
 
@@ -126,11 +126,7 @@ export function MediaAlbums({ albums, photos, videos }: MediaAlbumsProps) {
 
       {empty ? (
         <Reveal delay={80}>
-          <p className="placeholder-note">
-            {locale === "sk"
-              ? "V tomto albume zatiaľ nie sú fotky ani videá."
-              : "No photos or videos in this album yet."}
-          </p>
+          <p className="placeholder-note">{t.albums.empty}</p>
         </Reveal>
       ) : (
         <>

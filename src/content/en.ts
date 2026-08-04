@@ -199,6 +199,9 @@ export const en: Content = {
     eyebrow: "USA",
     title: "Florida — study and tennis",
     lead: "Inspiration Academy in Bradenton combines school and high-performance tennis — Filip’s current USA chapter.",
+    outlineTitle: "Hard court. School.",
+    photoAlt: "Filip Urbanos — training",
+    photoCaption: "Florida · hard-court chapter",
     points: [
       "Study and daily training at Inspiration Academy in Florida.",
       "Hard-court rhythm, strong competition, and a clear daily plan.",
@@ -251,6 +254,7 @@ export const en: Content = {
     eyebrow: "Photos from the road",
     title: "Media.",
     lead: "Tournaments, training, and moments from Filip’s tennis journey — grouped by event.",
+    outlineTitle: "Life in motion.",
     placeholder: "The gallery will keep growing with tournament moments and behind-the-scenes photos.",
   },
   albums: {
@@ -258,6 +262,7 @@ export const en: Content = {
     uncategorized: "Uncategorized",
     tabsLabel: "Albums",
     videosLabel: "Videos",
+    empty: "No photos or videos in this album yet.",
   },
   videos: {
     eyebrow: "Video gallery",
@@ -319,6 +324,7 @@ export const en: Content = {
     eyebrow: "Partners",
     title: "Brands with Filip",
     lead: "Thank you to the partners behind the journey — from training to tournaments.",
+    outlineTitle: "Shared journey.",
     mainLabel: "Main partner",
     othersLabel: "Partners",
     emptyNote: "The space is open for additional long-term partners and collaborations.",
@@ -355,7 +361,7 @@ export const en: Content = {
       { title: "Logos and brand assets", meta: "ZIP · on request" },
       { title: "Fact sheet", meta: "PDF · on request" },
     ],
-    cta: "Request media kit",
+    cta: "Request media kit via contact",
   },
   collaborate: {
     eyebrow: "Collaborate",
@@ -449,5 +455,11 @@ export const en: Content = {
   footer: {
     rights: "© Filip Urbanos. All rights reserved.",
     tagline: "Slovakia → USA",
+    instagram: "Instagram ↗",
+  },
+  chrome: {
+    menu: "Menu",
+    nav: "Primary navigation",
+    lang: "Language",
   },
 };

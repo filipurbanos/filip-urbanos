@@ -108,6 +108,9 @@ export type Content = {
     items: { title: string; body: string }[];
   };
   usa: SectionCopy & {
+    outlineTitle: string;
+    photoAlt: string;
+    photoCaption: string;
     points: string[];
     school: {
       eyebrow: string;
@@ -126,6 +129,7 @@ export type Content = {
     };
   };
   gallery: SectionCopy & {
+    outlineTitle: string;
     placeholder: string;
   };
   albums: {
@@ -133,6 +137,7 @@ export type Content = {
     uncategorized: string;
     tabsLabel: string;
     videosLabel: string;
+    empty: string;
   };
   videos: SectionCopy & {
     placeholder: string;
@@ -144,6 +149,7 @@ export type Content = {
     items: { type: string; title: string; source: string; href: string }[];
   };
   partners: SectionCopy & {
+    outlineTitle: string;
     mainLabel: string;
     othersLabel: string;
     emptyNote: string;
@@ -208,5 +214,11 @@ export type Content = {
   footer: {
     rights: string;
     tagline: string;
+    instagram: string;
+  };
+  chrome: {
+    menu: string;
+    nav: string;
+    lang: string;
   };
 };

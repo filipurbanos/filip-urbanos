@@ -268,9 +268,9 @@ export function Sponsors() {
         </Reveal>
       </div>
       <Reveal delay={160}>
-        <a className="btn btn--primary" href={mediaLinks.email}>
+        <Link className="btn btn--primary" href={routes.contact}>
           {t.sponsors.cta}
-        </a>
+        </Link>
       </Reveal>
     </Section>
   );
@@ -293,9 +293,9 @@ export function MediaKit() {
         ))}
       </div>
       <Reveal delay={160}>
-        <a className="btn btn--primary" href={mediaLinks.email}>
+        <Link className="btn btn--primary" href={routes.contact}>
           {t.mediaKit.cta}
-        </a>
+        </Link>
       </Reveal>
     </Section>
   );
@@ -321,19 +321,6 @@ export function Collaborate() {
         <Link className="btn btn--primary" href={routes.contact}>
           {t.collaborate.cta}
         </Link>
-      </Reveal>
-    </Section>
-  );
-}
-
-export function Community() {
-  const { t } = useLocale();
-
-  return (
-    <Section id="community" className="community" narrow>
-      <SectionHeader {...t.community} />
-      <Reveal delay={80}>
-        <p className="placeholder-note">{t.community.note}</p>
       </Reveal>
     </Section>
   );

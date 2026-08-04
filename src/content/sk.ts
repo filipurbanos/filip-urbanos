@@ -199,6 +199,9 @@ export const sk: Content = {
     eyebrow: "USA",
     title: "Florida — štúdium a tenis",
     lead: "Inspiration Academy v Bradentone spája školu a high-performance tenis — aktuálna kapitola Filipa v USA.",
+    outlineTitle: "Hard court. Škola.",
+    photoAlt: "Filip Urbánoš — tréning",
+    photoCaption: "Florida · hard court kapitola",
     points: [
       "Štúdium a denný tréning v Inspiration Academy na Floride.",
       "Hard court režim, silná konkurencia a jasný denný plán.",
@@ -251,6 +254,7 @@ export const sk: Content = {
     eyebrow: "Fotografie z cesty",
     title: "Médiá.",
     lead: "Turnaje, tréning a momenty z Filipovej tenisovej cesty — zoradené podľa akcií.",
+    outlineTitle: "Život v pohybe.",
     placeholder: "Výber fotiek budeme priebežne rozširovať o ďalšie turnaje a zákulisné momenty.",
   },
   albums: {
@@ -258,6 +262,7 @@ export const sk: Content = {
     uncategorized: "Bez albumu",
     tabsLabel: "Albumy",
     videosLabel: "Videá",
+    empty: "V tomto albume zatiaľ nie sú fotky ani videá.",
   },
   videos: {
     eyebrow: "Videogaléria",
@@ -319,6 +324,7 @@ export const sk: Content = {
     eyebrow: "Partneri",
     title: "Značky pri Filipa",
     lead: "Ďakujeme partnerom, ktorí stoja za cestou — od tréningu po turnaje.",
+    outlineTitle: "Spoločná cesta.",
     mainLabel: "Hlavný partner",
     othersLabel: "Partneri",
     emptyNote: "Priestor je otvorený aj pre ďalších partnerov a dlhodobé spolupráce.",
@@ -355,7 +361,7 @@ export const sk: Content = {
       { title: "Logá a brand assets", meta: "ZIP · na vyžiadanie" },
       { title: "Fact sheet", meta: "PDF · na vyžiadanie" },
     ],
-    cta: "Vyžiadať media kit",
+    cta: "Vyžiadať media kit cez kontakt",
   },
   collaborate: {
     eyebrow: "Spolupráca",
@@ -449,5 +455,11 @@ export const sk: Content = {
   footer: {
     rights: "© Filip Urbánoš. Všetky práva vyhradené.",
     tagline: "Slovakia → USA",
+    instagram: "Instagram ↗",
+  },
+  chrome: {
+    menu: "Menu",
+    nav: "Hlavná navigácia",
+    lang: "Jazyk",
   },
 };
