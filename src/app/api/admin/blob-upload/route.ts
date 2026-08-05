@@ -19,14 +19,16 @@ const ALLOWED = [
 
 /**
  * Client uploads go browser → Vercel Blob (bypasses the ~4.5MB serverless body limit).
- * onUploadCompleted writes the gallery record when the blob lands.
+ * Upload-completed callbacks come from Vercel (signed), not from the admin browser.
  */
 export async function POST(request: Request): Promise<NextResponse> {
-  if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   const body = (await request.json()) as HandleUploadBody;
+
+  if (body.type === "blob.generate-client-token") {
+    if (!(await isAdminAuthenticated())) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+  }
 
   try {
     const jsonResponse = await handleUpload({
@@ -46,7 +48,10 @@ export async function POST(request: Request): Promise<NextResponse> {
       },
       onUploadCompleted: async ({ blob, tokenPayload }) => {
         const payload = parseVideoUploadPayload(tokenPayload);
-        if (!payload) return;
+        if (!payload) {
+          console.warn("Blob upload completed without video payload:", blob.url);
+          return;
+        }
 
         await upsertVideoRecord({
           url: blob.url,

@@ -2,6 +2,7 @@
 
 import { upload } from "@vercel/blob/client";
 import { useEffect, useState } from "react";
+import { ensureVideoInGallery } from "@/lib/admin/ensure-video";
 import type { Album, Video } from "@/lib/cms/types";
 import { sortByDateDesc } from "@/lib/cms/dates";
 import { isManagedUploadUrl } from "@/lib/cms/media-url";
@@ -9,6 +10,7 @@ import { isManagedUploadUrl } from "@/lib/cms/media-url";
 /** Vercel serverless request body limit is ~4.5 MB — never post bigger files through our API. */
 const SERVER_SAFE_BYTES = 3.5 * 1024 * 1024;
 const MAX_BYTES = 150 * 1024 * 1024;
+const LAST_ALBUM_KEY = "admin:last-album-id";
 
 function makeUploadName(file: File) {
   const ext =
@@ -30,6 +32,7 @@ export default function AdminVideosPage() {
   const [albumId, setAlbumId] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState<number | null>(null);
   const [blobReady, setBlobReady] = useState<boolean | null>(null);
@@ -62,7 +65,22 @@ export default function AdminVideosPage() {
 
   useEffect(() => {
     void load();
+    try {
+      const savedAlbum = localStorage.getItem(LAST_ALBUM_KEY);
+      if (savedAlbum) setAlbumId(savedAlbum);
+    } catch {
+      // ignore
+    }
   }, []);
+
+  function rememberAlbum(id: string) {
+    if (!id) return;
+    try {
+      localStorage.setItem(LAST_ALBUM_KEY, id);
+    } catch {
+      // ignore
+    }
+  }
 
   async function saveRecord(payload: {
     id?: string;
@@ -113,24 +131,19 @@ export default function AdminVideosPage() {
     });
 
     try {
-      return await saveRecord({
-        title: payload.title,
-        url: blob.url,
-        description: payload.description,
-        albumId: payload.albumId,
-      });
-    } catch (err) {
-      // Blob callback may have already written CMS — wait and reload once.
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      const fresh = await fetchVideos();
-      if (fresh?.some((video) => video.url === blob.url)) {
-        return fresh;
-      }
-      throw err instanceof Error
-        ? err
-        : new Error(
-            "Súbor je nahraný v Blob, ale nepodarilo sa ho uložiť do galérie. Skús obnoviť stránku.",
-          );
+      return await ensureVideoInGallery(
+        blob.url,
+        {
+          title: payload.title,
+          url: blob.url,
+          description: payload.description,
+          albumId: payload.albumId,
+        },
+        saveRecord,
+        fetchVideos,
+      );
+    } finally {
+      setProgress(100);
     }
   }
 
@@ -160,6 +173,7 @@ export default function AdminVideosPage() {
   async function save(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setSuccess("");
     setProgress(null);
 
     if (editingId) {
@@ -178,6 +192,7 @@ export default function AdminVideosPage() {
           albumId,
         });
         setVideos(nextVideos);
+        setSuccess("Video bolo uložené.");
         resetForm();
       } catch (err) {
         const message = err instanceof Error ? err.message : "";
@@ -225,6 +240,12 @@ export default function AdminVideosPage() {
       }
 
       setVideos(nextVideos);
+      rememberAlbum(albumId);
+      setSuccess(
+        file
+          ? "Video bolo nahrané a je v galérii."
+          : "Video bolo pridané do galérie.",
+      );
       resetForm();
     } catch (err) {
       const message = err instanceof Error ? err.message : "";
@@ -242,7 +263,6 @@ export default function AdminVideosPage() {
     setTitle("");
     setUrl("");
     setDescription("");
-    setAlbumId("");
     setFile(null);
     setProgress(null);
   }
@@ -255,6 +275,7 @@ export default function AdminVideosPage() {
     setAlbumId(video.albumId);
     setFile(null);
     setError("");
+    setSuccess("");
   }
 
   async function remove(id: string) {
@@ -274,9 +295,9 @@ export default function AdminVideosPage() {
     <div className="admin-page">
       <h1>Videá</h1>
       <p className="admin-lead">
-        Veľké súbory (&gt; 4 MB) idú priamo do Vercel Blob z prehliadača — galéria
-        sa uloží automaticky po nahratí. Ak upload prešiel, ale video chýba,
-        vlož jeho Blob URL do poľa URL nižšie a ulož znova.
+        Veľké súbory (&gt; 4 MB) idú priamo do Vercel Blob z prehliadača. Po
+        nahratí sa video automaticky zapíše do galérie — stačí vybrať album a
+        pridať súbor.
         {blobReady === true ? " · Blob: OK" : null}
         {blobReady === false ? " · Blob: vypnutý" : null}
       </p>
@@ -295,7 +316,10 @@ export default function AdminVideosPage() {
             Album
             <select
               value={albumId}
-              onChange={(e) => setAlbumId(e.target.value)}
+              onChange={(e) => {
+                setAlbumId(e.target.value);
+                rememberAlbum(e.target.value);
+              }}
               required={!editingId}
             >
               <option value="">— vyber album —</option>
@@ -349,6 +373,7 @@ export default function AdminVideosPage() {
           <p className="admin-muted">Ukladám do galérie…</p>
         ) : null}
         {error ? <p className="admin-error">{error}</p> : null}
+        {success ? <p className="admin-success">{success}</p> : null}
         <button className="btn btn--primary" type="submit" disabled={loading}>
           {loading
             ? "Nahrávam…"

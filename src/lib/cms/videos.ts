@@ -1,3 +1,4 @@
+import { withRetry } from "@/lib/admin/retry";
 import { createId, mutateCms } from "@/lib/cms/store";
 import type { Video } from "@/lib/cms/types";
 
@@ -47,36 +48,40 @@ export async function upsertVideoRecord(input: {
     throw new Error("Chýba URL videa");
   }
 
-  const data = await mutateCms((draft) => {
-    const existing = draft.videos.find((video) => video.url === url);
-    if (existing) {
-      if (input.title?.trim()) existing.title = input.title.trim();
-      if (input.description !== undefined) {
-        existing.description = input.description.trim();
-      }
-      if (input.albumId !== undefined && input.albumId) {
-        existing.albumId = input.albumId;
-      }
-      return;
-    }
+  const data = await withRetry(
+    () =>
+      mutateCms((draft) => {
+        const existing = draft.videos.find((video) => video.url === url);
+        if (existing) {
+          if (input.title?.trim()) existing.title = input.title.trim();
+          if (input.description !== undefined) {
+            existing.description = input.description.trim();
+          }
+          if (input.albumId !== undefined && input.albumId) {
+            existing.albumId = input.albumId;
+          }
+          return;
+        }
 
-    const payload: VideoUploadPayload = {
-      title: input.title?.trim() || "",
-      description: input.description?.trim() || "",
-      albumId: input.albumId?.trim() || "",
-      fileName: input.fileName,
-    };
+        const payload: VideoUploadPayload = {
+          title: input.title?.trim() || "",
+          description: input.description?.trim() || "",
+          albumId: input.albumId?.trim() || "",
+          fileName: input.fileName,
+        };
 
-    const video: Video = {
-      id: createId("v"),
-      title: titleFromPayload(payload, url),
-      url,
-      description: payload.description,
-      albumId: payload.albumId,
-      createdAt: new Date().toISOString(),
-    };
-    draft.videos.unshift(video);
-  });
+        const video: Video = {
+          id: createId("v"),
+          title: titleFromPayload(payload, url),
+          url,
+          description: payload.description,
+          albumId: payload.albumId,
+          createdAt: new Date().toISOString(),
+        };
+        draft.videos.unshift(video);
+      }),
+    { attempts: 5, delayMs: 250, label: "CMS write conflict" },
+  );
 
   return data.videos;
 }
