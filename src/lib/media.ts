@@ -1,7 +1,7 @@
 /**
  * Drop Filip’s real photos here (filenames stay the same):
  * - public/media/hero.jpg           → homepage hero
- * - public/media/page-about.jpg     → Príbeh banner
+ * - public/media/page-about-banner.jpg → Príbeh banner
  * - public/media/filip-about.jpg    → Príbeh body photo
  * - public/media/page-journey.jpg   → Cesta
  * - public/media/page-results.jpg   → Výsledky
@@ -14,7 +14,7 @@
 export const mediaAssets = {
   hero: "/media/hero.jpg",
   heroFallback: "/media/hero-fallback.svg",
-  about: "/media/page-about.jpg",
+  about: "/media/page-about-banner.jpg",
   aboutPortrait: "/media/filip-about.jpg",
   journey: "/media/page-journey.jpg",
   results: "/media/page-results.jpg",
