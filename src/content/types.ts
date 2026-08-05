@@ -136,7 +136,6 @@ export type Content = {
   };
   gallery: SectionCopy & {
     outlineTitle: string;
-    placeholder: string;
   };
   albums: {
     all: string;
@@ -147,9 +146,6 @@ export type Content = {
     videosLabel: string;
     empty: string;
     emptyIndex: string;
-  };
-  videos: SectionCopy & {
-    placeholder: string;
   };
   news: SectionCopy & {
     items: { date: string; title: string; excerpt: string }[];
@@ -170,17 +166,6 @@ export type Content = {
     usageTitle: string;
     usage: string[];
     cta: string;
-  };
-  mediaKit: SectionCopy & {
-    items: { title: string; meta: string }[];
-    cta: string;
-  };
-  collaborate: SectionCopy & {
-    steps: { title: string; body: string }[];
-    cta: string;
-  };
-  community: SectionCopy & {
-    note: string;
   };
   faq: SectionCopy & {
     items: { q: string; a: string }[];

@@ -254,7 +254,6 @@ export const en: Content = {
     title: "Media.",
     lead: "Tournaments, training, and moments — open an album by event.",
     outlineTitle: "Life in motion.",
-    placeholder: "The gallery will keep growing with tournament moments and behind-the-scenes photos.",
   },
   albums: {
     all: "All moments",
@@ -265,12 +264,6 @@ export const en: Content = {
     videosLabel: "Videos",
     empty: "No photos or videos in this album yet.",
     emptyIndex: "No albums are ready yet.",
-  },
-  videos: {
-    eyebrow: "Video gallery",
-    title: "Matches, highlights, preparation",
-    lead: "Highlights, interviews, and longer videos from tournaments and training.",
-    placeholder: "New videos will be added over time as fresh tournament and training footage comes in.",
   },
   news: {
     eyebrow: "News",
@@ -344,44 +337,6 @@ export const en: Content = {
       "Study and training block in the USA",
     ],
     cta: "Talk partnerships",
-  },
-  mediaKit: {
-    eyebrow: "Media Kit",
-    title: "Downloadable assets",
-    lead: "Logo, bio, high-resolution photos, and core press copy are available as a prepared media pack.",
-    items: [
-      { title: "Bio (SK / EN)", meta: "PDF · on request" },
-      { title: "Photo selection", meta: "ZIP · on request" },
-      { title: "Logos and brand assets", meta: "ZIP · on request" },
-      { title: "Fact sheet", meta: "PDF · on request" },
-    ],
-    cta: "Request media kit via contact",
-  },
-  collaborate: {
-    eyebrow: "Collaborate",
-    title: "How partnership starts",
-    lead: "A simple path — from first email to activation on court and in media.",
-    steps: [
-      {
-        title: "1. Brief",
-        body: "Share brand goals, budget, and collaboration type.",
-      },
-      {
-        title: "2. Proposal",
-        body: "We shape a format: apparel, content, event presence, or a package.",
-      },
-      {
-        title: "3. Activation",
-        body: "Kickoff, assets, and reporting through the season.",
-      },
-    ],
-    cta: "Start a partnership",
-  },
-  community: {
-    eyebrow: "Community",
-    title: "Charity and community",
-    lead: "Space for work that matters beyond the scoreboard.",
-    note: "We’re open to projects around kids’ tennis, community clinics, and meaningful local initiatives.",
   },
   faq: {
     eyebrow: "FAQ",

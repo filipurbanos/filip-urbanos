@@ -7,7 +7,7 @@ export async function generateMetadata() {
   return buildPageMetadata({
     path: routes.media,
     title: {
-      sk: "Média",
+      sk: "Médiá",
       en: "Media",
     },
     description: {

@@ -2,98 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ContactDetails } from "@/components/ContactDetails";
 import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
 import type { Partner } from "@/lib/cms/types";
 import { useLocale } from "@/lib/locale";
 import { localePath } from "@/lib/locale-path";
 import { routes } from "@/lib/routes";
-
-export function Gallery({
-  photos,
-  omitHeader = false,
-}: {
-  photos?: { id: string; src: string; alt: string; caption: string }[];
-  omitHeader?: boolean;
-}) {
-  const { t } = useLocale();
-  const list = photos ?? [];
-
-  return (
-    <Section id="gallery" className="media">
-      {omitHeader ? null : <SectionHeader {...t.gallery} />}
-      {list.length > 0 ? (
-        <div className={`gallery-grid ${omitHeader ? "gallery-grid--flush" : ""}`}>
-          {list.map((photo, i) => (
-            <Reveal key={photo.id} delay={i * 50}>
-              <figure className="gallery-item">
-                <div className="gallery-item__media">
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                  />
-                </div>
-                {photo.caption ? <figcaption>{photo.caption}</figcaption> : null}
-              </figure>
-            </Reveal>
-          ))}
-        </div>
-      ) : (
-        <>
-          <div
-            className={`media__stage ${omitHeader ? "media__stage--flush" : ""}`}
-            aria-hidden="true"
-          >
-            <div className="media__panel media__panel--a" />
-            <div className="media__panel media__panel--b" />
-            <div className="media__panel media__panel--c" />
-          </div>
-          <Reveal delay={120}>
-            <p className="placeholder-note">{t.gallery.placeholder}</p>
-          </Reveal>
-        </>
-      )}
-    </Section>
-  );
-}
-
-export function Videos({
-  videos,
-}: {
-  videos?: { id: string; title: string; url: string }[];
-}) {
-  const { t } = useLocale();
-  const list = videos ?? [];
-
-  return (
-    <Section id="videos" className="videos">
-      <SectionHeader {...t.videos} />
-      {list.length > 0 ? (
-        <div className="video-grid">
-          {list.map((video, i) => (
-            <Reveal key={video.id} delay={i * 70}>
-              <a
-                className="video-slot video-slot--link"
-                href={video.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span>{video.title}</span>
-              </a>
-            </Reveal>
-          ))}
-        </div>
-      ) : (
-        <Reveal delay={160}>
-          <p className="placeholder-note">{t.videos.placeholder}</p>
-        </Reveal>
-      )}
-    </Section>
-  );
-}
 
 export function News() {
   const { t } = useLocale();
@@ -294,13 +208,4 @@ export function Faq() {
       </div>
     </Section>
   );
-}
-
-export function ContactCard() {
-  return <ContactDetails />;
-}
-
-export function Contact({ omitHeader = false }: { omitHeader?: boolean }) {
-  void omitHeader;
-  return <ContactDetails />;
 }

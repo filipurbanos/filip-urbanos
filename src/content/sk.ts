@@ -254,7 +254,6 @@ export const sk: Content = {
     title: "Médiá.",
     lead: "Turnaje, tréning a momenty — otvor album podľa akcie.",
     outlineTitle: "Život v pohybe.",
-    placeholder: "Výber fotiek budeme priebežne rozširovať o ďalšie turnaje a zákulisné momenty.",
   },
   albums: {
     all: "Všetky momenty",
@@ -265,12 +264,6 @@ export const sk: Content = {
     videosLabel: "Videá",
     empty: "V tomto albume zatiaľ nie sú fotky ani videá.",
     emptyIndex: "Zatiaľ nie sú pripravené žiadne albumy.",
-  },
-  videos: {
-    eyebrow: "Videogaléria",
-    title: "Zápasy, highlighty, príprava",
-    lead: "Krátke highlighty, rozhovory a dlhšie výstupy z turnajov a tréningu.",
-    placeholder: "Videá pribúdajú priebežne podľa turnajového programu a dostupných výstupov.",
   },
   news: {
     eyebrow: "Novinky",
@@ -344,44 +337,6 @@ export const sk: Content = {
       "Štúdium a tréningový blok v USA",
     ],
     cta: "Napísať o partnerstve",
-  },
-  mediaKit: {
-    eyebrow: "Media Kit",
-    title: "Materiály na stiahnutie",
-    lead: "Logo, bio, fotografie vo vysokom rozlíšení a základné press texty vieme poslať ako pripravený balík.",
-    items: [
-      { title: "Bio (SK / EN)", meta: "PDF · na vyžiadanie" },
-      { title: "Výber fotografií", meta: "ZIP · na vyžiadanie" },
-      { title: "Logá a brand assets", meta: "ZIP · na vyžiadanie" },
-      { title: "Fact sheet", meta: "PDF · na vyžiadanie" },
-    ],
-    cta: "Vyžiadať media kit cez kontakt",
-  },
-  collaborate: {
-    eyebrow: "Spolupráca",
-    title: "Ako začať partnerstvo",
-    lead: "Jednoduchý proces — od prvého mailu po aktiváciu na kurtu a v médiách.",
-    steps: [
-      {
-        title: "1. Brief",
-        body: "Pošlite cieľ značky, rozpočet a typ spolupráce.",
-      },
-      {
-        title: "2. Návrh",
-        body: "Pripravíme formát: apparel, content, event presence alebo balík.",
-      },
-      {
-        title: "3. Aktivácia",
-        body: "Spoločný kickoff, materiály a reporting počas sezóny.",
-      },
-    ],
-    cta: "Začať spoluprácu",
-  },
-  community: {
-    eyebrow: "Komunita",
-    title: "Charita a komunita",
-    lead: "Priestor pre aktivity, ktoré majú zmysel mimo výsledkovej listiny.",
-    note: "Radi sa zapojíme do projektov pre deti, tenisové komunity a zmysluplné lokálne iniciatívy.",
   },
   faq: {
     eyebrow: "FAQ",

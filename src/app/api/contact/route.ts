@@ -59,5 +59,18 @@ export async function POST(request: Request) {
 
   await appendInquiry({ name, email, topic, message, ip });
 
+  // Best-effort — form still succeeds if Slack/email is misconfigured.
+  const { notifyInquiry } = await import("@/lib/notify-inquiry");
+  // Re-read not needed; notify with the fields we just wrote.
+  await notifyInquiry({
+    id: "pending",
+    name,
+    email,
+    topic,
+    message,
+    createdAt: new Date().toISOString(),
+    ip,
+  });
+
   return NextResponse.json({ ok: true });
 }
