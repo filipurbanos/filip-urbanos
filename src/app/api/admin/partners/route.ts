@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/cms/auth-server";
-import { createId, readCms, writeCms } from "@/lib/cms/store";
+import { createId, mutateCms, readCms } from "@/lib/cms/store";
 import { deleteUpload, saveUpload } from "@/lib/cms/storage";
 import type { Partner, PartnerTier } from "@/lib/cms/types";
+import { handleCmsWriteError } from "@/lib/cms/write-helpers";
 
 export async function GET() {
   if (!(await isAdminAuthenticated())) {
@@ -32,9 +33,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Chýba názov" }, { status: 400 });
   }
 
-  const data = await readCms();
   let logo = "";
-
   if (file instanceof File && file.size > 0) {
     if (!file.type.startsWith("image/")) {
       return NextResponse.json({ error: "Logo musí byť obrázok" }, { status: 400 });
@@ -48,35 +47,42 @@ export async function POST(request: Request) {
     });
   }
 
-  if (id) {
-    data.partners = data.partners.map((item) => {
-      if (item.id !== id) return item;
-      return {
-        ...item,
-        name,
-        url,
-        description,
-        tier,
-        order: Number.isFinite(order) ? order : item.order,
-        logo: logo || item.logo,
-      };
-    });
-  } else {
-    const partner: Partner = {
-      id: createId("partner"),
-      name,
-      url,
-      logo,
-      tier,
-      description,
-      order: Number.isFinite(order) ? order : data.partners.length + 1,
-    };
-    data.partners.push(partner);
-  }
+  try {
+    const data = await mutateCms((data) => {
+      if (id) {
+        data.partners = data.partners.map((item) => {
+          if (item.id !== id) return item;
+          return {
+            ...item,
+            name,
+            url,
+            description,
+            tier,
+            order: Number.isFinite(order) ? order : item.order,
+            logo: logo || item.logo,
+          };
+        });
+      } else {
+        const partner: Partner = {
+          id: createId("partner"),
+          name,
+          url,
+          logo,
+          tier,
+          description,
+          order: Number.isFinite(order) ? order : data.partners.length + 1,
+        };
+        data.partners.push(partner);
+      }
 
-  data.partners.sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
-  await writeCms(data);
-  return NextResponse.json({ partners: data.partners });
+      data.partners.sort(
+        (a, b) => a.order - b.order || a.name.localeCompare(b.name),
+      );
+    });
+    return NextResponse.json({ partners: data.partners });
+  } catch (error) {
+    return handleCmsWriteError(error);
+  }
 }
 
 export async function DELETE(request: Request) {
@@ -90,14 +96,18 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Missing id" }, { status: 400 });
   }
 
-  const data = await readCms();
-  const partner = data.partners.find((item) => item.id === id);
-  data.partners = data.partners.filter((item) => item.id !== id);
-  await writeCms(data);
-
-  if (partner?.logo) {
-    await deleteUpload(partner.logo);
+  try {
+    let removedLogo = "";
+    const data = await mutateCms((data) => {
+      const partner = data.partners.find((item) => item.id === id);
+      removedLogo = partner?.logo || "";
+      data.partners = data.partners.filter((item) => item.id !== id);
+    });
+    if (removedLogo) {
+      await deleteUpload(removedLogo);
+    }
+    return NextResponse.json({ partners: data.partners });
+  } catch (error) {
+    return handleCmsWriteError(error);
   }
-
-  return NextResponse.json({ partners: data.partners });
 }

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/cms/auth-server";
-import { readCms, writeCms } from "@/lib/cms/store";
+import { mutateCms, readCms } from "@/lib/cms/store";
 import type { Ranking } from "@/lib/cms/types";
+import { handleCmsWriteError } from "@/lib/cms/write-helpers";
 
 const allowedSystems: Ranking["system"][] = [
   "ITF Junior",
@@ -50,8 +51,12 @@ export async function POST(request: Request) {
     );
   });
 
-  const data = await readCms();
-  data.rankings = next;
-  await writeCms(data);
-  return NextResponse.json({ rankings: data.rankings });
+  try {
+    const data = await mutateCms((data) => {
+      data.rankings = next;
+    });
+    return NextResponse.json({ rankings: data.rankings });
+  } catch (error) {
+    return handleCmsWriteError(error);
+  }
 }

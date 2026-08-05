@@ -5,7 +5,7 @@ import { clientIp, takeRateLimit } from "@/lib/cms/rate-limit";
 
 export async function POST(request: Request) {
   const ip = clientIp(request);
-  const limit = takeRateLimit(`login:${ip}`, 8, 15 * 60 * 1000);
+  const limit = await takeRateLimit(`login:${ip}`, 8, 15 * 60 * 1000);
   if (!limit.ok) {
     return NextResponse.json(
       { error: "Príliš veľa pokusov. Skús neskôr." },

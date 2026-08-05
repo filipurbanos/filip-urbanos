@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/cms/auth-server";
-import { createId, readCms, writeCms } from "@/lib/cms/store";
+import { createId, mutateCms, readCms } from "@/lib/cms/store";
 import type { Match, Tournament, TournamentStatus } from "@/lib/cms/types";
+import { handleCmsWriteError } from "@/lib/cms/write-helpers";
 
 function parseStatus(value: unknown): TournamentStatus {
   if (value === "live" || value === "completed" || value === "upcoming") {
@@ -46,63 +47,68 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = (await request.json()) as Partial<Tournament> & { id?: string };
-  const data = await readCms();
-  const status = parseStatus(body.status);
+  try {
+    const body = (await request.json()) as Partial<Tournament> & { id?: string };
+    const status = parseStatus(body.status);
 
-  if (body.id) {
-    data.tournaments = data.tournaments.map((item) => {
-      if (item.id !== body.id) {
-        // Only one live tournament at a time
-        if (status === "live" && item.status === "live") {
-          return { ...item, status: "upcoming" as const };
+    const data = await mutateCms((data) => {
+      if (body.id) {
+        data.tournaments = data.tournaments.map((item) => {
+          if (item.id !== body.id) {
+            if (status === "live" && item.status === "live") {
+              return { ...item, status: "upcoming" as const };
+            }
+            return item;
+          }
+          return {
+            ...item,
+            date: body.date ?? item.date,
+            event: body.event ?? item.event,
+            place: body.place ?? item.place,
+            surface: body.surface ?? item.surface,
+            status,
+            resultSingles: body.resultSingles ?? item.resultSingles,
+            resultDoubles: body.resultDoubles ?? item.resultDoubles,
+            notes: body.notes ?? item.notes,
+            url: body.url ?? item.url,
+            albumId:
+              body.albumId !== undefined ? String(body.albumId) : item.albumId,
+            matches:
+              body.matches !== undefined
+                ? parseMatches(body.matches, item.matches)
+                : item.matches,
+          };
+        });
+      } else {
+        if (status === "live") {
+          data.tournaments = data.tournaments.map((item) =>
+            item.status === "live"
+              ? { ...item, status: "upcoming" as const }
+              : item,
+          );
         }
-        return item;
+        const tournament: Tournament = {
+          id: createId("t"),
+          date: body.date?.trim() || "",
+          event: body.event?.trim() || "Turnaj",
+          place: body.place?.trim() || "",
+          surface: body.surface?.trim() || "Hard",
+          status,
+          resultSingles: body.resultSingles?.trim() || "",
+          resultDoubles: body.resultDoubles?.trim() || "",
+          notes: body.notes?.trim() || "",
+          url: body.url?.trim() || "",
+          albumId: String(body.albumId || "").trim(),
+          matches: parseMatches(body.matches),
+        };
+        data.tournaments.unshift(tournament);
       }
-      return {
-        ...item,
-        date: body.date ?? item.date,
-        event: body.event ?? item.event,
-        place: body.place ?? item.place,
-        surface: body.surface ?? item.surface,
-        status,
-        resultSingles: body.resultSingles ?? item.resultSingles,
-        resultDoubles: body.resultDoubles ?? item.resultDoubles,
-        notes: body.notes ?? item.notes,
-        url: body.url ?? item.url,
-        albumId:
-          body.albumId !== undefined ? String(body.albumId) : item.albumId,
-        matches:
-          body.matches !== undefined
-            ? parseMatches(body.matches, item.matches)
-            : item.matches,
-      };
     });
-  } else {
-    if (status === "live") {
-      data.tournaments = data.tournaments.map((item) =>
-        item.status === "live" ? { ...item, status: "upcoming" as const } : item,
-      );
-    }
-    const tournament: Tournament = {
-      id: createId("t"),
-      date: body.date?.trim() || "",
-      event: body.event?.trim() || "Turnaj",
-      place: body.place?.trim() || "",
-      surface: body.surface?.trim() || "Hard",
-      status,
-      resultSingles: body.resultSingles?.trim() || "",
-      resultDoubles: body.resultDoubles?.trim() || "",
-      notes: body.notes?.trim() || "",
-      url: body.url?.trim() || "",
-      albumId: String(body.albumId || "").trim(),
-      matches: parseMatches(body.matches),
-    };
-    data.tournaments.unshift(tournament);
-  }
 
-  await writeCms(data);
-  return NextResponse.json({ tournaments: data.tournaments });
+    return NextResponse.json({ tournaments: data.tournaments });
+  } catch (error) {
+    return handleCmsWriteError(error);
+  }
 }
 
 export async function DELETE(request: Request) {
@@ -116,8 +122,12 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Missing id" }, { status: 400 });
   }
 
-  const data = await readCms();
-  data.tournaments = data.tournaments.filter((item) => item.id !== id);
-  await writeCms(data);
-  return NextResponse.json({ tournaments: data.tournaments });
+  try {
+    const data = await mutateCms((data) => {
+      data.tournaments = data.tournaments.filter((item) => item.id !== id);
+    });
+    return NextResponse.json({ tournaments: data.tournaments });
+  } catch (error) {
+    return handleCmsWriteError(error);
+  }
 }

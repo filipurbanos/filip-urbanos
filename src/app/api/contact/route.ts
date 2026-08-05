@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   const ip = clientIp(request);
-  const limit = takeRateLimit(`contact:${ip}`, 5, 15 * 60 * 1000);
+  const limit = await takeRateLimit(`contact:${ip}`, 5, 15 * 60 * 1000);
   if (!limit.ok) {
     return NextResponse.json(
       { error: "Too many requests" },

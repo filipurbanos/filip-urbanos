@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/cms/auth-server";
-import { createId, readCms, writeCms } from "@/lib/cms/store";
+import { createId, mutateCms, readCms } from "@/lib/cms/store";
 import { deleteUpload, saveUpload } from "@/lib/cms/storage";
 import type { Photo } from "@/lib/cms/types";
+import { handleCmsWriteError } from "@/lib/cms/write-helpers";
 
 export async function GET() {
   if (!(await isAdminAuthenticated())) {
@@ -48,10 +49,14 @@ export async function POST(request: Request) {
     createdAt: new Date().toISOString(),
   };
 
-  const data = await readCms();
-  data.photos.unshift(photo);
-  await writeCms(data);
-  return NextResponse.json({ photos: data.photos });
+  try {
+    const data = await mutateCms((data) => {
+      data.photos.unshift(photo);
+    });
+    return NextResponse.json({ photos: data.photos });
+  } catch (error) {
+    return handleCmsWriteError(error);
+  }
 }
 
 export async function DELETE(request: Request) {
@@ -65,14 +70,18 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Missing id" }, { status: 400 });
   }
 
-  const data = await readCms();
-  const photo = data.photos.find((item) => item.id === id);
-  data.photos = data.photos.filter((item) => item.id !== id);
-  await writeCms(data);
-
-  if (photo?.src) {
-    await deleteUpload(photo.src);
+  try {
+    let removedSrc = "";
+    const data = await mutateCms((data) => {
+      const photo = data.photos.find((item) => item.id === id);
+      removedSrc = photo?.src || "";
+      data.photos = data.photos.filter((item) => item.id !== id);
+    });
+    if (removedSrc) {
+      await deleteUpload(removedSrc);
+    }
+    return NextResponse.json({ photos: data.photos });
+  } catch (error) {
+    return handleCmsWriteError(error);
   }
-
-  return NextResponse.json({ photos: data.photos });
 }

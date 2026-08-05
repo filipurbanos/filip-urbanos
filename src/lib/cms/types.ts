@@ -85,6 +85,8 @@ export type Ranking = {
 };
 
 export type CmsData = {
+  /** Monotonic revision for optimistic concurrency on write. */
+  revision: number;
   tournaments: Tournament[];
   albums: Album[];
   photos: Photo[];

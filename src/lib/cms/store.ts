@@ -1,3 +1,4 @@
+import { revalidateTag, unstable_cache } from "next/cache";
 import type {
   Album,
   CmsData,
@@ -10,7 +11,10 @@ import type {
 import { RANKING_SYSTEMS } from "@/lib/cms/rankings";
 import { readCmsJson, writeCmsJson } from "@/lib/cms/storage";
 
+export const CMS_CACHE_TAG = "cms";
+
 const empty: CmsData = {
+  revision: 0,
   tournaments: [],
   albums: [],
   photos: [],
@@ -117,7 +121,9 @@ function normalizeRankings(raw: unknown): Ranking[] {
 }
 
 export function parseCmsData(parsed: Partial<CmsData>): CmsData {
+  const revisionRaw = Number((parsed as { revision?: unknown }).revision);
   return {
+    revision: Number.isFinite(revisionRaw) && revisionRaw >= 0 ? revisionRaw : 0,
     tournaments: (parsed.tournaments ?? []).map((item) =>
       normalizeTournament(item as Partial<Tournament>),
     ),
@@ -142,7 +148,14 @@ export class CmsUnavailableError extends Error {
   }
 }
 
-export async function readCms(): Promise<CmsData> {
+export class CmsConflictError extends Error {
+  constructor(message = "CMS write conflict") {
+    super(message);
+    this.name = "CmsConflictError";
+  }
+}
+
+async function loadCmsUncached(): Promise<CmsData> {
   let raw: string | null;
   try {
     raw = await readCmsJson();
@@ -152,7 +165,7 @@ export async function readCms(): Promise<CmsData> {
     });
   }
 
-  if (!raw) return empty;
+  if (!raw) return { ...empty, rankings: normalizeRankings([]) };
 
   try {
     const parsed = JSON.parse(raw) as Partial<CmsData>;
@@ -164,8 +177,64 @@ export async function readCms(): Promise<CmsData> {
   }
 }
 
-export async function writeCms(data: CmsData): Promise<void> {
+/** Fresh read — admin APIs and mutations. */
+export async function readCms(): Promise<CmsData> {
+  return loadCmsUncached();
+}
+
+/** Cached read for public pages (invalidated via CMS_CACHE_TAG). */
+export const readCmsCached = unstable_cache(
+  async () => loadCmsUncached(),
+  ["cms-content"],
+  { tags: [CMS_CACHE_TAG], revalidate: 120 },
+);
+
+export function revalidateCmsCache() {
+  revalidateTag(CMS_CACHE_TAG, "max");
+}
+
+async function persistCms(data: CmsData): Promise<void> {
   await writeCmsJson(`${JSON.stringify(data, null, 2)}\n`);
+  revalidateCmsCache();
+}
+
+/**
+ * Direct write. Prefer `mutateCms` for concurrent-safe updates.
+ * Still bumps nothing — caller must set revision.
+ */
+export async function writeCms(data: CmsData): Promise<void> {
+  await persistCms(data);
+}
+
+/**
+ * Read → mutate → CAS revision check → write, with retries.
+ * Mutator may mutate the draft in place or return a new object.
+ */
+export async function mutateCms(
+  mutator: (data: CmsData) => void | CmsData | Promise<void | CmsData>,
+): Promise<CmsData> {
+  const maxAttempts = 4;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const current = await loadCmsUncached();
+    const baseRevision = current.revision;
+    const draft = structuredClone(current);
+    const maybe = await mutator(draft);
+    const next = maybe ?? draft;
+    next.revision = baseRevision + 1;
+
+    const latest = await loadCmsUncached();
+    if (latest.revision !== baseRevision) {
+      continue;
+    }
+
+    await persistCms(next);
+    return next;
+  }
+
+  throw new CmsConflictError(
+    "CMS write conflict — refresh and try again",
+  );
 }
 
 export function createId(prefix: string): string {

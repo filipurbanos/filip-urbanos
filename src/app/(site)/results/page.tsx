@@ -1,6 +1,6 @@
 import { ResultsView } from "@/components/page-views/ResultsView";
 import { sortByDateAsc, sortByDateDesc } from "@/lib/cms/dates";
-import { readCms } from "@/lib/cms/store";
+import { readCmsCached } from "@/lib/cms/store";
 import { routes } from "@/lib/routes";
 import { buildPageMetadata } from "@/lib/page-meta";
 
@@ -18,10 +18,8 @@ export async function generateMetadata() {
   });
 }
 
-export const dynamic = "force-dynamic";
-
 export default async function ResultsPage() {
-  const data = await readCms();
+  const data = await readCmsCached();
   const live =
     data.tournaments.find((tournament) => tournament.status === "live") || null;
   const completed = sortByDateDesc(

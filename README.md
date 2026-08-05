@@ -29,6 +29,10 @@ Open http://localhost:3000 (or the port Next prints).
 | `ADMIN_SECRET` | **yes** | HMAC session signing + sealing auth file |
 | `BLOB_READ_WRITE_TOKEN` | **yes** for durable CMS | Vercel Blob read/write |
 | `CMS_DRIVER` | optional | Force `fs` or `blob` (default: blob if token set) |
+| `CMS_ALLOW_SEED` | optional | Set `1` to allow auto-seed from git on Blob miss in **production** (off by default) |
+| `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` | optional | Durable rate limits for login/contact |
+| `CONTACT_SLACK_WEBHOOK_URL` | optional | Slack notify on contact form |
+| `RESEND_API_KEY` + `CONTACT_NOTIFY_TO` | optional | Email notify on contact form |
 
 ## CMS storage: git seed vs production truth
 
@@ -40,7 +44,7 @@ Open http://localhost:3000 (or the port Next prints).
 
 `data/content.json` in git is only a **seed**. Editing it locally does **not** update live Vercel content. To change live tournaments/media/partners, use **Admin** on production (or sync Blob intentionally).
 
-On first Blob read, if `cms/content.json` is missing, the app seeds it from the repo `data/content.json`.
+In **production**, a missing Blob `cms/content.json` does **not** auto-seed (avoids overwriting ops with git seed). Local/dev may seed on first miss. To allow seed in production intentionally, set `CMS_ALLOW_SEED=1`.
 
 ## Admin modules
 

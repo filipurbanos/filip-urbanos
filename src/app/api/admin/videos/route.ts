@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/cms/auth-server";
-import { createId, readCms, writeCms } from "@/lib/cms/store";
+import { createId, mutateCms, readCms } from "@/lib/cms/store";
 import { deleteUpload, saveUpload } from "@/lib/cms/storage";
 import type { Video } from "@/lib/cms/types";
+import { handleCmsWriteError, cmsWriteErrorResponse } from "@/lib/cms/write-helpers";
 
 const VIDEO_TYPES = new Set([
   "video/mp4",
@@ -50,6 +51,12 @@ async function readBodyWithLimit(
   return Buffer.concat(chunks.map((c) => Buffer.from(c)));
 }
 
+async function appendVideo(video: Video) {
+  return mutateCms((data) => {
+    data.videos.unshift(video);
+  });
+}
+
 export async function GET() {
   if (!(await isAdminAuthenticated())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -64,7 +71,6 @@ export async function POST(request: Request) {
   }
 
   const contentType = request.headers.get("content-type") || "";
-  const data = await readCms();
 
   const fileNameHeader = request.headers.get("x-file-name");
   const isRawUpload =
@@ -125,10 +131,12 @@ export async function POST(request: Request) {
         albumId,
         createdAt: new Date().toISOString(),
       };
-      data.videos.unshift(video);
-      await writeCms(data);
+      const data = await appendVideo(video);
       return NextResponse.json({ videos: data.videos });
     } catch (err) {
+      const conflict = cmsWriteErrorResponse(err);
+      if (conflict) return conflict;
+
       const message = err instanceof Error ? err.message : "";
       if (message === "TOO_LARGE") {
         return NextResponse.json(
@@ -196,9 +204,12 @@ export async function POST(request: Request) {
         albumId,
         createdAt: new Date().toISOString(),
       };
-      data.videos.unshift(video);
-      await writeCms(data);
-      return NextResponse.json({ videos: data.videos });
+      try {
+        const data = await appendVideo(video);
+        return NextResponse.json({ videos: data.videos });
+      } catch (error) {
+        return handleCmsWriteError(error);
+      }
     }
 
     if (!urlField) {
@@ -216,27 +227,37 @@ export async function POST(request: Request) {
       albumId,
       createdAt: new Date().toISOString(),
     };
-    data.videos.unshift(video);
-    await writeCms(data);
-    return NextResponse.json({ videos: data.videos });
+    try {
+      const data = await appendVideo(video);
+      return NextResponse.json({ videos: data.videos });
+    } catch (error) {
+      return handleCmsWriteError(error);
+    }
   }
 
   const body = (await request.json()) as Partial<Video> & { id?: string };
 
-  if (body.id) {
-    data.videos = data.videos.map((item) =>
-      item.id === body.id
-        ? {
-            ...item,
-            title: body.title?.trim() || item.title,
-            url: body.url?.trim() || item.url,
-            description: body.description?.trim() ?? item.description,
-            albumId:
-              body.albumId !== undefined ? String(body.albumId) : item.albumId,
-          }
-        : item,
-    );
-  } else {
+  try {
+    if (body.id) {
+      const data = await mutateCms((data) => {
+        data.videos = data.videos.map((item) =>
+          item.id === body.id
+            ? {
+                ...item,
+                title: body.title?.trim() || item.title,
+                url: body.url?.trim() || item.url,
+                description: body.description?.trim() ?? item.description,
+                albumId:
+                  body.albumId !== undefined
+                    ? String(body.albumId)
+                    : item.albumId,
+              }
+            : item,
+        );
+      });
+      return NextResponse.json({ videos: data.videos });
+    }
+
     if (!body.url?.trim()) {
       return NextResponse.json({ error: "Chýba URL" }, { status: 400 });
     }
@@ -248,11 +269,11 @@ export async function POST(request: Request) {
       albumId: String(body.albumId || ""),
       createdAt: new Date().toISOString(),
     };
-    data.videos.unshift(video);
+    const data = await appendVideo(video);
+    return NextResponse.json({ videos: data.videos });
+  } catch (error) {
+    return handleCmsWriteError(error);
   }
-
-  await writeCms(data);
-  return NextResponse.json({ videos: data.videos });
 }
 
 export async function DELETE(request: Request) {
@@ -266,14 +287,18 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Missing id" }, { status: 400 });
   }
 
-  const data = await readCms();
-  const video = data.videos.find((item) => item.id === id);
-  data.videos = data.videos.filter((item) => item.id !== id);
-  await writeCms(data);
-
-  if (video?.url) {
-    await deleteUpload(video.url);
+  try {
+    let removedUrl = "";
+    const data = await mutateCms((data) => {
+      const video = data.videos.find((item) => item.id === id);
+      removedUrl = video?.url || "";
+      data.videos = data.videos.filter((item) => item.id !== id);
+    });
+    if (removedUrl) {
+      await deleteUpload(removedUrl);
+    }
+    return NextResponse.json({ videos: data.videos });
+  } catch (error) {
+    return handleCmsWriteError(error);
   }
-
-  return NextResponse.json({ videos: data.videos });
 }

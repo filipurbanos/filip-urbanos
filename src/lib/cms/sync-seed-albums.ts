@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { parseCmsData, readCms, writeCms } from "@/lib/cms/store";
+import { mutateCms, parseCmsData } from "@/lib/cms/store";
 import type { Album, CmsData } from "@/lib/cms/types";
 
 export type SeedAlbumSyncResult = {
@@ -32,46 +32,53 @@ export async function syncSeedAlbums(): Promise<SeedAlbumSyncResult> {
     throw new Error("Seed content.json is missing");
   }
 
-  const data = await readCms();
-  const result = {
-    addedAlbums: [] as string[],
-    linkedTournaments: [] as string[],
-    linkedVideos: [] as string[],
-  };
+  let addedAlbums: string[] = [];
+  let linkedTournaments: string[] = [];
+  let linkedVideos: string[] = [];
 
-  const albumIds = new Set(data.albums.map((album) => album.id));
-  for (const album of seed.albums) {
-    if (albumIds.has(album.id)) continue;
-    data.albums.push(album);
-    albumIds.add(album.id);
-    result.addedAlbums.push(album.title);
-  }
+  const data = await mutateCms((data) => {
+    addedAlbums = [];
+    linkedTournaments = [];
+    linkedVideos = [];
 
-  for (const seedTournament of seed.tournaments) {
-    if (!seedTournament.albumId || !albumIds.has(seedTournament.albumId)) {
-      continue;
+    const albumIds = new Set(data.albums.map((album) => album.id));
+    for (const album of seed.albums) {
+      if (albumIds.has(album.id)) continue;
+      data.albums.push(album);
+      albumIds.add(album.id);
+      addedAlbums.push(album.title);
     }
-    const live = data.tournaments.find(
-      (tournament) =>
-        tournament.id === seedTournament.id ||
-        tournament.event === seedTournament.event,
-    );
-    if (!live || live.albumId) continue;
-    live.albumId = seedTournament.albumId;
-    result.linkedTournaments.push(live.event);
-  }
 
-  for (const seedVideo of seed.videos) {
-    if (!seedVideo.albumId || !albumIds.has(seedVideo.albumId)) continue;
-    const live = data.videos.find(
-      (video) =>
-        video.id === seedVideo.id || video.title === seedVideo.title,
-    );
-    if (!live || live.albumId) continue;
-    live.albumId = seedVideo.albumId;
-    result.linkedVideos.push(live.title);
-  }
+    for (const seedTournament of seed.tournaments) {
+      if (!seedTournament.albumId || !albumIds.has(seedTournament.albumId)) {
+        continue;
+      }
+      const live = data.tournaments.find(
+        (tournament) =>
+          tournament.id === seedTournament.id ||
+          tournament.event === seedTournament.event,
+      );
+      if (!live || live.albumId) continue;
+      live.albumId = seedTournament.albumId;
+      linkedTournaments.push(live.event);
+    }
 
-  await writeCms(data);
-  return { ...result, albums: data.albums };
+    for (const seedVideo of seed.videos) {
+      if (!seedVideo.albumId || !albumIds.has(seedVideo.albumId)) continue;
+      const live = data.videos.find(
+        (video) =>
+          video.id === seedVideo.id || video.title === seedVideo.title,
+      );
+      if (!live || live.albumId) continue;
+      live.albumId = seedVideo.albumId;
+      linkedVideos.push(live.title);
+    }
+  });
+
+  return {
+    addedAlbums,
+    linkedTournaments,
+    linkedVideos,
+    albums: data.albums,
+  };
 }
