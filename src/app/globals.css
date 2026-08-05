@@ -1371,6 +1371,21 @@ img {
   margin-top: 2.5rem;
   display: grid;
   gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 700px) {
+  .rankings__stack {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: stretch;
+  }
+}
+
+@media (min-width: 1100px) {
+  .rankings__stack {
+    grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+  }
 }
 
 .rankings__empty {
@@ -1395,8 +1410,11 @@ img {
 .rank-group {
   background: var(--panel);
   border: 1px solid var(--line);
-  border-left: 3px solid var(--ball);
-  padding: 1.35rem 1.35rem 1.45rem;
+  border-top: 3px solid var(--ball);
+  padding: 1.25rem 1.2rem 1.35rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .rank-group__header {
@@ -1406,7 +1424,7 @@ img {
 .rank-group__title {
   margin: 0;
   font-family: var(--font-display), sans-serif;
-  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ball);
@@ -1416,6 +1434,7 @@ img {
 .rank-group__metrics {
   display: grid;
   gap: 1.15rem;
+  flex: 1;
 }
 
 .rank-metric {
@@ -1441,7 +1460,7 @@ img {
 .rank-metric__value {
   margin: 0.45rem 0 0;
   font-family: var(--font-display), sans-serif;
-  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-size: clamp(2rem, 4vw, 2.85rem);
   letter-spacing: 0.03em;
   text-transform: uppercase;
   line-height: 1;
@@ -1449,11 +1468,10 @@ img {
 }
 
 .rank-metric__note {
-  margin: 0.7rem 0 0;
+  margin: 0.65rem 0 0;
   color: var(--ink-soft);
-  font-size: 0.9rem;
-  line-height: 1.45;
-  max-width: 28rem;
+  font-size: 0.86rem;
+  line-height: 1.4;
 }
 
 /* Training */
