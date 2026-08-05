@@ -628,7 +628,7 @@ export function Usa({ omitHeader = false }: { omitHeader?: boolean }) {
                 alt={t.usa.photoAlt}
                 fill
                 sizes="(max-width: 900px) 100vw, 45vw"
-                style={{ objectFit: "cover", objectPosition: "center 20%" }}
+                style={{ objectFit: "cover", objectPosition: "left center" }}
               />
               <figcaption>{t.usa.photoCaption}</figcaption>
             </figure>
