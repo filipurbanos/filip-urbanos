@@ -1795,50 +1795,64 @@ img {
 .calendar__list {
   margin-top: 2.5rem;
   display: grid;
-  gap: 0.85rem;
+  gap: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .event {
   display: grid;
-  gap: 0.75rem;
-  padding: 1.25rem 1.2rem;
-  background: #12161e;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  gap: 0.45rem;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
 }
 
 .event__date {
-  font-family: var(--font-display), sans-serif;
-  letter-spacing: 0.06em;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #c8f000;
-  font-size: 1.05rem;
+  color: var(--ball);
+  font-weight: 600;
+}
+
+.event__main {
+  min-width: 0;
 }
 
 .event__main h3 {
   margin: 0;
-  font-size: 1.2rem;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.2rem, 3.5vw, 1.55rem);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
 }
 
 .event__main p {
-  margin: 0.3rem 0 0;
-  color: #9aa3b2 !important;
+  margin: 0.35rem 0 0;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.92rem;
 }
 
-.event__surface {
-  justify-self: start;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
+.event__main a {
+  display: inline-block;
+  margin-top: 0.55rem;
+  color: var(--ball);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #c8f000 !important;
-  border-bottom: 1px solid rgba(200, 240, 0, 0.35);
-  padding-bottom: 0.15rem;
+  font-weight: 600;
+}
+
+.event__main a:hover {
+  color: #ffffff;
 }
 
 .calendar__note {
   margin: 1.5rem 0 0;
-  color: #9aa3b2;
+  color: rgba(255, 255, 255, 0.58);
   font-size: 0.95rem;
   line-height: 1.6;
   max-width: 40rem;
@@ -3002,8 +3016,13 @@ a.fu-vcard__item:hover {
   }
 
   .event {
-    grid-template-columns: 8.5rem 1fr auto;
-    align-items: center;
+    grid-template-columns: 7rem 1fr;
+    align-items: start;
+    column-gap: 1.25rem;
+  }
+
+  .event__date {
+    padding-top: 0.2rem;
   }
 
   .video-grid {
