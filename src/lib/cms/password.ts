@@ -72,7 +72,15 @@ export async function verifyPassword(password: string): Promise<boolean> {
   if (!stored?.salt || !stored?.hash) {
     const bootstrap = adminPassword();
     if (!bootstrap) return false;
-    return password === bootstrap;
+    const enc = new TextEncoder();
+    const a = enc.encode(password);
+    const b = enc.encode(bootstrap);
+    if (a.length !== b.length) return false;
+    let diff = 0;
+    for (let i = 0; i < a.length; i += 1) {
+      diff |= a[i]! ^ b[i]!;
+    }
+    return diff === 0;
   }
   const hash = await deriveHash(password, stored.salt);
   return timingSafeEqualHex(hash, stored.hash);

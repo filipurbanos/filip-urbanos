@@ -66,8 +66,8 @@ export async function signSession(
 }
 
 /**
- * HMAC + expiry check only (Edge-safe).
- * Password-epoch invalidation is enforced in Node via `isAdminAuthenticated`.
+ * HMAC + expiry check (Edge-safe).
+ * Password-epoch invalidation runs in Node `proxy.ts` + `isAdminAuthenticated`.
  */
 export async function verifySession(
   token: string | undefined,

@@ -135,14 +135,32 @@ export function parseCmsData(parsed: Partial<CmsData>): CmsData {
   };
 }
 
+export class CmsUnavailableError extends Error {
+  constructor(message: string, options?: { cause?: unknown }) {
+    super(message, options);
+    this.name = "CmsUnavailableError";
+  }
+}
+
 export async function readCms(): Promise<CmsData> {
+  let raw: string | null;
   try {
-    const raw = await readCmsJson();
-    if (!raw) return empty;
+    raw = await readCmsJson();
+  } catch (error) {
+    throw new CmsUnavailableError("CMS storage is temporarily unavailable", {
+      cause: error,
+    });
+  }
+
+  if (!raw) return empty;
+
+  try {
     const parsed = JSON.parse(raw) as Partial<CmsData>;
     return parseCmsData(parsed);
-  } catch {
-    return empty;
+  } catch (error) {
+    throw new CmsUnavailableError("CMS content could not be parsed", {
+      cause: error,
+    });
   }
 }
 

@@ -25,20 +25,36 @@ async function readTextFile(filePath: string): Promise<string | null> {
 
 export async function readCmsJson(): Promise<string | null> {
   if (usesBlobStorage()) {
-    const result = await get(CONTENT_PATHNAME, {
-      access: "public",
-      useCache: false,
-    });
-    if (!result?.stream) {
-      const seed = await readTextFile(
-        path.join(process.cwd(), "data", "content.json"),
+    let result: Awaited<ReturnType<typeof get>> | null = null;
+    try {
+      result = await get(CONTENT_PATHNAME, {
+        access: "public",
+        useCache: false,
+      });
+    } catch (error) {
+      throw new Error(
+        `CMS Blob read failed: ${
+          error instanceof Error ? error.message : "unknown error"
+        }`,
       );
-      if (seed) {
-        await writeCmsJson(seed);
-        return seed;
+    }
+
+    if (!result?.stream) {
+      const allowSeed =
+        process.env.CMS_ALLOW_SEED === "1" ||
+        process.env.NODE_ENV !== "production";
+      if (allowSeed) {
+        const seed = await readTextFile(
+          path.join(process.cwd(), "data", "content.json"),
+        );
+        if (seed) {
+          await writeCmsJson(seed);
+          return seed;
+        }
       }
       return null;
     }
+
     return new Response(result.stream).text();
   }
 
