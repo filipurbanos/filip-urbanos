@@ -4,7 +4,7 @@
  * - public/media/page-about-banner.jpg → Príbeh banner
  * - public/media/filip-about.jpg    → Príbeh body photo
  * - public/media/page-journey.jpg   → Cesta
- * - public/media/page-results.jpg   → Výsledky
+ * - public/media/page-results-banner.jpg → Výsledky
  * - public/media/page-usa.jpg       → USA banner
  * - public/media/filip-usa.jpg      → USA body photo
  * - public/media/page-media.jpg     → Médiá
@@ -18,7 +18,7 @@ export const mediaAssets = {
   about: "/media/page-about-banner.jpg",
   aboutPortrait: "/media/filip-about.jpg",
   journey: "/media/page-journey.jpg",
-  results: "/media/page-results.jpg",
+  results: "/media/page-results-banner.jpg",
   usa: "/media/page-usa.jpg",
   usaPortrait: "/media/filip-usa.jpg",
   media: "/media/page-media.jpg",
