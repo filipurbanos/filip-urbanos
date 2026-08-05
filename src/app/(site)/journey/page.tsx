@@ -10,8 +10,8 @@ export async function generateMetadata() {
       en: "Journey",
     },
     description: {
-      sk: "Športová cesta Filipa Urbánoša — od Slovenska cez Barcelonu do USA.",
-      en: "Filip Urbanos’s journey — from Slovakia through Barcelona to the USA.",
+      sk: "Športová cesta Filipa Urbánoša — od Slovenska cez Srbsko a Barcelonu do USA.",
+      en: "Filip Urbanos’s journey — from Slovakia through Serbia and Barcelona to the USA.",
     },
   });
 }

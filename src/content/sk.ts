@@ -47,7 +47,7 @@ export const sk: Content = {
   journey: {
     eyebrow: "Jeden smer",
     title: "Vpred.",
-    outlineTitle: "SK · BCN · FL",
+    outlineTitle: "SK · SRB · BCN · FL",
     lead: "Každá kapitola pridala tempo, súperov a jasnejší cieľ.",
     chapters: [
       {
@@ -57,16 +57,21 @@ export const sk: Content = {
       },
       {
         year: "02",
+        title: "Srbsko",
+        body: "Tréningové bloky v Srbsku v rôznych intervaloch — medzinárodná príprava a práca na antuke mimo domova.",
+      },
+      {
+        year: "03",
         title: "Barcelona",
         body: "Medzinárodný tréning a nový pohľad na tenisovú hru.",
       },
       {
-        year: "03",
+        year: "04",
         title: "Florida",
         body: "Štúdium a tréning v Inspiration Academy spojené so získavaním zápasových skúseností v USA.",
       },
       {
-        year: "04",
+        year: "05",
         title: "Budúcnosť",
         body: "Univerzitný tenis a dlhodobá cesta na profesionálny okruh.",
       },
@@ -345,7 +350,7 @@ export const sk: Content = {
     items: [
       {
         q: "Kde Filip trénuje?",
-        a: "Cesta viedla cez Love 4 Tennis v Bratislave a Barcelona Tennis Academy. Aktuálna kapitola je štúdium a tréning na Inspiration Academy na Floride.",
+        a: "Cesta viedla cez Love 4 Tennis v Bratislave, tréningové bloky v Srbsku, Barcelona Tennis Academy a dnes Inspiration Academy na Floride.",
       },
       {
         q: "Ako môžem sponzorovať Filipa?",

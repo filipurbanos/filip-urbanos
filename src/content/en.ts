@@ -47,7 +47,7 @@ export const en: Content = {
   journey: {
     eyebrow: "One direction",
     title: "Forward.",
-    outlineTitle: "SK · BCN · FL",
+    outlineTitle: "SK · SRB · BCN · FL",
     lead: "Each chapter added pace, tougher opponents, and a clearer aim.",
     chapters: [
       {
@@ -57,16 +57,21 @@ export const en: Content = {
       },
       {
         year: "02",
+        title: "Serbia",
+        body: "Training blocks in Serbia at different intervals — international preparation and clay-court work away from home.",
+      },
+      {
+        year: "03",
         title: "Barcelona",
         body: "International training and a new view of the game.",
       },
       {
-        year: "03",
+        year: "04",
         title: "Florida",
         body: "Study and training at Inspiration Academy, building match experience in the USA.",
       },
       {
-        year: "04",
+        year: "05",
         title: "Future",
         body: "College tennis and a long-term path toward the professional tour.",
       },
@@ -345,7 +350,7 @@ export const en: Content = {
     items: [
       {
         q: "Where does Filip train?",
-        a: "The path ran through Love 4 Tennis in Bratislava and Barcelona Tennis Academy. The current chapter is study and training at Inspiration Academy in Florida.",
+        a: "The path ran through Love 4 Tennis in Bratislava, training blocks in Serbia, Barcelona Tennis Academy, and now Inspiration Academy in Florida.",
       },
       {
         q: "How can I sponsor Filip?",
