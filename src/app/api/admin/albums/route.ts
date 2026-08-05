@@ -4,6 +4,8 @@ import { createId, mutateCms, readCms } from "@/lib/cms/store";
 import type { Album } from "@/lib/cms/types";
 import { handleCmsWriteError } from "@/lib/cms/write-helpers";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   if (!(await isAdminAuthenticated())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

@@ -4,6 +4,8 @@ import { createId, mutateCms, readCms } from "@/lib/cms/store";
 import type { Match, Tournament, TournamentStatus } from "@/lib/cms/types";
 import { handleCmsWriteError } from "@/lib/cms/write-helpers";
 
+export const dynamic = "force-dynamic";
+
 function parseStatus(value: unknown): TournamentStatus {
   if (value === "live" || value === "completed" || value === "upcoming") {
     return value;

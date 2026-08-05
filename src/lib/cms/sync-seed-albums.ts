@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { mutateCms, parseCmsData } from "@/lib/cms/store";
-import type { Album, CmsData } from "@/lib/cms/types";
+import type { Album, CmsData, Photo, Tournament, Video } from "@/lib/cms/types";
 
 export type SeedAlbumSyncResult = {
   addedAlbums: string[];
@@ -10,6 +10,9 @@ export type SeedAlbumSyncResult = {
   linkedTournaments: string[];
   linkedVideos: string[];
   albums: Album[];
+  photos: Photo[];
+  videos: Video[];
+  tournaments: Tournament[];
 };
 
 async function readSeedCms(): Promise<CmsData | null> {
@@ -102,5 +105,8 @@ export async function syncSeedAlbums(): Promise<SeedAlbumSyncResult> {
     linkedTournaments,
     linkedVideos,
     albums: data.albums,
+    photos: data.photos,
+    videos: data.videos,
+    tournaments: data.tournaments,
   };
 }

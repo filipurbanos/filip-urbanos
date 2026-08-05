@@ -22,11 +22,12 @@ export default function AdminAlbumsPage() {
   const [syncing, setSyncing] = useState(false);
 
   async function load() {
+    const fetchOpts = { cache: "no-store" as const };
     const [albumsRes, tournamentsRes, photosRes, videosRes] = await Promise.all([
-      fetch("/api/admin/albums"),
-      fetch("/api/admin/tournaments"),
-      fetch("/api/admin/photos"),
-      fetch("/api/admin/videos"),
+      fetch("/api/admin/albums", fetchOpts),
+      fetch("/api/admin/tournaments", fetchOpts),
+      fetch("/api/admin/photos", fetchOpts),
+      fetch("/api/admin/videos", fetchOpts),
     ]);
 
     if (albumsRes.ok) {
@@ -58,7 +59,10 @@ export default function AdminAlbumsPage() {
     setSyncNote("");
     setSyncing(true);
     try {
-      const res = await fetch("/api/admin/albums/sync-seed", { method: "POST" });
+      const res = await fetch("/api/admin/albums/sync-seed", {
+        method: "POST",
+        cache: "no-store",
+      });
       if (!res.ok) {
         setError("Sync zo seedu zlyhal");
         return;
@@ -69,30 +73,33 @@ export default function AdminAlbumsPage() {
         addedVideos: string[];
         linkedTournaments: string[];
         linkedVideos: string[];
-        albums?: Album[];
+        albums: Album[];
+        photos: Photo[];
+        videos: Video[];
+        tournaments: Tournament[];
       };
       const parts = [
         data.addedAlbums.length
           ? `albumy: ${data.addedAlbums.join(", ")}`
           : "žiadne nové albumy",
-        data.addedPhotos?.length
+        data.addedPhotos.length
           ? `fotky: ${data.addedPhotos.length}`
-          : null,
-        data.addedVideos?.length
+          : "žiadne nové fotky",
+        data.addedVideos.length
           ? `videá: ${data.addedVideos.length}`
-          : null,
+          : "žiadne nové videá",
         data.linkedTournaments.length
-          ? `turnaje: ${data.linkedTournaments.length}`
+          ? `turnaje: ${data.linkedTournaments.join(", ")}`
           : null,
         data.linkedVideos.length
-          ? `videá: ${data.linkedVideos.length}`
+          ? `prepojené videá: ${data.linkedVideos.length}`
           : null,
       ].filter(Boolean);
       setSyncNote(`Sync hotový — ${parts.join(" · ")}`);
-      if (data.albums) {
-        setAlbums(data.albums);
-      }
-      await load();
+      setAlbums(data.albums);
+      setPhotos(data.photos);
+      setVideos(data.videos);
+      setTournaments(data.tournaments);
     } finally {
       setSyncing(false);
     }

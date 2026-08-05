@@ -23,6 +23,7 @@ function makeUploadName(file: File) {
 export default function AdminVideosPage() {
   const [videos, setVideos] = useState<Video[]>([]);
   const [albums, setAlbums] = useState<Album[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
@@ -34,10 +35,11 @@ export default function AdminVideosPage() {
   const [blobReady, setBlobReady] = useState<boolean | null>(null);
 
   async function load() {
+    const fetchOpts = { cache: "no-store" as const };
     const [videosRes, albumsRes, configRes] = await Promise.all([
-      fetch("/api/admin/videos"),
-      fetch("/api/admin/albums"),
-      fetch("/api/admin/upload-config"),
+      fetch("/api/admin/videos", fetchOpts),
+      fetch("/api/admin/albums", fetchOpts),
+      fetch("/api/admin/upload-config", fetchOpts),
     ]);
     if (videosRes.ok) {
       const data = (await videosRes.json()) as { videos: Video[] };
@@ -62,26 +64,34 @@ export default function AdminVideosPage() {
     void load();
   }, []);
 
-  async function registerVideo(videoUrl: string, fileName: string) {
+  async function saveRecord(payload: {
+    id?: string;
+    title: string;
+    url: string;
+    description: string;
+    albumId: string;
+  }) {
     const res = await fetch("/api/admin/videos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: title || fileName.replace(/\.[^.]+$/, "") || "Video",
-        url: videoUrl,
-        description,
-        albumId,
-      }),
+      body: JSON.stringify(payload),
     });
     const data = (await res.json().catch(() => null)) as
       | { videos?: Video[]; error?: string }
       | null;
     if (!res.ok) {
-      throw new Error(
-        data?.error || `Uloženie záznamu zlyhalo (${res.status})`,
-      );
+      throw new Error(data?.error || `Uloženie záznamu zlyhalo (${res.status})`);
     }
     return data?.videos || [];
+  }
+
+  async function registerVideo(videoUrl: string, fileName: string) {
+    return saveRecord({
+      title: title || fileName.replace(/\.[^.]+$/, "") || "Video",
+      url: videoUrl,
+      description,
+      albumId,
+    });
   }
 
   async function uploadViaBlob(selected: File) {
@@ -126,8 +136,39 @@ export default function AdminVideosPage() {
     e.preventDefault();
     setError("");
     setProgress(null);
+
+    if (editingId) {
+      const current = videos.find((video) => video.id === editingId);
+      if (!current) {
+        setError("Video sa nenašlo — obnov stránku");
+        return;
+      }
+      setLoading(true);
+      try {
+        const nextVideos = await saveRecord({
+          id: editingId,
+          title: title.trim() || current.title,
+          url: current.url,
+          description,
+          albumId,
+        });
+        setVideos(nextVideos);
+        resetForm();
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "";
+        setError(message || "Uloženie zlyhalo");
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
     if (!file && !url.trim()) {
       setError("Nahraj súbor z disku alebo vyplň URL");
+      return;
+    }
+    if (!albumId) {
+      setError("Vyber album — inak sa video nezobrazí v galérii turnaja.");
       return;
     }
     if (file && file.size > MAX_BYTES) {
@@ -155,26 +196,11 @@ export default function AdminVideosPage() {
           nextVideos = await uploadViaServer(file);
         }
       } else {
-        const res = await fetch("/api/admin/videos", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title, url, description, albumId }),
-        });
-        const data = (await res.json().catch(() => null)) as
-          | { videos?: Video[]; error?: string }
-          | null;
-        if (!res.ok) {
-          throw new Error(data?.error || `Uloženie zlyhalo (${res.status})`);
-        }
-        nextVideos = data?.videos || [];
+        nextVideos = await saveRecord({ title, url, description, albumId });
       }
 
       setVideos(nextVideos);
-      setTitle("");
-      setUrl("");
-      setDescription("");
-      setFile(null);
-      setProgress(null);
+      resetForm();
     } catch (err) {
       const message = err instanceof Error ? err.message : "";
       setError(
@@ -184,6 +210,26 @@ export default function AdminVideosPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function resetForm() {
+    setEditingId(null);
+    setTitle("");
+    setUrl("");
+    setDescription("");
+    setAlbumId("");
+    setFile(null);
+    setProgress(null);
+  }
+
+  function edit(video: Video) {
+    setEditingId(video.id);
+    setTitle(video.title);
+    setUrl(video.url);
+    setDescription(video.description);
+    setAlbumId(video.albumId);
+    setFile(null);
+    setError("");
   }
 
   async function remove(id: string) {
@@ -225,8 +271,9 @@ export default function AdminVideosPage() {
             <select
               value={albumId}
               onChange={(e) => setAlbumId(e.target.value)}
+              required={!editingId}
             >
-              <option value="">Bez albumu</option>
+              <option value="">— vyber album —</option>
               {albums.map((album) => (
                 <option key={album.id} value={album.id}>
                   {album.date ? `${album.date} · ` : ""}
@@ -241,6 +288,7 @@ export default function AdminVideosPage() {
               type="file"
               accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov,.m4v"
               onChange={(e) => setFile(e.target.files?.[0] || null)}
+              disabled={Boolean(editingId)}
             />
           </label>
           <label className="admin-form__wide">
@@ -249,7 +297,7 @@ export default function AdminVideosPage() {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://..."
-              disabled={Boolean(file)}
+              disabled={Boolean(file) || Boolean(editingId)}
             />
           </label>
           <label className="admin-form__wide">
@@ -274,8 +322,21 @@ export default function AdminVideosPage() {
         ) : null}
         {error ? <p className="admin-error">{error}</p> : null}
         <button className="btn btn--primary" type="submit" disabled={loading}>
-          {loading ? "Nahrávam…" : "Pridať video"}
+          {loading
+            ? "Nahrávam…"
+            : editingId
+              ? "Uložiť video"
+              : "Pridať video"}
         </button>
+        {editingId ? (
+          <button
+            type="button"
+            className="btn btn--admin-ghost"
+            onClick={resetForm}
+          >
+            Zrušiť
+          </button>
+        ) : null}
       </form>
 
       <div className="admin-table">
@@ -299,6 +360,9 @@ export default function AdminVideosPage() {
               </p>
             </div>
             <div className="admin-row__actions">
+              <button type="button" onClick={() => edit(video)}>
+                Upraviť
+              </button>
               <button type="button" onClick={() => remove(video.id)}>
                 Zmazať
               </button>

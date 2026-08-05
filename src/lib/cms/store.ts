@@ -1,4 +1,4 @@
-import { revalidateTag, unstable_cache } from "next/cache";
+import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
 import type {
   Album,
   CmsData,
@@ -191,6 +191,10 @@ export const readCmsCached = unstable_cache(
 
 export function revalidateCmsCache() {
   revalidateTag(CMS_CACHE_TAG, "max");
+  revalidatePath("/media");
+  revalidatePath("/en/media");
+  revalidatePath("/results");
+  revalidatePath("/en/results");
 }
 
 async function persistCms(data: CmsData): Promise<void> {

@@ -5,6 +5,8 @@ import { deleteUpload, saveUpload } from "@/lib/cms/storage";
 import type { Photo } from "@/lib/cms/types";
 import { handleCmsWriteError } from "@/lib/cms/write-helpers";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   if (!(await isAdminAuthenticated())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
