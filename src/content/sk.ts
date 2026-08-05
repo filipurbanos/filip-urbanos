@@ -174,6 +174,17 @@ export const sk: Content = {
       ATP: "ATP",
       "Tennis Europe": "Tennis Europe",
     },
+    groups: {
+      ITF: "ITF",
+      UTR: "UTR",
+      WTN: "WTN",
+      ATP: "ATP",
+      "Tennis Europe": "Tennis Europe",
+    },
+    disciplines: {
+      singles: "2-hra",
+      doubles: "4-hra",
+    },
     items: [
       {
         system: "WTN",

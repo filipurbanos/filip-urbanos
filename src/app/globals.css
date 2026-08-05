@@ -1367,11 +1367,10 @@ img {
   color: var(--white);
 }
 
-.rankings__grid {
+.rankings__stack {
   margin-top: 2.5rem;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
 .rankings__empty {
@@ -1393,37 +1392,68 @@ img {
   color: #ffffff;
 }
 
-.rank-card {
+.rank-group {
   background: var(--panel);
   border: 1px solid var(--line);
-  padding: 1.35rem 1.2rem;
-  min-height: 9rem;
+  border-left: 3px solid var(--ball);
+  padding: 1.35rem 1.35rem 1.45rem;
 }
 
-.rank-card__system {
+.rank-group__header {
+  margin: 0 0 1rem;
+}
+
+.rank-group__title {
+  margin: 0;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ball);
+  line-height: 1;
+}
+
+.rank-group__metrics {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.rank-metric {
+  min-width: 0;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+}
+
+.rank-metric:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.rank-metric__label {
   margin: 0;
   font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ball);
+  color: var(--ink-soft);
   font-weight: 600;
 }
 
-.rank-card__value {
-  margin: 0.85rem 0 0;
+.rank-metric__value {
+  margin: 0.45rem 0 0;
   font-family: var(--font-display), sans-serif;
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
   letter-spacing: 0.03em;
   text-transform: uppercase;
   line-height: 1;
   color: var(--white);
 }
 
-.rank-card__note {
-  margin: 0.75rem 0 0;
+.rank-metric__note {
+  margin: 0.7rem 0 0;
   color: var(--ink-soft);
-  font-size: 0.92rem;
-  line-height: 1.5;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  max-width: 28rem;
 }
 
 /* Training */
@@ -3044,10 +3074,6 @@ a.fu-vcard__item:hover {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .rankings__grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
   .training__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.5rem;
@@ -3263,10 +3289,6 @@ a.fu-vcard__item:hover {
   .partner-card--featured {
     grid-template-columns: 1fr;
     gap: 1rem;
-  }
-
-  .rankings__grid {
-    grid-template-columns: 1fr;
   }
 }
 

@@ -107,6 +107,11 @@ export type Content = {
     empty: string;
     profileLink: string;
     systems: Record<string, string>;
+    groups: Record<string, string>;
+    disciplines: {
+      singles: string;
+      doubles: string;
+    };
     items: { system: string; value: string; note: string }[];
   };
   training: SectionCopy & {

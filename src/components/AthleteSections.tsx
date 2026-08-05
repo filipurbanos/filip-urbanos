@@ -7,7 +7,10 @@ import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
 import { sortByDateDesc, youtubeEmbedUrl } from "@/lib/cms/dates";
 import { isPlayableMediaUrl } from "@/lib/cms/media-url";
-import { filterPublishedRankings } from "@/lib/cms/rankings";
+import {
+  groupPublishedRankings,
+  rankingDiscipline,
+} from "@/lib/cms/rankings";
 import type { Match, Ranking } from "@/lib/cms/types";
 import { mediaLinks } from "@/content";
 import { useLocale } from "@/lib/locale";
@@ -535,15 +538,14 @@ type RankingItem = {
 export function Rankings({ items }: { items?: RankingItem[] }) {
   const { t } = useLocale();
   const source = items?.length ? items : t.rankings.items;
-  const list = filterPublishedRankings(
-    source.map(
-      (item): Ranking => ({
-        system: item.system as Ranking["system"],
-        value: item.value,
-        note: item.note,
-      }),
-    ),
+  const list = source.map(
+    (item): Ranking => ({
+      system: item.system as Ranking["system"],
+      value: item.value,
+      note: item.note,
+    }),
   );
+  const groups = groupPublishedRankings(list);
 
   return (
     <Section id="rankings" className="rankings">
@@ -553,7 +555,7 @@ export function Rankings({ items }: { items?: RankingItem[] }) {
         <p className="section-lead">{t.rankings.lead}</p>
       </Reveal>
 
-      {list.length === 0 ? (
+      {groups.length === 0 ? (
         <Reveal delay={60}>
           <div className="rankings__empty">
             <p className="placeholder-note">{t.rankings.empty}</p>
@@ -568,18 +570,37 @@ export function Rankings({ items }: { items?: RankingItem[] }) {
           </div>
         </Reveal>
       ) : (
-        <div className="rankings__grid">
-          {list.map((item, i) => (
-            <Reveal key={item.system} delay={i * 60}>
-              <article className="rank-card">
-                <p className="rank-card__system">
-                  {t.rankings.systems[item.system] || item.system}
-                </p>
-                <p className="rank-card__value">{item.value}</p>
-                {item.note ? (
-                  <p className="rank-card__note">{item.note}</p>
-                ) : null}
-              </article>
+        <div className="rankings__stack">
+          {groups.map((group, groupIndex) => (
+            <Reveal key={group.id} delay={groupIndex * 70}>
+              <section className="rank-group">
+                <header className="rank-group__header">
+                  <h3 className="rank-group__title">
+                    {t.rankings.groups[group.id] || group.id}
+                  </h3>
+                </header>
+                <div className="rank-group__metrics">
+                  {group.items.map((item) => {
+                    const discipline = rankingDiscipline(item.system);
+                    const label =
+                      discipline === "solo"
+                        ? null
+                        : t.rankings.disciplines[discipline];
+
+                    return (
+                      <article key={item.system} className="rank-metric">
+                        {label ? (
+                          <p className="rank-metric__label">{label}</p>
+                        ) : null}
+                        <p className="rank-metric__value">{item.value}</p>
+                        {item.note ? (
+                          <p className="rank-metric__note">{item.note}</p>
+                        ) : null}
+                      </article>
+                    );
+                  })}
+                </div>
+              </section>
             </Reveal>
           ))}
         </div>
