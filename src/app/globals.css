@@ -2952,8 +2952,13 @@ a.fu-vcard__item:hover {
 
 .site-footer__inner {
   display: grid;
-  gap: 0.55rem;
+  gap: 1.25rem;
   grid-template-columns: 1fr;
+}
+
+.site-footer__brand-block {
+  display: grid;
+  gap: 0.45rem;
 }
 
 .site-footer__brand-row {
@@ -2977,12 +2982,50 @@ a.fu-vcard__item:hover {
   font-size: 0.9rem;
 }
 
+.site-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 1.1rem;
+}
+
+.site-footer__nav a {
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+  font-size: 0.92rem;
+  transition: color 160ms ease;
+}
+
+.site-footer__nav a:hover {
+  color: var(--ball);
+}
+
+.site-footer__contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+}
+
+.site-footer__email {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.site-footer__email:hover {
+  color: var(--ball);
+}
+
 .site-footer__ig {
   font-size: 0.85rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--white);
-  justify-self: start;
+  text-decoration: none;
+}
+
+.site-footer__ig:hover {
+  color: var(--ball);
 }
 
 @media (min-width: 720px) {
@@ -3038,8 +3081,16 @@ a.fu-vcard__item:hover {
   }
 
   .site-footer__inner {
-    grid-template-columns: 1.2fr 1fr auto;
-    align-items: center;
+    grid-template-columns: 1.1fr 1.4fr auto;
+    align-items: start;
+    column-gap: 2rem;
+  }
+
+  .site-footer__contact {
+    justify-content: flex-end;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.55rem;
   }
 
   .site-footer__rights {

@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { MediaAlbums } from "@/components/MediaAlbums";
 import { PageBanner } from "@/components/PageBanner";
 import { Press } from "@/components/SiteSections";
@@ -27,7 +28,9 @@ export function MediaView({
         lead={t.gallery.lead}
         imageSrc={mediaAssets.media}
       />
-      <MediaAlbums albums={albums} photos={photos} videos={videos} />
+      <Suspense fallback={null}>
+        <MediaAlbums albums={albums} photos={photos} videos={videos} />
+      </Suspense>
       <Press />
     </>
   );

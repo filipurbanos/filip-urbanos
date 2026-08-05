@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
 import { youtubeEmbedUrl, sortByDateDesc } from "@/lib/cms/dates";
@@ -79,14 +80,59 @@ function countLabel(photos: number, videos: number, locale: "sk" | "en") {
   return parts.join(" · ");
 }
 
+function resolveAlbumParam(
+  value: string | null,
+  albumIds: Set<string>,
+  hasUncategorized: boolean,
+): ActiveView {
+  if (!value) return "index";
+  if (value === "all") return "all";
+  if (value === "none" && hasUncategorized) return "none";
+  if (albumIds.has(value)) return value;
+  return "index";
+}
+
 export function MediaAlbums({ albums, photos, videos }: MediaAlbumsProps) {
   const { t, locale } = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const sortedAlbums = useMemo(() => sortByDateDesc(albums), [albums]);
-  const [active, setActive] = useState<ActiveView>("index");
+  const albumIds = useMemo(
+    () => new Set(sortedAlbums.map((album) => album.id)),
+    [sortedAlbums],
+  );
 
   const hasUncategorized =
     photos.some((photo) => !photo.albumId) ||
     videos.some((video) => !video.albumId);
+
+  const [active, setActive] = useState<ActiveView>(() =>
+    resolveAlbumParam(searchParams.get("album"), albumIds, hasUncategorized),
+  );
+
+  useEffect(() => {
+    setActive(
+      resolveAlbumParam(searchParams.get("album"), albumIds, hasUncategorized),
+    );
+  }, [searchParams, albumIds, hasUncategorized]);
+
+  const openAlbum = useCallback(
+    (view: ActiveView) => {
+      setActive(view);
+      const params = new URLSearchParams(searchParams.toString());
+      if (view === "index") {
+        params.delete("album");
+      } else {
+        params.set("album", view);
+      }
+      const query = params.toString();
+      router.replace(query ? `${pathname}?${query}` : pathname, {
+        scroll: false,
+      });
+    },
+    [pathname, router, searchParams],
+  );
 
   const albumStats = useMemo(() => {
     return sortedAlbums
@@ -173,7 +219,7 @@ export function MediaAlbums({ albums, photos, videos }: MediaAlbumsProps) {
                   <button
                     type="button"
                     className="album-row"
-                    onClick={() => setActive("all")}
+                    onClick={() => openAlbum("all")}
                   >
                     <span
                       className="album-row__cover album-row__cover--all"
@@ -198,7 +244,7 @@ export function MediaAlbums({ albums, photos, videos }: MediaAlbumsProps) {
                     <button
                       type="button"
                       className="album-row"
-                      onClick={() => setActive(album.id)}
+                      onClick={() => openAlbum(album.id)}
                     >
                       <span className="album-row__cover">
                         {cover ? (
@@ -234,7 +280,7 @@ export function MediaAlbums({ albums, photos, videos }: MediaAlbumsProps) {
                     <button
                       type="button"
                       className="album-row"
-                      onClick={() => setActive("none")}
+                      onClick={() => openAlbum("none")}
                     >
                       <span className="album-row__cover">
                         {uncategorizedStats.cover ? (
@@ -275,7 +321,7 @@ export function MediaAlbums({ albums, photos, videos }: MediaAlbumsProps) {
             <button
               type="button"
               className="album-back"
-              onClick={() => setActive("index")}
+              onClick={() => openAlbum("index")}
             >
               ← {t.albums.back}
             </button>
