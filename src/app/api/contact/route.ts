@@ -25,12 +25,18 @@ export async function POST(request: Request) {
     email?: string;
     topic?: string;
     message?: string;
+    company?: string;
   };
 
   try {
     body = (await request.json()) as typeof body;
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  // Honeypot: bots fill hidden "company" — pretend success, drop the message.
+  if (String(body.company || "").trim()) {
+    return NextResponse.json({ ok: true });
   }
 
   const name = String(body.name || "").trim().slice(0, 120);

@@ -9,10 +9,10 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { dictionaries } from "@/content";
 import type { Content, Locale } from "@/content/types";
-
-const STORAGE_KEY = "fu-locale";
+import { localePath, stripLocalePath } from "@/lib/locale-path";
 
 type LocaleContextValue = {
   locale: Locale;
@@ -22,26 +22,36 @@ type LocaleContextValue = {
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
-function isLocale(value: string | null): value is Locale {
-  return value === "sk" || value === "en";
+function localeFromPath(pathname: string): Locale {
+  return pathname === "/en" || pathname.startsWith("/en/") ? "en" : "sk";
 }
 
-export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("sk");
+export function LocaleProvider({
+  children,
+  initialLocale = "sk",
+}: {
+  children: ReactNode;
+  initialLocale?: Locale;
+}) {
+  const [locale, setLocaleState] = useState<Locale>(initialLocale);
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (isLocale(stored)) {
-      setLocaleState(stored);
-      document.documentElement.lang = stored;
-    }
-  }, []);
+    const fromPath = localeFromPath(pathname || "/");
+    setLocaleState(fromPath);
+    document.documentElement.lang = fromPath;
+  }, [pathname]);
 
-  const setLocale = useCallback((next: Locale) => {
-    setLocaleState(next);
-    document.documentElement.lang = next;
-    window.localStorage.setItem(STORAGE_KEY, next);
-  }, []);
+  const setLocale = useCallback(
+    (next: Locale) => {
+      setLocaleState(next);
+      document.documentElement.lang = next;
+      const basePath = stripLocalePath(pathname || "/");
+      router.push(localePath(next, basePath));
+    },
+    [pathname, router],
+  );
 
   const value = useMemo(
     () => ({

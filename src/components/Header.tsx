@@ -7,6 +7,7 @@ import { BrandMark } from "@/components/BrandMark";
 import type { Content } from "@/content/types";
 import { routes } from "@/lib/routes";
 import { useLocale } from "@/lib/locale";
+import { localePath, stripLocalePath } from "@/lib/locale-path";
 
 const links: { key: keyof Content["nav"]; href: string }[] = [
   { key: "about", href: routes.about },
@@ -21,13 +22,15 @@ const links: { key: keyof Content["nav"]; href: string }[] = [
 export function Header() {
   const { t, locale, setLocale } = useLocale();
   const pathname = usePathname();
-  const isHome = pathname === routes.home;
+  const basePath = stripLocalePath(pathname);
+  const isHome = basePath === routes.home;
   const [scrolled, setScrolled] = useState(!isHome);
   const [open, setOpen] = useState(false);
   const navId = useId();
   const menuLabel = t.chrome.menu;
   const navLabel = t.chrome.nav;
   const langLabel = t.chrome.lang;
+  const brandName = locale === "en" ? "Filip Urbanos" : "Filip Urbánoš";
 
   useEffect(() => {
     if (!isHome) {
@@ -67,9 +70,13 @@ export function Header() {
       className={`site-header ${scrolled || !isHome ? "is-scrolled" : ""}`}
     >
       <div className="site-header__inner">
-        <Link href={routes.home} className="brand" onClick={() => setOpen(false)}>
+        <Link
+          href={localePath(locale, routes.home)}
+          className="brand"
+          onClick={() => setOpen(false)}
+        >
           <BrandMark />
-          <span className="brand__name">Filip Urbánoš</span>
+          <span className="brand__name">{brandName}</span>
         </Link>
 
         <nav
@@ -80,8 +87,8 @@ export function Header() {
           {links.map(({ key, href }) => (
             <Link
               key={href}
-              href={href}
-              className={pathname === href ? "is-active" : ""}
+              href={localePath(locale, href)}
+              className={basePath === href ? "is-active" : ""}
               onClick={() => setOpen(false)}
             >
               {t.nav[key]}

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import { useLocale } from "@/lib/locale";
+import { localePath } from "@/lib/locale-path";
 import { routes } from "@/lib/routes";
 import type { Content } from "@/content/types";
 
@@ -20,7 +21,7 @@ const cards: {
 ];
 
 export function HomeHub() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   return (
     <section className="section home-hub">
@@ -35,7 +36,7 @@ export function HomeHub() {
           {cards.map((card, i) => (
             <Reveal key={card.href} delay={i * 50}>
               <Link
-                href={card.href}
+                href={localePath(locale, card.href)}
                 className={`home-card${card.featured ? " home-card--featured" : ""}`}
               >
                 <span className="home-card__label">{t.nav[card.key]}</span>
@@ -52,7 +53,7 @@ export function HomeHub() {
 
         <Reveal delay={280}>
           <div className="home-hub__cta">
-            <Link className="btn btn--primary" href={routes.contact}>
+            <Link className="btn btn--primary" href={localePath(locale, routes.contact)}>
               {t.nav.contact}
               <span aria-hidden="true">↗</span>
             </Link>

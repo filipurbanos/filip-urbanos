@@ -1,13 +1,22 @@
-import type { Metadata } from "next";
 import { ResultsView } from "@/components/page-views/ResultsView";
 import { sortByDateAsc, sortByDateDesc } from "@/lib/cms/dates";
 import { readCms } from "@/lib/cms/store";
+import { routes } from "@/lib/routes";
+import { buildPageMetadata } from "@/lib/page-meta";
 
-export const metadata: Metadata = {
-  title: "Výsledky",
-  description:
-    "Aktuálny turnaj, kalendár a výsledky Filipa Urbánoša — ITF, UTR, ATP.",
-};
+export async function generateMetadata() {
+  return buildPageMetadata({
+    path: routes.results,
+    title: {
+      sk: "Výsledky",
+      en: "Results",
+    },
+    description: {
+      sk: "Aktuálny turnaj, kalendár a výsledky Filipa Urbánoša — ITF, UTR, ATP.",
+      en: "Live tournament, calendar, and results for Filip Urbanos — ITF, UTR, ATP.",
+    },
+  });
+}
 
 export const dynamic = "force-dynamic";
 

@@ -1,12 +1,21 @@
-import type { Metadata } from "next";
 import { PartnersView } from "@/components/page-views/PartnersView";
 import { readCms } from "@/lib/cms/store";
+import { routes } from "@/lib/routes";
+import { buildPageMetadata } from "@/lib/page-meta";
 
-export const metadata: Metadata = {
-  title: "Partneri",
-  description:
-    "Partneri, sponzoring, media kit a spolupráca s Filipom Urbánošom.",
-};
+export async function generateMetadata() {
+  return buildPageMetadata({
+    path: routes.partners,
+    title: {
+      sk: "Partneri",
+      en: "Partners",
+    },
+    description: {
+      sk: "Partneri, sponzoring, media kit a spolupráca s Filipom Urbánošom.",
+      en: "Partners, sponsorship, media kit, and collaboration with Filip Urbanos.",
+    },
+  });
+}
 
 export const dynamic = "force-dynamic";
 

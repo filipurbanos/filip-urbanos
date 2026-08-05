@@ -13,6 +13,7 @@ export function ContactForm({ flushTop = false }: { flushTop?: boolean }) {
   const [email, setEmail] = useState("");
   const [topic, setTopic] = useState<Topic>("partner");
   const [message, setMessage] = useState("");
+  const [company, setCompany] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">(
     "idle",
   );
@@ -24,7 +25,7 @@ export function ContactForm({ flushTop = false }: { flushTop?: boolean }) {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, topic, message }),
+        body: JSON.stringify({ name, email, topic, message, company }),
       });
       if (!res.ok) {
         setStatus("error");
@@ -35,6 +36,7 @@ export function ContactForm({ flushTop = false }: { flushTop?: boolean }) {
       setEmail("");
       setTopic("partner");
       setMessage("");
+      setCompany("");
     } catch {
       setStatus("error");
     }
@@ -51,6 +53,17 @@ export function ContactForm({ flushTop = false }: { flushTop?: boolean }) {
         lead={formCopy.lead}
       />
       <form className="contact-form" onSubmit={onSubmit}>
+        <label className="hp-field" aria-hidden="true">
+          Company
+          <input
+            name="company"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+          />
+        </label>
         <label>
           {formCopy.name}
           <input

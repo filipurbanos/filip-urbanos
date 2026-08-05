@@ -7,6 +7,7 @@ import { Reveal } from "@/components/Reveal";
 import { Section, SectionHeader } from "@/components/Section";
 import type { Partner } from "@/lib/cms/types";
 import { useLocale } from "@/lib/locale";
+import { localePath } from "@/lib/locale-path";
 import { routes } from "@/lib/routes";
 
 export function Gallery({
@@ -239,7 +240,7 @@ function PartnerCard({
 }
 
 export function Sponsors() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   return (
     <Section id="sponsors" className="sponsors">
@@ -267,7 +268,7 @@ export function Sponsors() {
         </Reveal>
       </div>
       <Reveal delay={160}>
-        <Link className="btn btn--primary" href={routes.contact}>
+        <Link className="btn btn--primary" href={localePath(locale, routes.contact)}>
           {t.sponsors.cta}
         </Link>
       </Reveal>
@@ -276,7 +277,7 @@ export function Sponsors() {
 }
 
 export function MediaKit() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   return (
     <Section id="media-kit" className="media-kit">
@@ -292,7 +293,7 @@ export function MediaKit() {
         ))}
       </div>
       <Reveal delay={160}>
-        <Link className="btn btn--primary" href={routes.contact}>
+        <Link className="btn btn--primary" href={localePath(locale, routes.contact)}>
           {t.mediaKit.cta}
         </Link>
       </Reveal>
@@ -301,7 +302,7 @@ export function MediaKit() {
 }
 
 export function Collaborate() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   return (
     <Section id="collaborate" className="collaborate">
@@ -317,7 +318,7 @@ export function Collaborate() {
         ))}
       </div>
       <Reveal delay={160}>
-        <Link className="btn btn--primary" href={routes.contact}>
+        <Link className="btn btn--primary" href={localePath(locale, routes.contact)}>
           {t.collaborate.cta}
         </Link>
       </Reveal>

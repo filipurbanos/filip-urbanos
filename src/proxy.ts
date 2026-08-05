@@ -7,17 +7,20 @@ import {
   verifySession,
 } from "@/lib/cms/auth";
 import { authEpoch } from "@/lib/cms/password";
+import { LOCALE_COOKIE } from "@/lib/locale-path";
 
-/**
- * Node proxy (Next.js 16): admin gate with HMAC + password-epoch check.
- */
-export async function proxy(request: NextRequest) {
+function localeCookie(locale: "sk" | "en") {
+  return {
+    name: LOCALE_COOKIE,
+    value: locale,
+    path: "/",
+    sameSite: "lax" as const,
+    maxAge: 60 * 60 * 24 * 365,
+  };
+}
+
+async function handleAdmin(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
-  if (!pathname.startsWith("/admin")) {
-    return NextResponse.next();
-  }
-
   const token = request.cookies.get(COOKIE)?.value;
   const hmacOk = await verifySession(token);
 
@@ -34,7 +37,6 @@ export async function proxy(request: NextRequest) {
   }
 
   const authed = hmacOk && epochOk;
-
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-pathname", pathname);
 
@@ -64,6 +66,69 @@ export async function proxy(request: NextRequest) {
   });
 }
 
+/**
+ * Node proxy: admin auth (HMAC + epoch) + `/en` locale rewrites.
+ */
+export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  if (pathname.startsWith("/admin")) {
+    return handleAdmin(request);
+  }
+
+  if (pathname.startsWith("/api") || pathname.startsWith("/_next")) {
+    return NextResponse.next();
+  }
+
+  const requestHeaders = new Headers(request.headers);
+
+  if (pathname === "/en" || pathname.startsWith("/en/")) {
+    const stripped =
+      pathname === "/en" ? "/" : pathname.slice(3) || "/";
+    const url = request.nextUrl.clone();
+    url.pathname = stripped.startsWith("/") ? stripped : `/${stripped}`;
+    requestHeaders.set("x-locale", "en");
+    const res = NextResponse.rewrite(url, {
+      request: { headers: requestHeaders },
+    });
+    res.cookies.set(localeCookie("en"));
+    return res;
+  }
+
+  // Public SK URLs
+  if (
+    pathname === "/" ||
+    pathname === "/about" ||
+    pathname === "/journey" ||
+    pathname === "/results" ||
+    pathname === "/usa" ||
+    pathname === "/media" ||
+    pathname === "/partners" ||
+    pathname === "/contact"
+  ) {
+    requestHeaders.set("x-locale", "sk");
+    const res = NextResponse.next({
+      request: { headers: requestHeaders },
+    });
+    res.cookies.set(localeCookie("sk"));
+    return res;
+  }
+
+  return NextResponse.next();
+}
+
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/",
+    "/about",
+    "/journey",
+    "/results",
+    "/usa",
+    "/media",
+    "/partners",
+    "/contact",
+    "/en",
+    "/en/:path*",
+  ],
 };

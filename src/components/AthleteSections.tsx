@@ -12,10 +12,11 @@ import type { Match, Ranking } from "@/lib/cms/types";
 import { mediaLinks } from "@/content";
 import { useLocale } from "@/lib/locale";
 import { mediaAssets } from "@/lib/media";
+import { localePath } from "@/lib/locale-path";
 import { routes } from "@/lib/routes";
 
 export function About({ omitHeader = false }: { omitHeader?: boolean }) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   return (
     <section
@@ -48,11 +49,11 @@ export function About({ omitHeader = false }: { omitHeader?: boolean }) {
             </div>
             <Reveal delay={200}>
               <div className="about__actions">
-                <Link className="btn btn--primary" href={routes.results}>
+                <Link className="btn btn--primary" href={localePath(locale, routes.results)}>
                   {t.nav.results}
                   <span aria-hidden="true">↗</span>
                 </Link>
-                <Link className="btn btn--ghost" href={routes.usa}>
+                <Link className="btn btn--ghost" href={localePath(locale, routes.usa)}>
                   {t.nav.usa}
                 </Link>
               </div>
@@ -65,7 +66,7 @@ export function About({ omitHeader = false }: { omitHeader?: boolean }) {
 }
 
 export function Journey({ omitHeader = false }: { omitHeader?: boolean }) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const chapters = t.journey.chapters;
 
   return (
@@ -98,11 +99,11 @@ export function Journey({ omitHeader = false }: { omitHeader?: boolean }) {
       </ol>
       <Reveal delay={320}>
         <div className="story__actions">
-          <Link className="btn btn--primary" href={routes.usa}>
+          <Link className="btn btn--primary" href={localePath(locale, routes.usa)}>
             {t.nav.usa}
             <span aria-hidden="true">↗</span>
           </Link>
-          <Link className="btn btn--ghost" href={routes.results}>
+          <Link className="btn btn--ghost" href={localePath(locale, routes.results)}>
             {t.nav.results}
           </Link>
         </div>
@@ -608,7 +609,7 @@ export function Training() {
 }
 
 export function Usa({ omitHeader = false }: { omitHeader?: boolean }) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const school = t.usa.school;
   const life = t.usa.life;
 
@@ -642,11 +643,11 @@ export function Usa({ omitHeader = false }: { omitHeader?: boolean }) {
             </ul>
             <Reveal delay={280}>
               <div className="usa-intro__actions">
-                <Link className="btn btn--primary" href={routes.results}>
+                <Link className="btn btn--primary" href={localePath(locale, routes.results)}>
                   {t.nav.results}
                   <span aria-hidden="true">↗</span>
                 </Link>
-                <Link className="btn btn--ghost" href={routes.contact}>
+                <Link className="btn btn--ghost" href={localePath(locale, routes.contact)}>
                   {t.nav.contact}
                 </Link>
               </div>

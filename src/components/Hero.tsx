@@ -5,10 +5,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { useLocale } from "@/lib/locale";
 import { mediaAssets } from "@/lib/media";
+import { localePath } from "@/lib/locale-path";
 import { routes } from "@/lib/routes";
 
 export function Hero() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const [heroSrc, setHeroSrc] = useState<string>(mediaAssets.hero);
   const [usingFallback, setUsingFallback] = useState(false);
   const nameParts = t.hero.headline.trim().split(/\s+/);
@@ -52,11 +53,11 @@ export function Hero() {
         <p className="hero__tagline">{t.hero.tagline}</p>
         <p className="hero__lead">{t.hero.lead}</p>
         <div className="hero__actions">
-          <Link className="btn btn--primary" href={routes.results}>
+          <Link className="btn btn--primary" href={localePath(locale, routes.results)}>
             {t.hero.ctaPrimary}
             <span aria-hidden="true">↗</span>
           </Link>
-          <Link className="btn btn--ghost" href={routes.partners}>
+          <Link className="btn btn--ghost" href={localePath(locale, routes.partners)}>
             {t.hero.ctaSecondary}
           </Link>
         </div>

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, Outfit } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import { dictionaries } from "@/content";
+import { getRequestLocale } from "@/lib/request-locale";
 import { siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
@@ -60,15 +61,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getRequestLocale();
+
   return (
-    <html lang="sk" className={`${display.variable} ${body.variable} h-full`}>
+    <html lang={locale} className={`${display.variable} ${body.variable} h-full`}>
       <body className="min-h-full antialiased">
-        <Providers>{children}</Providers>
+        <Providers initialLocale={locale}>{children}</Providers>
       </body>
     </html>
   );
