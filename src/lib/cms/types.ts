@@ -13,6 +13,8 @@ export type RankingSystem =
   | "ITF Doubles"
   | "UTR"
   | "UTR Doubles"
+  | "WTN"
+  | "WTN Doubles"
   | "ATP"
   | "Tennis Europe";
 

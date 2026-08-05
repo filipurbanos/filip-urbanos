@@ -182,6 +182,16 @@
       "note": ""
     },
     {
+      "system": "WTN",
+      "value": "24,3",
+      "note": "Aktuálne World Tennis Number v dvojhre."
+    },
+    {
+      "system": "WTN Doubles",
+      "value": "24,3",
+      "note": "Aktuálne World Tennis Number vo štvorhre."
+    },
+    {
       "system": "ATP",
       "value": "",
       "note": ""

@@ -1,17 +1,11 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/cms/auth-server";
+import { RANKING_SYSTEMS } from "@/lib/cms/rankings";
 import { mutateCms, readCms } from "@/lib/cms/store";
 import type { Ranking } from "@/lib/cms/types";
 import { handleCmsWriteError } from "@/lib/cms/write-helpers";
 
-const allowedSystems: Ranking["system"][] = [
-  "ITF Junior",
-  "ITF Doubles",
-  "UTR",
-  "UTR Doubles",
-  "ATP",
-  "Tennis Europe",
-];
+const allowedSystems = RANKING_SYSTEMS;
 
 export async function GET() {
   if (!(await isAdminAuthenticated())) {

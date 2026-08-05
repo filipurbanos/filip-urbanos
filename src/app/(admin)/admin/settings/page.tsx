@@ -4,21 +4,34 @@ import { useEffect, useState } from "react";
 import { emptyRankingsTemplate } from "@/lib/cms/rankings";
 import type { Ranking } from "@/lib/cms/types";
 
-const defaultRankings: Ranking[] = emptyRankingsTemplate().map((item) =>
-  item.system === "Tennis Europe"
-    ? {
-        ...item,
-        value: "~150",
-        note: "Historický juniorský míľnik",
-      }
-    : item,
-);
+const defaultRankings: Ranking[] = emptyRankingsTemplate().map((item) => {
+  if (item.system === "Tennis Europe") {
+    return {
+      ...item,
+      value: "~150",
+      note: "Historický juniorský míľnik",
+    };
+  }
+  if (item.system === "WTN" || item.system === "WTN Doubles") {
+    return {
+      ...item,
+      value: "24,3",
+      note:
+        item.system === "WTN"
+          ? "Aktuálne World Tennis Number v dvojhre."
+          : "Aktuálne World Tennis Number vo štvorhre.",
+    };
+  }
+  return item;
+});
 
 function rankingLabel(system: Ranking["system"]) {
   if (system === "ITF Junior") return "ITF 2-hra";
   if (system === "ITF Doubles") return "ITF 4-hra";
   if (system === "UTR") return "UTR 2-hra";
   if (system === "UTR Doubles") return "UTR 4-hra";
+  if (system === "WTN") return "WTN 2-hra";
+  if (system === "WTN Doubles") return "WTN 4-hra";
   return system;
 }
 

@@ -159,7 +159,7 @@ export const sk: Content = {
   },
   rankings: {
     eyebrow: "Rebríčky",
-    title: "ITF · UTR · ATP",
+    title: "ITF · UTR · WTN",
     lead: "Overené pozície a míľniky. Ďalšie čísla dopĺňame, keď ich máme z oficiálnych zdrojov.",
     empty:
       "Aktuálne čísla dopĺňame priebežne. Medzitým je Filipov oficiálny ITF profil.",
@@ -169,10 +169,22 @@ export const sk: Content = {
       "ITF Doubles": "ITF 4-hra",
       UTR: "UTR 2-hra",
       "UTR Doubles": "UTR 4-hra",
+      WTN: "WTN 2-hra",
+      "WTN Doubles": "WTN 4-hra",
       ATP: "ATP",
       "Tennis Europe": "Tennis Europe",
     },
     items: [
+      {
+        system: "WTN",
+        value: "24,3",
+        note: "Aktuálne World Tennis Number v dvojhre.",
+      },
+      {
+        system: "WTN Doubles",
+        value: "24,3",
+        note: "Aktuálne World Tennis Number vo štvorhre.",
+      },
       {
         system: "Tennis Europe",
         value: "~150",

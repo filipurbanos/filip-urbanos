@@ -159,7 +159,7 @@ export const en: Content = {
   },
   rankings: {
     eyebrow: "Rankings",
-    title: "ITF · UTR · ATP",
+    title: "ITF · UTR · WTN",
     lead: "Verified positions and milestones. We add more numbers once they’re confirmed from official sources.",
     empty:
       "Current numbers are added as they land. Meanwhile, see Filip’s official ITF profile.",
@@ -169,10 +169,22 @@ export const en: Content = {
       "ITF Doubles": "ITF doubles",
       UTR: "UTR singles",
       "UTR Doubles": "UTR doubles",
+      WTN: "WTN singles",
+      "WTN Doubles": "WTN doubles",
       ATP: "ATP",
       "Tennis Europe": "Tennis Europe",
     },
     items: [
+      {
+        system: "WTN",
+        value: "24.3",
+        note: "Current World Tennis Number in singles.",
+      },
+      {
+        system: "WTN Doubles",
+        value: "24.3",
+        note: "Current World Tennis Number in doubles.",
+      },
       {
         system: "Tennis Europe",
         value: "~150",
