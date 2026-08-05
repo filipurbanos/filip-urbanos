@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, Outfit } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import { dictionaries } from "@/content";
@@ -17,6 +17,12 @@ const body = Outfit({
 });
 
 const site = siteUrl();
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(site),
