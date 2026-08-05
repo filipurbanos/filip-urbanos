@@ -85,16 +85,20 @@ export default function AdminVideosPage() {
     return data?.videos || [];
   }
 
-  async function registerVideo(videoUrl: string, fileName: string) {
-    return saveRecord({
-      title: title || fileName.replace(/\.[^.]+$/, "") || "Video",
-      url: videoUrl,
-      description,
-      albumId,
-    });
+  async function fetchVideos() {
+    const res = await fetch("/api/admin/videos", { cache: "no-store" });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { videos: Video[] };
+    return data.videos;
   }
 
   async function uploadViaBlob(selected: File) {
+    const payload = {
+      title: title || selected.name.replace(/\.[^.]+$/, "") || "Video",
+      description,
+      albumId,
+      fileName: selected.name,
+    };
     const pathname = makeUploadName(selected);
     setProgress(0);
     const blob = await upload(pathname, selected, {
@@ -102,11 +106,32 @@ export default function AdminVideosPage() {
       handleUploadUrl: "/api/admin/blob-upload",
       multipart: true,
       contentType: selected.type || "video/mp4",
+      clientPayload: JSON.stringify(payload),
       onUploadProgress: ({ percentage }) => {
         setProgress(Math.round(percentage));
       },
     });
-    return registerVideo(blob.url, selected.name);
+
+    try {
+      return await saveRecord({
+        title: payload.title,
+        url: blob.url,
+        description: payload.description,
+        albumId: payload.albumId,
+      });
+    } catch (err) {
+      // Blob callback may have already written CMS — wait and reload once.
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const fresh = await fetchVideos();
+      if (fresh?.some((video) => video.url === blob.url)) {
+        return fresh;
+      }
+      throw err instanceof Error
+        ? err
+        : new Error(
+            "Súbor je nahraný v Blob, ale nepodarilo sa ho uložiť do galérie. Skús obnoviť stránku.",
+          );
+    }
   }
 
   async function uploadViaServer(selected: File) {
@@ -249,9 +274,9 @@ export default function AdminVideosPage() {
     <div className="admin-page">
       <h1>Videá</h1>
       <p className="admin-lead">
-        Veľké súbory (&gt; 4 MB) idú priamo do Vercel Blob z prehliadača — nie
-        cez API (preto už by nemal byť 413). YouTube/Vimeo link je stále
-        najspoľahlivejší.
+        Veľké súbory (&gt; 4 MB) idú priamo do Vercel Blob z prehliadača — galéria
+        sa uloží automaticky po nahratí. Ak upload prešiel, ale video chýba,
+        vlož jeho Blob URL do poľa URL nižšie a ulož znova.
         {blobReady === true ? " · Blob: OK" : null}
         {blobReady === false ? " · Blob: vypnutý" : null}
       </p>
@@ -317,8 +342,11 @@ export default function AdminVideosPage() {
               : ""}
           </p>
         ) : null}
-        {progress !== null ? (
+        {progress !== null && progress < 100 ? (
           <p className="admin-muted">Nahrávam do Blob… {progress}%</p>
+        ) : null}
+        {progress !== null && progress >= 100 ? (
+          <p className="admin-muted">Ukladám do galérie…</p>
         ) : null}
         {error ? <p className="admin-error">{error}</p> : null}
         <button className="btn btn--primary" type="submit" disabled={loading}>

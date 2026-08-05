@@ -3,6 +3,7 @@ import { isAdminAuthenticated } from "@/lib/cms/auth-server";
 import { createId, mutateCms, readCms } from "@/lib/cms/store";
 import { deleteUpload, saveUpload } from "@/lib/cms/storage";
 import type { Video } from "@/lib/cms/types";
+import { upsertVideoRecord } from "@/lib/cms/videos";
 import { handleCmsWriteError, cmsWriteErrorResponse } from "@/lib/cms/write-helpers";
 
 const VIDEO_TYPES = new Set([
@@ -52,8 +53,11 @@ async function readBodyWithLimit(
 }
 
 async function appendVideo(video: Video) {
-  return mutateCms((data) => {
-    data.videos.unshift(video);
+  return upsertVideoRecord({
+    url: video.url,
+    title: video.title,
+    description: video.description,
+    albumId: video.albumId,
   });
 }
 
@@ -132,7 +136,7 @@ export async function POST(request: Request) {
         createdAt: new Date().toISOString(),
       };
       const data = await appendVideo(video);
-      return NextResponse.json({ videos: data.videos });
+      return NextResponse.json({ videos: data });
     } catch (err) {
       const conflict = cmsWriteErrorResponse(err);
       if (conflict) return conflict;
@@ -205,8 +209,8 @@ export async function POST(request: Request) {
         createdAt: new Date().toISOString(),
       };
       try {
-        const data = await appendVideo(video);
-        return NextResponse.json({ videos: data.videos });
+        const videos = await appendVideo(video);
+        return NextResponse.json({ videos });
       } catch (error) {
         return handleCmsWriteError(error);
       }
@@ -229,7 +233,7 @@ export async function POST(request: Request) {
     };
     try {
       const data = await appendVideo(video);
-      return NextResponse.json({ videos: data.videos });
+      return NextResponse.json({ videos: data });
     } catch (error) {
       return handleCmsWriteError(error);
     }
@@ -261,16 +265,13 @@ export async function POST(request: Request) {
     if (!body.url?.trim()) {
       return NextResponse.json({ error: "Chýba URL" }, { status: 400 });
     }
-    const video: Video = {
-      id: createId("v"),
-      title: body.title?.trim() || "Video",
+    const videos = await upsertVideoRecord({
       url: body.url.trim(),
+      title: body.title?.trim(),
       description: body.description?.trim() || "",
       albumId: String(body.albumId || ""),
-      createdAt: new Date().toISOString(),
-    };
-    const data = await appendVideo(video);
-    return NextResponse.json({ videos: data.videos });
+    });
+    return NextResponse.json({ videos });
   } catch (error) {
     return handleCmsWriteError(error);
   }
