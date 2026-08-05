@@ -111,7 +111,7 @@ export const sk: Content = {
         date: "2026-02",
         event: "J30 Nairobi",
         place: "Nairobi, Kenya",
-        surface: "Hard",
+        surface: "Clay",
         resultSingles: "Nasadený #2",
         resultDoubles: "—",
       },

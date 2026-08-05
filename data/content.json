@@ -62,13 +62,13 @@
       "date": "2026-02",
       "event": "J30 Nairobi",
       "place": "Nairobi, Kenya",
-      "surface": "Hard",
+      "surface": "Clay",
       "status": "completed",
       "resultSingles": "Nasadený #2",
       "resultDoubles": "—",
       "notes": "ITF East Africa Junior Circuit",
       "url": "",
-      "albumId": "",
+      "albumId": "a_nairobi",
       "matches": []
     },
     {
@@ -107,6 +107,13 @@
       "date": "2026",
       "description": "Príprava na antuke a hard courte.",
       "createdAt": "2026-07-31T00:00:00.000Z"
+    },
+    {
+      "id": "a_nairobi",
+      "title": "J30 Nairobi",
+      "date": "2026-02",
+      "description": "ITF East Africa Junior Circuit · Nairobi, Kenya.",
+      "createdAt": "2026-02-11T00:00:00.000Z"
     }
   ],
   "photos": [
@@ -117,6 +124,22 @@
       "caption": "Tréning · backhand",
       "albumId": "a_training",
       "createdAt": "2026-07-31T00:00:00.000Z"
+    },
+    {
+      "id": "p_nairobi_ready",
+      "src": "/media/filip-nairobi-ready.jpg",
+      "alt": "Filip Urbánoš — J30 Nairobi, príprava na podanie",
+      "caption": "J30 Nairobi · ready",
+      "albumId": "a_nairobi",
+      "createdAt": "2026-02-11T00:00:00.000Z"
+    },
+    {
+      "id": "p_nairobi_serve",
+      "src": "/media/filip-nairobi-serve.jpg",
+      "alt": "Filip Urbánoš — J30 Nairobi, podanie",
+      "caption": "J30 Nairobi · serve",
+      "albumId": "a_nairobi",
+      "createdAt": "2026-02-11T00:00:00.000Z"
     }
   ],
   "videos": [

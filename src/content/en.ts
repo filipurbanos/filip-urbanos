@@ -111,7 +111,7 @@ export const en: Content = {
         date: "2026-02",
         event: "J30 Nairobi",
         place: "Nairobi, Kenya",
-        surface: "Hard",
+        surface: "Clay",
         resultSingles: "Seeded #2",
         resultDoubles: "—",
       },

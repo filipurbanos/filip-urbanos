@@ -9,7 +9,8 @@
  * - public/media/filip-usa.jpg      → USA body photo
  * - public/media/page-media.jpg     → Médiá
  * - public/media/page-partners.jpg  → Partneri
- * - public/media/page-contact.jpg   → Kontakt
+ * - public/media/filip-nairobi-ready.jpg → J30 Nairobi album
+ * - public/media/filip-nairobi-serve.jpg  → J30 Nairobi album
  */
 export const mediaAssets = {
   hero: "/media/hero.jpg",

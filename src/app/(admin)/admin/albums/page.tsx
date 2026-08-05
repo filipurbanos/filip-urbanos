@@ -65,6 +65,7 @@ export default function AdminAlbumsPage() {
       }
       const data = (await res.json()) as {
         addedAlbums: string[];
+        addedPhotos: string[];
         linkedTournaments: string[];
         linkedVideos: string[];
         albums?: Album[];
@@ -73,6 +74,9 @@ export default function AdminAlbumsPage() {
         data.addedAlbums.length
           ? `albumy: ${data.addedAlbums.join(", ")}`
           : "žiadne nové albumy",
+        data.addedPhotos?.length
+          ? `fotky: ${data.addedPhotos.length}`
+          : null,
         data.linkedTournaments.length
           ? `turnaje: ${data.linkedTournaments.length}`
           : null,
