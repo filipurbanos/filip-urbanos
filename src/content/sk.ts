@@ -148,7 +148,7 @@ export const sk: Content = {
   },
   calendar: {
     eyebrow: "Kalendár",
-    title: "Nadchádzajúce turnaje",
+    title: "Najbližšie",
     lead: "Plán okruhu — miesta a dátumy sa môžu meniť podľa žrebovania a cestovania.",
     items: [],
     empty: "Zatiaľ nie sú naplánované ďalšie turnaje.",

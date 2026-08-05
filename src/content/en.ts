@@ -148,7 +148,7 @@ export const en: Content = {
   },
   calendar: {
     eyebrow: "Calendar",
-    title: "Upcoming tournaments",
+    title: "Up next",
     lead: "Circuit plan — venues and dates can shift with draws and travel.",
     items: [],
     empty: "No upcoming tournaments scheduled yet.",
