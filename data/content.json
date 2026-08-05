@@ -150,6 +150,14 @@
       "description": "Rozhovor o pocitoch a ako našiel akadémiu Inspiration Academy v Bradentone na Floride",
       "albumId": "a_inspiration",
       "createdAt": "2026-07-31T19:03:00.570Z"
+    },
+    {
+      "id": "v_nairobi_match",
+      "title": "J30 Nairobi · zápas",
+      "url": "/media/filip-nairobi-match.mp4",
+      "description": "ITF East Africa Junior Circuit · Nairobi, Kenya",
+      "albumId": "a_nairobi",
+      "createdAt": "2026-02-06T18:41:27.000Z"
     }
   ],
   "rankings": [

@@ -6,6 +6,7 @@ import type { Album, CmsData } from "@/lib/cms/types";
 export type SeedAlbumSyncResult = {
   addedAlbums: string[];
   addedPhotos: string[];
+  addedVideos: string[];
   linkedTournaments: string[];
   linkedVideos: string[];
   albums: Album[];
@@ -35,12 +36,14 @@ export async function syncSeedAlbums(): Promise<SeedAlbumSyncResult> {
 
   let addedAlbums: string[] = [];
   let addedPhotos: string[] = [];
+  let addedVideos: string[] = [];
   let linkedTournaments: string[] = [];
   let linkedVideos: string[] = [];
 
   const data = await mutateCms((data) => {
     addedAlbums = [];
     addedPhotos = [];
+    addedVideos = [];
     linkedTournaments = [];
     linkedVideos = [];
 
@@ -80,15 +83,22 @@ export async function syncSeedAlbums(): Promise<SeedAlbumSyncResult> {
         (video) =>
           video.id === seedVideo.id || video.title === seedVideo.title,
       );
-      if (!live || live.albumId) continue;
-      live.albumId = seedVideo.albumId;
-      linkedVideos.push(live.title);
+      if (live) {
+        if (!live.albumId) {
+          live.albumId = seedVideo.albumId;
+          linkedVideos.push(live.title);
+        }
+        continue;
+      }
+      data.videos.push(seedVideo);
+      addedVideos.push(seedVideo.title);
     }
   });
 
   return {
     addedAlbums,
     addedPhotos,
+    addedVideos,
     linkedTournaments,
     linkedVideos,
     albums: data.albums,

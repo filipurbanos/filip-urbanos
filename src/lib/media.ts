@@ -10,7 +10,7 @@
  * - public/media/page-media.jpg     → Médiá
  * - public/media/page-partners.jpg  → Partneri
  * - public/media/filip-nairobi-ready.jpg → J30 Nairobi album
- * - public/media/filip-nairobi-serve.jpg  → J30 Nairobi album
+ * - public/media/filip-nairobi-match.mp4  → J30 Nairobi album video
  */
 export const mediaAssets = {
   hero: "/media/hero.jpg",
