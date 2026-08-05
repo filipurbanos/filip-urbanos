@@ -28,7 +28,7 @@ export function About({ omitHeader = false }: { omitHeader?: boolean }) {
           <Reveal>
             <figure className="about__photo">
               <Image
-                src="/media/filip-backhand.jpg"
+                src={mediaAssets.aboutPortrait}
                 alt={t.about.photoAlt}
                 fill
                 sizes="(max-width: 900px) 100vw, 50vw"
@@ -624,11 +624,11 @@ export function Usa({ omitHeader = false }: { omitHeader?: boolean }) {
           <Reveal>
             <figure className="usa-intro__photo">
               <Image
-                src="/media/filip-backhand.jpg"
+                src={mediaAssets.usaPortrait}
                 alt={t.usa.photoAlt}
                 fill
                 sizes="(max-width: 900px) 100vw, 45vw"
-                style={{ objectFit: "cover" }}
+                style={{ objectFit: "cover", objectPosition: "center 20%" }}
               />
               <figcaption>{t.usa.photoCaption}</figcaption>
             </figure>

@@ -38,7 +38,7 @@ export const en: Content = {
     title: "Ambition, discipline, growth",
     outlineTitle: "Junior · SK",
     lead: "A Slovak junior with a clear aim and a routine built on training and matches.",
-    photoAlt: "Filip Urbanos — backhand on clay",
+    photoAlt: "Filip Urbanos — on the bench before training",
     paragraphs: [
       "Filip Urbanos is a 196 cm right-hander with a hard-court preference. He has played tennis since age four or five and now competes on the ITF Junior Tour.",
       "The goal is Top 20 ATP — through discipline, tough matches, and daily preparation. Profile and training sit below; the chapter path has its own page.",
@@ -199,8 +199,8 @@ export const en: Content = {
     title: "Florida — study and tennis",
     lead: "Inspiration Academy in Bradenton combines school and high-performance tennis — Filip’s current USA chapter.",
     outlineTitle: "Bradenton · FL",
-    photoAlt: "Filip Urbanos — training",
-    photoCaption: "Florida · hard-court chapter",
+    photoAlt: "Filip Urbanos — Inspiration Academy Tennis",
+    photoCaption: "Bradenton · Inspiration Academy",
     schoolBadge: "Inspiration Academy Lions",
     points: [
       "Study and daily training at Inspiration Academy in Florida.",

@@ -38,7 +38,7 @@ export const sk: Content = {
     title: "Ambícia, disciplína, rast",
     outlineTitle: "Junior · SK",
     lead: "Slovenský junior s jasnou ambíciou a režimom postaveným na tréningu a zápase.",
-    photoAlt: "Filip Urbánoš — backhand na antuke",
+    photoAlt: "Filip Urbánoš — na lavičke pred tréningom",
     paragraphs: [
       "Filip Urbánoš je 196 cm vysoký pravák s preferenciou hard courtu. Tenis hrá od štyroch–piatich rokov a dnes sa pohybuje na ITF Junior Tour.",
       "Cieľ je Top 20 ATP — cez disciplínu, ťažké zápasy a každodennú prípravu. Profil a režim tréningu sú nižšie; kapitoly cesty majú vlastnú stránku.",
@@ -199,8 +199,8 @@ export const sk: Content = {
     title: "Florida — štúdium a tenis",
     lead: "Inspiration Academy v Bradentone spája školu a high-performance tenis — aktuálna kapitola Filipa v USA.",
     outlineTitle: "Bradenton · FL",
-    photoAlt: "Filip Urbánoš — tréning",
-    photoCaption: "Florida · hard court kapitola",
+    photoAlt: "Filip Urbánoš — Inspiration Academy Tennis",
+    photoCaption: "Bradenton · Inspiration Academy",
     schoolBadge: "Inspiration Academy Lions",
     points: [
       "Štúdium a denný tréning v Inspiration Academy na Floride.",
