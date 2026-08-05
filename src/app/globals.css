@@ -339,6 +339,41 @@ img {
   gap: 0.75rem;
 }
 
+.home-hub__grid--chapters {
+  grid-template-columns: 1fr;
+}
+
+.home-hub__more {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.55rem 1.15rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.home-hub__more-label {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-right: 0.25rem;
+}
+
+.home-hub__more a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.home-hub__more a:hover {
+  color: var(--ball);
+  border-bottom-color: rgba(200, 240, 0, 0.55);
+}
+
 .home-hub__cta {
   margin-top: 2rem;
   display: flex;
@@ -606,14 +641,6 @@ img {
   text-transform: uppercase;
   color: var(--ball);
   line-height: 1.1;
-}
-
-.hero__lead {
-  margin: 0.85rem 0 0;
-  max-width: 32rem;
-  color: rgba(255, 255, 255, 0.78);
-  line-height: 1.65;
-  font-size: 1.02rem;
 }
 
 .hero__actions {
@@ -2969,11 +2996,8 @@ a.fu-vcard__item:hover {
     min-height: 32rem;
   }
 
-  .home-hub__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .profile__grid {
+  .home-hub__grid,
+  .home-hub__grid--chapters {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
@@ -3165,14 +3189,6 @@ a.fu-vcard__item:hover {
 
   .hero__tagline {
     font-size: 1.15rem;
-  }
-
-  .hero__lead {
-    font-size: 0.95rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
   .hero__actions {

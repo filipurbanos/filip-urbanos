@@ -51,7 +51,6 @@ export function Hero() {
           ) : null}
         </h1>
         <p className="hero__tagline">{t.hero.tagline}</p>
-        <p className="hero__lead">{t.hero.lead}</p>
         <div className="hero__actions">
           <Link className="btn btn--primary" href={localePath(locale, routes.results)}>
             {t.hero.ctaPrimary}

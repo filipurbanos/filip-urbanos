@@ -24,7 +24,6 @@ export type Content = {
     role: string;
     headline: string;
     tagline: string;
-    lead: string;
     ctaPrimary: string;
     ctaSecondary: string;
   };
@@ -34,12 +33,10 @@ export type Content = {
     lead: string;
     cards: {
       about: string;
-      journey: string;
       results: string;
       usa: string;
-      media: string;
-      partners: string;
     };
+    moreLabel: string;
   };
   about: SectionCopy & {
     outlineTitle: string;

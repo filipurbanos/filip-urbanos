@@ -276,56 +276,6 @@ export function Sponsors() {
   );
 }
 
-export function MediaKit() {
-  const { t, locale } = useLocale();
-
-  return (
-    <Section id="media-kit" className="media-kit">
-      <SectionHeader {...t.mediaKit} />
-      <div className="kit__list">
-        {t.mediaKit.items.map((item, i) => (
-          <Reveal key={item.title} delay={i * 50}>
-            <article className="kit-item">
-              <h3>{item.title}</h3>
-              <p>{item.meta}</p>
-            </article>
-          </Reveal>
-        ))}
-      </div>
-      <Reveal delay={160}>
-        <Link className="btn btn--primary" href={localePath(locale, routes.contact)}>
-          {t.mediaKit.cta}
-        </Link>
-      </Reveal>
-    </Section>
-  );
-}
-
-export function Collaborate() {
-  const { t, locale } = useLocale();
-
-  return (
-    <Section id="collaborate" className="collaborate">
-      <SectionHeader {...t.collaborate} />
-      <div className="steps">
-        {t.collaborate.steps.map((step, i) => (
-          <Reveal key={step.title} delay={i * 70}>
-            <article className="step">
-              <h3>{step.title}</h3>
-              <p>{step.body}</p>
-            </article>
-          </Reveal>
-        ))}
-      </div>
-      <Reveal delay={160}>
-        <Link className="btn btn--primary" href={localePath(locale, routes.contact)}>
-          {t.collaborate.cta}
-        </Link>
-      </Reveal>
-    </Section>
-  );
-}
-
 export function Faq() {
   const { t } = useLocale();
 

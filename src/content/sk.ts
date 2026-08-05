@@ -19,32 +19,29 @@ export const sk: Content = {
     role: "Junior · Slovakia → Florida",
     headline: "Filip Urbánoš",
     tagline: "Pripravený na ďalší bod.",
-    lead: "Zo Slovenska na Floridu. Štúdium, disciplína a elitný tréning s cieľom profesionálnej kariéry.",
     ctaPrimary: "Pozrieť výsledky",
     ctaSecondary: "Stať sa partnerom",
   },
   homeHub: {
-    eyebrow: "Cesta",
-    title: "Zo Slovenska na Floridu",
-    lead: "Tri hlavné kapitoly — príbeh, výsledky a USA. Ďalšie stránky sú hneď pod nimi.",
+    eyebrow: "Kapitoly",
+    title: "Tri cesty dovnútra",
+    lead: "Príbeh hráča, výsledky na okruhu a aktuálna kapitola v USA.",
     cards: {
       about: "Kto je Filip a kam smeruje.",
-      journey: "Od Slovenska cez Barcelonu do USA.",
       results: "Výsledky, kalendár a rebríčky.",
-      usa: "Štúdium a tenis v Spojených štátoch.",
-      media: "Fotky, videá a press odkazy.",
-      partners: "Partnerstvá, media kit a spolupráca.",
+      usa: "Štúdium a tenis na Floride.",
     },
+    moreLabel: "Ďalej",
   },
   about: {
     eyebrow: "O Filipovi",
     title: "Ambícia, disciplína, rast",
-    outlineTitle: "Slovensko → USA",
-    lead: "Slovenský junior, ktorý stavia kariéru cez tréning, medzinárodný okruh a ďalšiu kapitolu v USA.",
+    outlineTitle: "Junior · SK",
+    lead: "Slovenský junior s jasnou ambíciou a režimom postaveným na tréningu a zápase.",
     photoAlt: "Filip Urbánoš — backhand na antuke",
     paragraphs: [
       "Filip Urbánoš je 196 cm vysoký pravák s preferenciou hard courtu. Tenis hrá od štyroch–piatich rokov a dnes sa pohybuje na ITF Junior Tour.",
-      "Jeho cieľ je jasný: rásť ako hráč aj ako človek — cez ťažké zápasy, kvalitnú prípravu a spojenie štúdia s tenisom v Spojených štátoch.",
+      "Cieľ je Top 20 ATP — cez disciplínu, ťažké zápasy a každodennú prípravu. Profil a režim tréningu sú nižšie; kapitoly cesty majú vlastnú stránku.",
     ],
   },
   journey: {
@@ -224,7 +221,6 @@ export const sk: Content = {
       paragraphs: [
         "Inspiration Academy je day & boarding škola zameraná na individuálny prístup. Akademická časť beží popri športe, aby hráči zvládali učivo aj náročný tréningový plán.",
         "Tenisová akadémia na tom istom areáli dáva Filipovi dennú prácu na hard courte, prípravu do zápasov a prístup k turnajom v regióne Bradenton / Sarasota — vrátane UTR eventov ako Battle on the Bay.",
-        "Pre Filipa je to prirodzené pokračovanie cesty Bratislava → Barcelona → USA: škola, tréning a zápasy na jednom mieste.",
       ],
       linkLabel: "inspirationacademy.com",
       linkHref: "https://inspirationacademy.com/",
@@ -232,7 +228,7 @@ export const sk: Content = {
     life: {
       eyebrow: "Každodennosť",
       title: "Čo znamená kapitola Florida",
-      lead: "Nie je to len „ísť do USA“ — je to režim, v ktorom sa škola a tenis dopĺňajú.",
+      lead: "Režim, v ktorom sa škola a tenis dopĺňajú — nie len zmena krajiny.",
       items: [
         {
           title: "Škola + kurt",
@@ -279,7 +275,7 @@ export const sk: Content = {
   news: {
     eyebrow: "Novinky",
     title: "Čo je nové",
-    lead: "Krátke správy z okruhu, prípravy a USA kapitoly.",
+    lead: "Krátke správy z okruhu a prípravy.",
     items: [
       {
         date: "2026",
@@ -287,18 +283,12 @@ export const sk: Content = {
         excerpt:
           "Spúšťame priestor pre profil, výsledky, médiá a partnerstvá — v slovenčine aj angličtine.",
       },
-      {
-        date: "2026",
-        title: "Kapitola Florida",
-        excerpt:
-          "Štúdium a tréning v Inspiration Academy — aktuálna kapitola po Barcelone.",
-      },
     ],
   },
   press: {
     eyebrow: "Médiá",
     title: "Rozhovory a výstupy",
-    lead: "Odkazy pre novinárov a fanúšikov. Media kit je samostatne nižšie.",
+    lead: "Odkazy pre novinárov a fanúšikov. Media kit pošleme na vyžiadanie cez kontakt.",
     items: [
       {
         type: "Profil",
@@ -339,21 +329,19 @@ export const sk: Content = {
   sponsors: {
     eyebrow: "Pre sponzorov",
     title: "Prečo ísť do toho s Filipom",
-    lead: "Dlhodobé partnerstvo s juniorom, ktorý buduje medzinárodnú viditeľnosť a jasný cieľ.",
+    lead: "Jedno partnerstvo — viditeľnosť na okruhu, obsah a media kit na vyžiadanie.",
     offerTitle: "Čo partner dostane",
     offers: [
       "Viditeľnosť loga na oblečení a výbave",
       "Zmienky na Instagrame a v mediálnych výstupoch",
       "Prezentácia značky na turnajoch",
-      "Prístup k media kitu a spolupráci na obsahu",
+      "Media kit (bio, fotky, fact sheet) na vyžiadanie",
     ],
     usageTitle: "Kam idú prostriedky",
     usage: [
       "Cestovanie a ubytovanie na ITF turnajoch",
-      "Rakety, výplety, obuv a apparel",
-      "Tréning, kondícia a fyzioterapia",
+      "Výbava, tréning a fyzioterapia",
       "Štúdium a tréningový blok v USA",
-      "Produkcia foto a video obsahu",
     ],
     cta: "Napísať o partnerstve",
   },

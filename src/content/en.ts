@@ -19,32 +19,29 @@ export const en: Content = {
     role: "Junior · Slovakia → Florida",
     headline: "Filip Urbanos",
     tagline: "Ready for the next point.",
-    lead: "From Slovakia to Florida. Study, discipline, and elite training aimed at a pro career.",
     ctaPrimary: "View results",
     ctaSecondary: "Become a partner",
   },
   homeHub: {
-    eyebrow: "The path",
-    title: "From Slovakia to Florida",
-    lead: "Three main chapters — story, results, and the USA. More pages sit just below.",
+    eyebrow: "Chapters",
+    title: "Three ways in",
+    lead: "The player story, results on tour, and the current USA chapter.",
     cards: {
       about: "Who Filip is and where he’s headed.",
-      journey: "From Slovakia through Barcelona to the USA.",
       results: "Results, calendar, and rankings.",
-      usa: "Study and tennis in the United States.",
-      media: "Photos, videos, and press links.",
-      partners: "Partnerships, media kit, and collaboration.",
+      usa: "Study and tennis in Florida.",
     },
+    moreLabel: "More",
   },
   about: {
     eyebrow: "About Filip",
     title: "Ambition, discipline, growth",
-    outlineTitle: "Slovakia → USA",
-    lead: "A Slovak junior building a career through training, the international circuit, and a next chapter in the USA.",
+    outlineTitle: "Junior · SK",
+    lead: "A Slovak junior with a clear aim and a routine built on training and matches.",
     photoAlt: "Filip Urbanos — backhand on clay",
     paragraphs: [
       "Filip Urbanos is a 196 cm right-hander with a hard-court preference. He has played tennis since age four or five and now competes on the ITF Junior Tour.",
-      "His aim is clear: grow as a player and as a person — through tough matches, quality preparation, and combining study with tennis in the United States.",
+      "The goal is Top 20 ATP — through discipline, tough matches, and daily preparation. Profile and training sit below; the chapter path has its own page.",
     ],
   },
   journey: {
@@ -224,7 +221,6 @@ export const en: Content = {
       paragraphs: [
         "Inspiration Academy is a day and boarding school built around personal instruction. Academics run alongside sport so players can handle coursework and a demanding training week.",
         "The tennis academy on the same campus gives Filip daily hard-court work, match prep, and access to events around Bradenton / Sarasota — including UTR events like Battle on the Bay.",
-        "For Filip it’s the natural next step after Bratislava → Barcelona → USA: school, training, and competition in one place.",
       ],
       linkLabel: "inspirationacademy.com",
       linkHref: "https://inspirationacademy.com/",
@@ -232,7 +228,7 @@ export const en: Content = {
     life: {
       eyebrow: "Day to day",
       title: "What the Florida chapter means",
-      lead: "It’s not just “moving to the USA” — it’s a regime where school and tennis reinforce each other.",
+      lead: "A regime where school and tennis reinforce each other — not just a change of country.",
       items: [
         {
           title: "School + court",
@@ -279,7 +275,7 @@ export const en: Content = {
   news: {
     eyebrow: "News",
     title: "What’s new",
-    lead: "Short updates from the circuit, preparation, and the USA chapter.",
+    lead: "Short updates from the circuit and preparation.",
     items: [
       {
         date: "2026",
@@ -287,18 +283,12 @@ export const en: Content = {
         excerpt:
           "A home for profile, results, media, and partnerships — in Slovak and English.",
       },
-      {
-        date: "2026",
-        title: "Florida chapter",
-        excerpt:
-          "Study and training at Inspiration Academy — the current chapter after Barcelona.",
-      },
     ],
   },
   press: {
     eyebrow: "Press",
     title: "Interviews and coverage",
-    lead: "Links for journalists and fans. Media kit is listed separately below.",
+    lead: "Links for journalists and fans. Request the media kit via Contact.",
     items: [
       {
         type: "Profile",
@@ -339,21 +329,19 @@ export const en: Content = {
   sponsors: {
     eyebrow: "For sponsors",
     title: "Why partner with Filip",
-    lead: "A long-term partnership with a junior building international visibility and a clear goal.",
+    lead: "One partnership — visibility on tour, content, and a media kit on request.",
     offerTitle: "What a partner gets",
     offers: [
       "Logo visibility on clothing and equipment",
       "Mentions on Instagram and in media posts",
       "Brand presence at tournaments",
-      "Access to the media kit and content collaboration",
+      "Media kit (bio, photos, fact sheet) on request",
     ],
     usageTitle: "Where support goes",
     usage: [
       "Travel and lodging for ITF events",
-      "Rackets, strings, shoes, and apparel",
-      "Coaching, conditioning, and physiotherapy",
+      "Equipment, coaching, and physiotherapy",
       "Study and training block in the USA",
-      "Photo and video production",
     ],
     cta: "Talk partnerships",
   },

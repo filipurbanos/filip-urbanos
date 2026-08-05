@@ -1,12 +1,7 @@
 "use client";
 
 import { PageBanner } from "@/components/PageBanner";
-import {
-  Collaborate,
-  MediaKit,
-  PartnersList,
-  Sponsors,
-} from "@/components/SiteSections";
+import { PartnersList, Sponsors } from "@/components/SiteSections";
 import type { Partner } from "@/lib/cms/types";
 import { useLocale } from "@/lib/locale";
 import { mediaAssets } from "@/lib/media";
@@ -25,8 +20,6 @@ export function PartnersView({ partners }: { partners: Partner[] }) {
       />
       <PartnersList partners={partners} />
       <Sponsors />
-      <MediaKit />
-      <Collaborate />
     </>
   );
 }
