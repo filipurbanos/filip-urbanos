@@ -11,53 +11,55 @@ export default function AppleIcon() {
           width: "100%",
           height: "100%",
           display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#c8f000",
+          borderRadius: 999,
           position: "relative",
-          background: "#0a0c10",
-          border: "8px solid #c8f000",
-          boxSizing: "border-box",
         }}
       >
+        {/* left seam */}
         <div
           style={{
             position: "absolute",
-            left: 28,
-            top: 32,
-            color: "#ffffff",
-            fontSize: 78,
-            fontWeight: 800,
-            letterSpacing: "-0.06em",
-            fontFamily: "system-ui, sans-serif",
-            lineHeight: 1,
+            left: 22,
+            top: 28,
+            width: 42,
+            height: 124,
+            border: "7px solid #0a0c10",
+            borderRight: "none",
+            borderRadius: "999px 0 0 999px",
+            boxSizing: "border-box",
           }}
-        >
-          F
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            left: 88,
-            top: 32,
-            color: "#ffffff",
-            fontSize: 78,
-            fontWeight: 800,
-            letterSpacing: "-0.06em",
-            fontFamily: "system-ui, sans-serif",
-            lineHeight: 1,
-          }}
-        >
-          U
-        </div>
+        />
+        {/* right seam */}
         <div
           style={{
             position: "absolute",
             right: 22,
-            bottom: 22,
+            top: 28,
             width: 42,
-            height: 42,
-            borderRadius: 999,
-            background: "#c8f000",
+            height: 124,
+            border: "7px solid #0a0c10",
+            borderLeft: "none",
+            borderRadius: "0 999px 999px 0",
+            boxSizing: "border-box",
           }}
         />
+        <div
+          style={{
+            display: "flex",
+            color: "#0a0c10",
+            fontSize: 78,
+            fontWeight: 800,
+            letterSpacing: "-0.06em",
+            fontFamily: "system-ui, sans-serif",
+            lineHeight: 1,
+            zIndex: 1,
+          }}
+        >
+          FU
+        </div>
       </div>
     ),
     size,
