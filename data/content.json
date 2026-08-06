@@ -2,6 +2,20 @@
   "revision": 1,
   "tournaments": [
     {
+      "id": "t_utr_387045",
+      "date": "2026-08-08",
+      "event": "Battle on the Bay · Inspiration Academy",
+      "place": "Bradenton / Sarasota, FL",
+      "surface": "Hard",
+      "status": "upcoming",
+      "resultSingles": "",
+      "resultDoubles": "",
+      "notes": "UTR Verified · EQWI Ventures $3.5K Prize Money · Men’s Open",
+      "url": "https://app.utrsports.net/events/387045?t=2",
+      "albumId": "",
+      "matches": []
+    },
+    {
       "id": "t_utr_388585",
       "date": "2026-08-12",
       "event": "Inspiration Tennis Academy vs Clearwater Tennis Club HP Academy",
